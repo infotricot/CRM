@@ -1,0 +1,127 @@
+﻿@using diplom_2.Models
+@model List<Product>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    ViewBag.Title = "Home Page";
+
+}
+<div class="pageheader">
+    <h2><i class="fa fa-table"></i>Каталог<span></span></h2>
+    <div class="breadcrumb-wrapper">
+        <span class="label"></span>
+        <ol class="breadcrumb">
+            <li><a href="~/Home/Index">Главная</a></li>
+            <li class="active"><a href="~/Catalog/GetProductInCategory">Каталог - товары</a></li>          
+        </ol>
+    </div>
+</div>
+<div class="contentpanel">
+
+    @*<div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="panel-btns">
+                    <a href="" class="panel-close">&times;</a>
+                    <a href="" class="minimize">&minus;</a>
+                </div><!-- panel-btns -->
+                <h4 class="panel-title">Modal Box</h4>
+                <p>Modals are streamlined, but flexible, dialog prompts with the minimum required functionality and smart defaults.</p>
+            </div><!-- panel-heading -->
+            <div class="panel-body">
+
+                <!-- Button trigger modal -->
+                <button class="btn btn-primary btn-lg mb10" data-toggle="modal" data-target="#myModal">
+                    Launch Modal
+                </button>
+                <p>You can view more examples in using modals in <a href="modals.html">here</a></p>
+            </div>
+        </div><!-- panel -->*@
+
+    @*<button class="btn btn-primary btn-lg mb10" data-toggle="modal" data-target="#myModal">
+        Launch Modal
+    </button>*@
+
+    @{ 
+        int count = 0;
+     
+    }
+    @foreach (var i in Model)
+    {
+        if (count == 0)
+        {
+            @Html.Raw("<div class='row'>")
+        }
+
+        <div class="col-sm-4">
+            <div class="panel panel-default widget-photoday">
+                <div class="panel-body"  ProductId="@i.Id" data-toggle="modal" data-target="#myModal" style="cursor: pointer">
+                    <div class="photoday">
+                    <img style="width: 50%; margin: auto" src="https://tricot.com.ua/sites/default/files/styles/medium/public/products/@i.Images[0].Filename" alt="" /></div>
+                    <div class="photo-details">
+                        <h4 class="photo-title">@i.Name</h4>
+                        <small class="text-muted">
+                            @if (i.Description.Length < 300)
+                            {
+                                @Html.Raw(i.Description)
+                            }
+                        </small>
+                        <small>
+                            Полотно:
+                            @for (int j = 0; j < i.ListPolotno.Count; j++)
+                            {
+                                <a href="#">@i.ListPolotno[j]</a>
+                            }
+
+
+                        </small>
+                    </div><!-- photo-details -->
+                    <ul class="photo-meta">
+                        <li><span><i class="fa fa-eye"></i> 32,102</span></li>
+                        <li><a href="#"><i class="fa fa-heart"></i> 1,003</a></li>
+                        <li><a href="#"><i class="fa fa-comments"></i> 52</a></li>
+                    </ul>
+                </div><!-- panel-body -->
+            </div><!-- panel -->
+        </div><!-- col-sm-6 -->
+        count++;
+    
+        if (count == 3)
+        {
+            @Html.Raw("</div>");
+            count = 0;
+        }
+    }
+</div><!-- contentpanel -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width: 40%">
+        
+    </div><!-- modal-dialog -->
+</div><!-- modal -->
+
+
+<script>
+    $('#myModal').on('shown.bs.modal', function (e) {
+        $('.modal-dialog').html('<div id="preloader_modal"><div id="status"><i class="fa fa-spinner fa-spin"></i></div></div>');
+        var ProductId = $(e.relatedTarget).attr('ProductId');
+        
+        $('#preloader_modal').show();
+        $.ajax({
+            type: "GET",
+            url: "/Catalog/ShowProduct/" + ProductId,
+            //   data: '{name: "' + $("#txtName").val() + '" }',
+            success: function (response) {                
+                $('.modal-dialog').html(response);        
+            },
+            error: function (response) {
+                alert("Error");
+            }
+        })
+    })
+</script>

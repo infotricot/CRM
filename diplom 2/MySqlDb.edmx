@@ -1,0 +1,468 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Model.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.6" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="field_data_field_image">
+          <Key>
+            <PropertyRef Name="entity_type" />
+            <PropertyRef Name="deleted" />
+            <PropertyRef Name="entity_id" />
+            <PropertyRef Name="language" />
+            <PropertyRef Name="delta" />
+          </Key>
+          <Property Name="entity_type" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="bundle" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="deleted" Type="tinyint" Nullable="false" />
+          <Property Name="entity_id" Type="uint" Nullable="false" />
+          <Property Name="revision_id" Type="uint" />
+          <Property Name="language" Type="varchar" MaxLength="32" Nullable="false" />
+          <Property Name="delta" Type="uint" Nullable="false" />
+          <Property Name="field_image_fid" Type="uint" />
+          <Property Name="field_image_alt" Type="varchar" MaxLength="512" />
+          <Property Name="field_image_title" Type="varchar" MaxLength="1024" />
+          <Property Name="field_image_width" Type="uint" />
+          <Property Name="field_image_height" Type="uint" />
+        </EntityType>
+        <EntityType Name="field_revision_body">
+          <Key>
+            <PropertyRef Name="entity_type" />
+            <PropertyRef Name="deleted" />
+            <PropertyRef Name="entity_id" />
+            <PropertyRef Name="revision_id" />
+            <PropertyRef Name="language" />
+            <PropertyRef Name="delta" />
+          </Key>
+          <Property Name="entity_type" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="bundle" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="deleted" Type="tinyint" Nullable="false" />
+          <Property Name="entity_id" Type="uint" Nullable="false" />
+          <Property Name="revision_id" Type="uint" Nullable="false" />
+          <Property Name="language" Type="varchar" MaxLength="32" Nullable="false" />
+          <Property Name="delta" Type="uint" Nullable="false" />
+          <Property Name="body_value" Type="longtext" />
+          <Property Name="body_summary" Type="longtext" />
+          <Property Name="body_format" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="field_revision_field_catalog">
+          <Key>
+            <PropertyRef Name="entity_type" />
+            <PropertyRef Name="deleted" />
+            <PropertyRef Name="entity_id" />
+            <PropertyRef Name="revision_id" />
+            <PropertyRef Name="language" />
+            <PropertyRef Name="delta" />
+          </Key>
+          <Property Name="entity_type" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="bundle" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="deleted" Type="tinyint" Nullable="false" />
+          <Property Name="entity_id" Type="uint" Nullable="false" />
+          <Property Name="revision_id" Type="uint" Nullable="false" />
+          <Property Name="language" Type="varchar" MaxLength="32" Nullable="false" />
+          <Property Name="delta" Type="uint" Nullable="false" />
+          <Property Name="field_catalog_tid" Type="uint" />
+        </EntityType>
+        <EntityType Name="field_revision_field_collection">
+          <Key>
+            <PropertyRef Name="entity_type" />
+            <PropertyRef Name="deleted" />
+            <PropertyRef Name="entity_id" />
+            <PropertyRef Name="revision_id" />
+            <PropertyRef Name="language" />
+            <PropertyRef Name="delta" />
+          </Key>
+          <Property Name="entity_type" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="bundle" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="deleted" Type="tinyint" Nullable="false" />
+          <Property Name="entity_id" Type="uint" Nullable="false" />
+          <Property Name="revision_id" Type="uint" Nullable="false" />
+          <Property Name="language" Type="varchar" MaxLength="32" Nullable="false" />
+          <Property Name="delta" Type="uint" Nullable="false" />
+          <Property Name="field_collection_tid" Type="uint" />
+        </EntityType>
+        <EntityType Name="field_revision_field_polotno">
+          <Key>
+            <PropertyRef Name="entity_type" />
+            <PropertyRef Name="deleted" />
+            <PropertyRef Name="entity_id" />
+            <PropertyRef Name="revision_id" />
+            <PropertyRef Name="language" />
+            <PropertyRef Name="delta" />
+          </Key>
+          <Property Name="entity_type" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="bundle" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="deleted" Type="tinyint" Nullable="false" />
+          <Property Name="entity_id" Type="uint" Nullable="false" />
+          <Property Name="revision_id" Type="uint" Nullable="false" />
+          <Property Name="language" Type="varchar" MaxLength="32" Nullable="false" />
+          <Property Name="delta" Type="uint" Nullable="false" />
+          <Property Name="field_polotno_tid" Type="uint" />
+        </EntityType>
+        <EntityType Name="file_managed">
+          <Key>
+            <PropertyRef Name="fid" />
+          </Key>
+          <Property Name="fid" Type="uint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="uid" Type="uint" Nullable="false" />
+          <Property Name="filename" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="uri" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="filemime" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="filesize" Type="ubigint" Nullable="false" />
+          <Property Name="status" Type="tinyint" Nullable="false" />
+          <Property Name="timestamp" Type="uint" Nullable="false" />
+          <Property Name="type" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="node">
+          <Key>
+            <PropertyRef Name="nid" />
+          </Key>
+          <Property Name="nid" Type="uint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="vid" Type="uint" />
+          <Property Name="type" Type="varchar" MaxLength="32" Nullable="false" />
+          <Property Name="language" Type="varchar" MaxLength="12" Nullable="false" />
+          <Property Name="title" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="uid" Type="int" Nullable="false" />
+          <Property Name="status" Type="int" Nullable="false" />
+          <Property Name="created" Type="int" Nullable="false" />
+          <Property Name="changed" Type="int" Nullable="false" />
+          <Property Name="comment" Type="int" Nullable="false" />
+          <Property Name="promote" Type="int" Nullable="false" />
+          <Property Name="sticky" Type="int" Nullable="false" />
+          <Property Name="tnid" Type="uint" Nullable="false" />
+          <Property Name="translate" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="taxonomy_term_data">
+          <Key>
+            <PropertyRef Name="tid" />
+          </Key>
+          <Property Name="tid" Type="uint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="vid" Type="uint" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="description" Type="longtext" />
+          <Property Name="format" Type="varchar" MaxLength="255" />
+          <Property Name="weight" Type="int" Nullable="false" />
+          <Property Name="language" Type="varchar" MaxLength="12" Nullable="false" />
+          <Property Name="i18n_tsid" Type="uint" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="ModelStoreContainer">
+          <EntitySet Name="field_data_field_image" EntityType="Self.field_data_field_image" Schema="meotis_newtric" store:Type="Tables" />
+          <EntitySet Name="field_revision_body" EntityType="Self.field_revision_body" Schema="meotis_newtric" store:Type="Tables" />
+          <EntitySet Name="field_revision_field_catalog" EntityType="Self.field_revision_field_catalog" Schema="meotis_newtric" store:Type="Tables" />
+          <EntitySet Name="field_revision_field_collection" EntityType="Self.field_revision_field_collection" Schema="meotis_newtric" store:Type="Tables" />
+          <EntitySet Name="field_revision_field_polotno" EntityType="Self.field_revision_field_polotno" Schema="meotis_newtric" store:Type="Tables" />
+          <EntitySet Name="file_managed" EntityType="Self.file_managed" Schema="meotis_newtric" store:Type="Tables" />
+          <EntitySet Name="node" EntityType="Self.node" Schema="meotis_newtric" store:Type="Tables" />
+          <EntitySet Name="taxonomy_term_data" EntityType="Self.taxonomy_term_data" Schema="meotis_newtric" store:Type="Tables" />
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="field_revision_field_catalog">
+          <Key>
+            <PropertyRef Name="entity_type" />
+            <PropertyRef Name="deleted" />
+            <PropertyRef Name="entity_id" />
+            <PropertyRef Name="revision_id" />
+            <PropertyRef Name="language" />
+            <PropertyRef Name="delta" />
+          </Key>
+          <Property Name="entity_type" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="bundle" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="deleted" Type="SByte" Nullable="false" />
+          <Property Name="entity_id" Type="Int64" Nullable="false" />
+          <Property Name="revision_id" Type="Int64" Nullable="false" />
+          <Property Name="language" Type="String" MaxLength="32" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="delta" Type="Int64" Nullable="false" />
+          <Property Name="field_catalog_tid" Type="Int64" />
+        </EntityType>
+        <EntityType Name="node">
+          <Key>
+            <PropertyRef Name="nid" />
+          </Key>
+          <Property Name="nid" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="vid" Type="Int64" />
+          <Property Name="type" Type="String" MaxLength="32" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="language" Type="String" MaxLength="12" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="title" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="uid" Type="Int32" Nullable="false" />
+          <Property Name="status" Type="Int32" Nullable="false" />
+          <Property Name="created" Type="Int32" Nullable="false" />
+          <Property Name="changed" Type="Int32" Nullable="false" />
+          <Property Name="comment" Type="Int32" Nullable="false" />
+          <Property Name="promote" Type="Int32" Nullable="false" />
+          <Property Name="sticky" Type="Int32" Nullable="false" />
+          <Property Name="tnid" Type="Int64" Nullable="false" />
+          <Property Name="translate" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="taxonomy_term_data">
+          <Key>
+            <PropertyRef Name="tid" />
+          </Key>
+          <Property Name="tid" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="vid" Type="Int64" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="description" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="format" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="weight" Type="Int32" Nullable="false" />
+          <Property Name="language" Type="String" Nullable="false" MaxLength="12" FixedLength="false" Unicode="false" />
+          <Property Name="i18n_tsid" Type="Int64" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="meotis_newtricEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="field_revision_field_catalog" EntityType="Self.field_revision_field_catalog" />
+          <EntitySet Name="node" EntityType="Self.node" />
+          <EntitySet Name="taxonomy_term_data" EntityType="Self.taxonomy_term_data" />
+          <EntitySet Name="file_managed" EntityType="Model.file_managed" />
+          <EntitySet Name="field_data_field_image" EntityType="Model.field_data_field_image" />
+          <EntitySet Name="field_revision_body" EntityType="Model.field_revision_body" />
+          <EntitySet Name="field_revision_field_polotno" EntityType="Model.field_revision_field_polotno" />
+          <EntitySet Name="field_revision_field_collection" EntityType="Model.field_revision_field_collection" />
+        </EntityContainer>
+        <EntityType Name="file_managed">
+          <Key>
+            <PropertyRef Name="fid" />
+          </Key>
+          <Property Name="fid" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="uid" Type="Int64" Nullable="false" />
+          <Property Name="filename" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="uri" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="filemime" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="filesize" Type="Decimal" Nullable="false" />
+          <Property Name="status" Type="SByte" Nullable="false" />
+          <Property Name="timestamp" Type="Int64" Nullable="false" />
+          <Property Name="type" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="field_data_field_image">
+          <Key>
+            <PropertyRef Name="entity_type" />
+            <PropertyRef Name="deleted" />
+            <PropertyRef Name="entity_id" />
+            <PropertyRef Name="language" />
+            <PropertyRef Name="delta" />
+          </Key>
+          <Property Name="entity_type" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="bundle" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="deleted" Type="SByte" Nullable="false" />
+          <Property Name="entity_id" Type="Int64" Nullable="false" />
+          <Property Name="revision_id" Type="Int64" />
+          <Property Name="language" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="false" />
+          <Property Name="delta" Type="Int64" Nullable="false" />
+          <Property Name="field_image_fid" Type="Int64" />
+          <Property Name="field_image_alt" Type="String" MaxLength="512" FixedLength="false" Unicode="false" />
+          <Property Name="field_image_title" Type="String" MaxLength="1024" FixedLength="false" Unicode="false" />
+          <Property Name="field_image_width" Type="Int64" />
+          <Property Name="field_image_height" Type="Int64" />
+        </EntityType>
+        <EntityType Name="field_revision_body">
+          <Key>
+            <PropertyRef Name="entity_type" />
+            <PropertyRef Name="deleted" />
+            <PropertyRef Name="entity_id" />
+            <PropertyRef Name="revision_id" />
+            <PropertyRef Name="language" />
+            <PropertyRef Name="delta" />
+          </Key>
+          <Property Name="entity_type" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="bundle" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="deleted" Type="SByte" Nullable="false" />
+          <Property Name="entity_id" Type="Int64" Nullable="false" />
+          <Property Name="revision_id" Type="Int64" Nullable="false" />
+          <Property Name="language" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="false" />
+          <Property Name="delta" Type="Int64" Nullable="false" />
+          <Property Name="body_value" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="body_summary" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="body_format" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="field_revision_field_polotno">
+          <Key>
+            <PropertyRef Name="entity_type" />
+            <PropertyRef Name="deleted" />
+            <PropertyRef Name="entity_id" />
+            <PropertyRef Name="revision_id" />
+            <PropertyRef Name="language" />
+            <PropertyRef Name="delta" />
+          </Key>
+          <Property Name="entity_type" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="bundle" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="deleted" Type="SByte" Nullable="false" />
+          <Property Name="entity_id" Type="Int64" Nullable="false" />
+          <Property Name="revision_id" Type="Int64" Nullable="false" />
+          <Property Name="language" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="false" />
+          <Property Name="delta" Type="Int64" Nullable="false" />
+          <Property Name="field_polotno_tid" Type="Int64" />
+        </EntityType>
+        <EntityType Name="field_revision_field_collection">
+          <Key>
+            <PropertyRef Name="entity_type" />
+            <PropertyRef Name="deleted" />
+            <PropertyRef Name="entity_id" />
+            <PropertyRef Name="revision_id" />
+            <PropertyRef Name="language" />
+            <PropertyRef Name="delta" />
+          </Key>
+          <Property Name="entity_type" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="bundle" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="deleted" Type="SByte" Nullable="false" />
+          <Property Name="entity_id" Type="Int64" Nullable="false" />
+          <Property Name="revision_id" Type="Int64" Nullable="false" />
+          <Property Name="language" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="false" />
+          <Property Name="delta" Type="Int64" Nullable="false" />
+          <Property Name="field_collection_tid" Type="Int64" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="meotis_newtricEntities">
+          <EntitySetMapping Name="field_revision_field_catalog">
+            <EntityTypeMapping TypeName="Model.field_revision_field_catalog">
+              <MappingFragment StoreEntitySet="field_revision_field_catalog">
+                <ScalarProperty Name="entity_type" ColumnName="entity_type" />
+                <ScalarProperty Name="bundle" ColumnName="bundle" />
+                <ScalarProperty Name="deleted" ColumnName="deleted" />
+                <ScalarProperty Name="entity_id" ColumnName="entity_id" />
+                <ScalarProperty Name="revision_id" ColumnName="revision_id" />
+                <ScalarProperty Name="language" ColumnName="language" />
+                <ScalarProperty Name="delta" ColumnName="delta" />
+                <ScalarProperty Name="field_catalog_tid" ColumnName="field_catalog_tid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="node">
+            <EntityTypeMapping TypeName="Model.node">
+              <MappingFragment StoreEntitySet="node">
+                <ScalarProperty Name="nid" ColumnName="nid" />
+                <ScalarProperty Name="vid" ColumnName="vid" />
+                <ScalarProperty Name="type" ColumnName="type" />
+                <ScalarProperty Name="language" ColumnName="language" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="uid" ColumnName="uid" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="created" ColumnName="created" />
+                <ScalarProperty Name="changed" ColumnName="changed" />
+                <ScalarProperty Name="comment" ColumnName="comment" />
+                <ScalarProperty Name="promote" ColumnName="promote" />
+                <ScalarProperty Name="sticky" ColumnName="sticky" />
+                <ScalarProperty Name="tnid" ColumnName="tnid" />
+                <ScalarProperty Name="translate" ColumnName="translate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="taxonomy_term_data">
+            <EntityTypeMapping TypeName="Model.taxonomy_term_data">
+              <MappingFragment StoreEntitySet="taxonomy_term_data">
+                <ScalarProperty Name="i18n_tsid" ColumnName="i18n_tsid" />
+                <ScalarProperty Name="language" ColumnName="language" />
+                <ScalarProperty Name="tid" ColumnName="tid" />
+                <ScalarProperty Name="vid" ColumnName="vid" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="format" ColumnName="format" />
+                <ScalarProperty Name="weight" ColumnName="weight" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="file_managed">
+            <EntityTypeMapping TypeName="Model.file_managed">
+              <MappingFragment StoreEntitySet="file_managed">
+                <ScalarProperty Name="type" ColumnName="type" />
+                <ScalarProperty Name="timestamp" ColumnName="timestamp" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="filesize" ColumnName="filesize" />
+                <ScalarProperty Name="filemime" ColumnName="filemime" />
+                <ScalarProperty Name="uri" ColumnName="uri" />
+                <ScalarProperty Name="filename" ColumnName="filename" />
+                <ScalarProperty Name="uid" ColumnName="uid" />
+                <ScalarProperty Name="fid" ColumnName="fid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="field_data_field_image">
+            <EntityTypeMapping TypeName="Model.field_data_field_image">
+              <MappingFragment StoreEntitySet="field_data_field_image">
+                <ScalarProperty Name="field_image_height" ColumnName="field_image_height" />
+                <ScalarProperty Name="field_image_width" ColumnName="field_image_width" />
+                <ScalarProperty Name="field_image_title" ColumnName="field_image_title" />
+                <ScalarProperty Name="field_image_alt" ColumnName="field_image_alt" />
+                <ScalarProperty Name="field_image_fid" ColumnName="field_image_fid" />
+                <ScalarProperty Name="delta" ColumnName="delta" />
+                <ScalarProperty Name="language" ColumnName="language" />
+                <ScalarProperty Name="revision_id" ColumnName="revision_id" />
+                <ScalarProperty Name="entity_id" ColumnName="entity_id" />
+                <ScalarProperty Name="deleted" ColumnName="deleted" />
+                <ScalarProperty Name="bundle" ColumnName="bundle" />
+                <ScalarProperty Name="entity_type" ColumnName="entity_type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="field_revision_body">
+            <EntityTypeMapping TypeName="Model.field_revision_body">
+              <MappingFragment StoreEntitySet="field_revision_body">
+                <ScalarProperty Name="body_format" ColumnName="body_format" />
+                <ScalarProperty Name="body_summary" ColumnName="body_summary" />
+                <ScalarProperty Name="body_value" ColumnName="body_value" />
+                <ScalarProperty Name="delta" ColumnName="delta" />
+                <ScalarProperty Name="language" ColumnName="language" />
+                <ScalarProperty Name="revision_id" ColumnName="revision_id" />
+                <ScalarProperty Name="entity_id" ColumnName="entity_id" />
+                <ScalarProperty Name="deleted" ColumnName="deleted" />
+                <ScalarProperty Name="bundle" ColumnName="bundle" />
+                <ScalarProperty Name="entity_type" ColumnName="entity_type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="field_revision_field_polotno">
+            <EntityTypeMapping TypeName="Model.field_revision_field_polotno">
+              <MappingFragment StoreEntitySet="field_revision_field_polotno">
+                <ScalarProperty Name="field_polotno_tid" ColumnName="field_polotno_tid" />
+                <ScalarProperty Name="delta" ColumnName="delta" />
+                <ScalarProperty Name="language" ColumnName="language" />
+                <ScalarProperty Name="revision_id" ColumnName="revision_id" />
+                <ScalarProperty Name="entity_id" ColumnName="entity_id" />
+                <ScalarProperty Name="deleted" ColumnName="deleted" />
+                <ScalarProperty Name="bundle" ColumnName="bundle" />
+                <ScalarProperty Name="entity_type" ColumnName="entity_type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="field_revision_field_collection">
+            <EntityTypeMapping TypeName="Model.field_revision_field_collection">
+              <MappingFragment StoreEntitySet="field_revision_field_collection">
+                <ScalarProperty Name="field_collection_tid" ColumnName="field_collection_tid" />
+                <ScalarProperty Name="delta" ColumnName="delta" />
+                <ScalarProperty Name="language" ColumnName="language" />
+                <ScalarProperty Name="revision_id" ColumnName="revision_id" />
+                <ScalarProperty Name="entity_id" ColumnName="entity_id" />
+                <ScalarProperty Name="deleted" ColumnName="deleted" />
+                <ScalarProperty Name="bundle" ColumnName="bundle" />
+                <ScalarProperty Name="entity_type" ColumnName="entity_type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

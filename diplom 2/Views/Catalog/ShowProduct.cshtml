@@ -1,0 +1,70 @@
+﻿@model diplom_2.Models.Product
+
+@{
+    Layout = null;
+}
+
+<!-- Preloader -->
+
+    
+<div class="modal-content">
+        @*<div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">@item.Name</h4>
+            </div>*@
+
+        <div class="panel panel-dark panel-alt widget-slider">
+            <div class="panel-heading">
+                <h5 class="panel-title">@Model.Name</h5>
+            </div>
+            <div class="panel-body">
+                <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                    <!-- Wrapper for slides -->
+                    @{
+                        int imageCounter = 0;
+                    }
+                    <div class="carousel-inner">
+                        @foreach (var image in Model.Images)
+                        {
+
+                            <div class="item @(imageCounter == 0 ? "active" : "")">
+                                <div class="media">
+                                    <img style=" width: 100%;" src="https://tricot.com.ua/sites/default/files/styles/922x610/public/products/@image.Filename" class="media-object" />
+                                </div><!-- media -->
+                            </div><!-- item -->
+                            { imageCounter++; }
+                        }
+
+
+                    </div><!-- carousel-inner -->
+                    <!-- Indicators -->
+                    @{
+                        imageCounter = 0;
+                    }
+                    <ol class="carousel-indicators">
+
+                        @foreach (var image in Model.Images)
+                        {
+                            <li data-target="#carousel-example-generic" data-slide-to="@imageCounter" @(imageCounter == 0 ? "active" : "")></li>
+                            { imageCounter++; }
+                        }
+                        @*<li data-target="#carousel-example-generic_@n" data-slide-to="1"></li>
+                            <li data-target="#carousel-example-generic_@n" data-slide-to="2"></li>*@
+                    </ol>
+
+                </div><!-- carousel -->
+            </div><!-- panel-body -->
+        </div><!-- panel -->
+
+        <div class="modal-body">
+            @Html.Raw(Model.Description)
+            <hr />
+            @foreach (var p in Model.ListPolotno)
+            {
+                <div>@p</div>
+            }
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>            
+        </div>
+    </div><!-- modal-content -->

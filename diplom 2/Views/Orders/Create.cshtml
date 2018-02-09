@@ -1,0 +1,190 @@
+﻿@model diplom_2.Models.Order
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="pageheader">
+    <h2><i class="fa fa-dollar"></i> Invoice <span>Subtitle goes here...</span></h2>
+    <div class="breadcrumb-wrapper">
+        <span class="label">You are here:</span>
+        <ol class="breadcrumb">
+            <li><a href="index.html">Bracket</a></li>
+            <li><a href="index.html">Pages</a></li>
+            <li class="active">Invoice</li>
+        </ol>
+    </div>
+</div>
+
+<div class="contentpanel">
+
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-6">
+
+                    <h5 class="subtitle mb10">From</h5>
+                    <img src="images/themeforest.png" class="img-responsive mb10" alt="" />
+                    <address>
+                        <strong>ThemeForest Web Services, Inc.</strong><br>
+                        795 Folsom Ave, Suite 600<br>
+                        San Francisco, CA 94107<br>
+                        <abbr title="Phone">P:</abbr> (123) 456-7890
+                    </address>
+
+                </div><!-- col-sm-6 -->
+
+                <div class="col-sm-6 text-right">
+                    <h5 class="subtitle mb10">Invoice No.</h5>
+                    <h4 class="text-primary">INV-000464F4-00</h4>
+
+                    <h5 class="subtitle mb10">To</h5>
+                    <address>
+                        <strong>ThemePixels, Inc.</strong><br>
+                        795 Folsom Ave, Suite 600<br>
+                        San Francisco, CA 94107<br>
+                        <abbr title="Phone">P:</abbr> (123) 456-7890
+                    </address>
+
+                    <p><strong>Invoice Date:</strong> January 20, 2014</p>
+                    <p><strong>Due Date:</strong> January 22, 2014</p>
+
+                </div>
+            </div><!-- row -->
+            @using (Html.BeginForm())
+            {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+          
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ReadyDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="datepicker" name="ReadyDate" value="@DateTime.Now.AddDays(14).ToShortDateString()">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                    </div>
+                    @Html.ValidationMessageFor(model => model.ReadyDate, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Модель</label>
+                <div class="col-sm-8">
+                    <select id="selectList" class="select2" data-placeholder="Выберете или введите название модели">
+                        <option id="SelectedProduct" value=""></option>
+                        @foreach (var product in diplom_2.Models.Product.GetProductFromSiteDb())
+                {
+                    <option model="@product.title" value="@product.nid">@product.title</option>
+                        }
+                    </select>
+              
+                </div>
+                <div class="col-sm-2">
+                    <input onclick="AddToOrder()" class="btn btn-primary mr5" type="button" value="Добавить в заявку" id="AddToOrderButton" />
+                </div>
+            </div>
+
+            @*<div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                   
+                </div>
+            </div>*@
+        </div>
+
+        <script>
+            function AddToOrder() {
+                var ProductId = $('#selectList').val();
+                var ProductName = $('#selectList').find(':selected');
+                alert(ProductName);
+                //$('#selectList').val(null).trigger('change');               
+                $('#tbody').append('<tr><td><div class="text-primary"><strong>'+ ProductName+'</strong></div></td ><td></td><td>$99.00</td><td>$99.00</td></tr >');
+            }
+        </script>
+            <div class="table-responsive">
+                <table class="table table-invoice">
+                    <thead>
+                        <tr>
+                            <th>Модель</th>
+                            <th>Тип ткани, цвет</th>
+                            <th>Размер</th>
+                            <th>Количество</th>
+                        </tr>
+                    </thead>
+                    <tbody  id="tbody">
+
+                        @*<tr>
+                            <td>
+                                <div class="text-primary"><strong>Wordpress Template Customization</strong></div>
+                                <small>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam</small>
+                            </td>
+                            <td>1</td>
+                            <td>$99.00</td>
+                            <td>$99.00</td>
+                        </tr>*@                     
+                    </tbody>
+                </table>
+            </div><!-- table-responsive -->
+
+            <table class="table table-total">
+                <tbody>
+                    <tr>
+                        <td><strong>Sub Total :</strong></td>
+                        <td>$849.00</td>
+                    </tr>
+                    <tr>
+                        <td><strong>VAT :</strong></td>
+                        <td>$67.23</td>
+                    </tr>
+                    <tr>
+                        <td><strong>TOTAL :</strong></td>
+                        <td>$916.23</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="text-right btn-invoice">
+                <input class="btn btn-primary mr5" type="submit" value="Создать заявку"/>
+                @*<button <i class="fa fa-dollar mr5"></i> Make A Payment</button>*@
+                <button class="btn btn-white"><i class="fa fa-print mr5"></i> Распечатать</button>
+            </div>
+
+            <div class="mb40"></div>
+
+            <div class="well">
+                Thank you for your business. Please make sure all cheques payable to <strong>ThemeForest Web Services, Inc.</strong> Account No. 54353535
+            </div>
+
+            }
+        </div><!-- panel-body -->
+    </div><!-- panel -->
+            
+</div>
+
+
+@*<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>*@
+@*<script src="~/js/select2.min.js"></script>*@
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+<script>
+    jQuery(document).ready(function () {
+        jQuery('#datepicker').datepicker();
+
+        // Select2
+        jQuery(".select2").select2({
+            //width: '100%'
+            tags: true
+        });
+    })
+</script>

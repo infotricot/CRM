@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="0eb139bc7aa04c209eecce3d553b8de5" Name="Diagram1">
+        <EntityTypeShape EntityType="Model.field_revision_field_catalog" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.node" Width="1.5" PointX="0.875" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.taxonomy_term_data" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.file_managed" Width="1.5" PointX="6.75" PointY="1.875" />
+        <EntityTypeShape EntityType="Model.field_data_field_image" Width="1.5" PointX="4.875" PointY="3.75" />
+        <EntityTypeShape EntityType="Model.field_revision_body" Width="1.5" PointX="2.875" PointY="3.75" />
+        <EntityTypeShape EntityType="Model.field_revision_field_polotno" Width="1.5" PointX="0.75" PointY="4.625" />
+        <EntityTypeShape EntityType="Model.field_revision_field_collection" Width="1.5" PointX="2.75" PointY="7.5" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

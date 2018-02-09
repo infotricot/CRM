@@ -1,0 +1,85 @@
+﻿@model IEnumerable<diplom_2.Models.ApplicationUser>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Surname)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Phone)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.City)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var manager in Model)
+    {
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => manager.Name)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => manager.Surname)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => manager.Phone)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => manager.City)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => manager.Email)
+    </td>
+    <td>
+        @Html.ActionLink("Edit", "Edit", new { id = manager.Id }) |
+        @Html.ActionLink("Details", "Details", new { id = manager.Id }) |
+        @Html.ActionLink("Delete", "Delete", new { id = manager.Id })
+    </td>
+</tr>
+foreach (var subManager in manager.SubManagers)
+{
+    <tr>
+        <td>
+           @Html.DisplayFor(modelItem => subManager.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => subManager.Surname)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => subManager.Phone)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => subManager.City)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => subManager.Email)
+        </td>
+        <td>
+            @*@Html.ActionLink("Edit", "Edit", new { id = subManager.Id }) |
+            @Html.ActionLink("Details", "Details", new { id = subManager.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id = subManager.Id })*@
+            Руководитель: @subManager.ParentManager.Name
+        </td>
+    </tr>
+}
+}
+
+</table>

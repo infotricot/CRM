@@ -1,0 +1,67 @@
+﻿@model diplom_2.Models.Order
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Order</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Counterparty.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Counterparty.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.StatusOrder.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StatusOrder.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.InvoiceUrl)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.InvoiceUrl)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreatedDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ChangeDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ChangeDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ReadyDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ReadyDate)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

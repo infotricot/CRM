@@ -1,0 +1,90 @@
+﻿@model diplom_2.Models.Contact
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="pageheader">
+    <h2><i class="fa fa-table"></i> Удаление контакта<span></span></h2>
+    <div class="breadcrumb-wrapper">
+        <span class="label"></span>
+        <ol class="breadcrumb">
+            <li><a href="~/Home/Index">Главная</a></li>
+            <li><a href="~/Counterparties/Index">Мои клиенты</a></li>
+            <li class="active">Удаление контакта</li>
+        </ol>
+    </div>
+</div>
+
+<div class="contentpanel">
+    <div class="col-md-12">
+        <h3>Вы действительно хотите удалить этот контакт?</h3>
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.FIO)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.FIO)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Phones)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Phones)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Email)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Email)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Skype)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Skype)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Viber)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Viber)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Facebook)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Facebook)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Notes)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Notes)
+            </dd>
+        </dl>
+        </div>
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-actions no-color">
+                <input type="submit" value="Удалить" class="btn btn-default" /> |
+                @Html.ActionLink("Вернуться назад", "Index", "Counterparties")
+            </div>
+        }
+    </div>

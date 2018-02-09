@@ -1,0 +1,119 @@
+﻿@using diplom_2.Models
+@model diplom_2.Models.EditViewModel
+@{
+    ViewBag.Title = "Редактирование пользователя";
+}
+
+<div class="pageheader">
+    <h2><i class="fa fa-table"></i> Изменение пользователя <span></span></h2>
+    <div class="breadcrumb-wrapper">
+        <span class="label"></span>
+        <ol class="breadcrumb">
+            <li><a href="~/Home/Index">Главная</a></li>
+            <li><a href="~/Account/UsersList">Управление пользователями</a></li>
+            <li class="active">Изменение пользователя</li>
+        </ol>
+    </div>
+</div>
+
+<div class="contentpanel">
+    <div class="col-md-12">
+
+        <form method="post" action="~/Account/Edit">
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary("", new { @class = "text-danger" })
+            <h3 class="nomargin"></h3>
+            <label class="control-label">Информация о пользователе</label>
+            <div class="row mb10">
+                <div class="col-sm-6">
+                    <input id="Name" name="Name" type="text" class="form-control" placeholder="Имя" value="@Model.Name" />
+                </div>
+                <div class="col-sm-6">
+                    <input id="Surname" name="Surname" type="text" class="form-control" placeholder="Фамилия" value="@Model.Surname" />
+                </div>
+            </div>
+
+            <div class="mb10">
+                <label class="control-label">Email-адрес</label>
+                <input id="Email" name="Email" type="text" class="form-control" value="@Model.Email" />
+            </div>
+
+            <div class="row mb10"ol-s>
+                <div class="col-sm-6">
+                    <label class="control-label">Телефоны</label>
+                    <input id="Phone" name="Phone" type="text" class="form-control" placeholder="Телефоны" value="@Model.Phone" />
+                </div>
+                <div class="col-sm-6">
+                    <label class="control-label">Город</label>
+                    <input id="City" name="City" type="text" class="form-control" placeholder="Город" value="@Model.City" />
+                </div>
+            </div>
+
+            <div class="mb10">
+                <label class="control-label">Укажите роль пользователя</label>
+                <select id="selectRole" class="form-control" onchange="SelectRole()">
+                    @{
+                ApplicationDbContext db = new ApplicationDbContext();
+                var Roles = db.Roles.ToList();
+                    }
+                    @foreach (var role in Roles)
+            {
+                if (role.Id == Model.SelectedRole)
+                {
+                    <option selected>@role.Name</option>
+        }
+        else
+        {
+            <option>@role.Name</option>
+}
+}
+                </select>
+                <input type="hidden" id="SelectedRole" name="SelectedRole" value="@Model.SelectedRole" />
+                <input type="hidden" id="ParentManagerId" name="ParentManagerId" value="@Model.ParentManagerId" />
+                <input type="hidden" id="Id" name="Id" value="@Model.Id" />
+            </div>
+
+            <div id="ParentManager" @((Model.SelectedRole == "5") ? "" : "style='display: none'") class="mb10">
+                <label class="control-label">Выберети куратора</label>
+                <select id="selectParentManager" onchange="SelectParentManager()" class="form-control">
+                    @foreach (var manager in ApplicationUser.GetUsersInRole("Manager"))
+            {
+                if (manager.Id != Model.Id)
+                {
+                    if (Model.ParentManagerId == manager.Id)
+                    {
+                        <option selected data="@manager.Id">@(manager.Name + " " + manager.Surname)</option>
+            }
+            else
+            {
+                <option data="@manager.Id">@(manager.Name + " " + manager.Surname)</option>
+    }
+}
+}
+                </select>
+            </div>
+            <br />
+
+            <input type="submit" class="btn btn-success btn-block" value="Изменить" />
+            <script>
+                SelectRole();
+                SelectParentManager();
+
+                function SelectRole() {
+                    //$(this).find(':selected').data('id')
+                    $('#SelectedRole').val($('#selectRole option:selected').text());
+                    if ($('#selectRole option:selected').text() == 'remove manager') {
+                        $('#ParentManager').show();
+                    }
+                    else {
+                        $('#ParentManager').hide();
+                    }
+                }
+
+                function SelectParentManager() {
+                    $('#ParentManagerId').val($('#selectParentManager option:selected').attr('data'));
+                }
+            </script>
+        </form>
+    </div><!-- col-sm-6 -->
+</div>

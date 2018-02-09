@@ -1,0 +1,88 @@
+﻿@using diplom_2.Models
+@model diplom_2.Models.RegisterViewModel
+@{
+    ViewBag.Title = "Регистрация";
+}
+
+<div class="pageheader">
+    <h2><i class="fa fa-table"></i> Регистрация нового пользователя <span></span></h2>
+    <div class="breadcrumb-wrapper">
+        <span class="label"></span>
+        <ol class="breadcrumb">
+            <li><a href="~/Home/Index">Главная</a></li>
+            <li><a href="~/Account/UsersList">Управление пользователями</a></li>
+            <li class="active">Регистрация пользователя</li>
+        </ol>
+    </div>
+</div>
+
+<div class="contentpanel">
+    <div class="col-md-12">
+
+        <form method="post" action="~/Account/Register">
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary("", new { @class = "text-danger" })
+            <h3 class="nomargin"></h3>
+            <label class="control-label">Информация о пользователе</label>
+            <div class="row mb10">
+                <div class="col-sm-6">
+                    <input id="Name" name="Name" type="text" class="form-control" placeholder="Имя" />
+                </div>
+                <div class="col-sm-6">
+                    <input id="Surname" name="Surname" type="text" class="form-control" placeholder="Фамилия" />
+                </div>
+            </div>
+
+            <div class="mb10">
+                <label class="control-label">Пароль</label>
+                <input id="Password" name="Password" type="password" class="form-control" />
+            </div>
+
+            <div class="mb10">
+                <label class="control-label">Введите пароль ещё раз</label>
+                <input id="ConfirmPassword" name="ConfirmPassword" type="password" class="form-control" />
+            </div>
+
+            <div class="mb10">
+                <label class="control-label">Email-адрес</label>
+                <input id="Email" name="Email" type="text" class="form-control" />
+            </div>
+
+            <div class="row mb10">
+                <div class="col-sm-6">
+                    <label class="control-label">Телефоны</label>
+                    <input id="Phone" name="Phone" type="text" class="form-control" placeholder="Телефоны" />
+                </div>
+                <div class="col-sm-6">
+                    <label class="control-label">Город</label>
+                    <input id="City" name="City" type="text" class="form-control" placeholder="Город" />
+                </div>
+            </div>
+
+            <div class="mb10">
+                <label class="control-label">Укажите роль пользователя</label>
+                <select class="form-control" onchange="SelectRole()">
+                    @{
+                ApplicationDbContext db = new ApplicationDbContext();
+                var Roles = db.Roles.ToList();
+                    }
+                    @foreach (var role in Roles)
+            {
+                <option>@role.Name</option>
+    }
+                </select>
+                <input type="hidden" id="SelectedRole" name="SelectedRole" value="admin" />
+            </div>
+            <br />
+
+            <input type="submit" class="btn btn-success btn-block" value="Зарегистрировать" />
+            <script>
+                function SelectRole() {
+
+                    $('#SelectedRole').val($('select option:selected').text());
+
+                }
+            </script>
+        </form>
+    </div><!-- col-sm-6 -->
+</div>
