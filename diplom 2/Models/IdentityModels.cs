@@ -43,10 +43,8 @@ namespace diplom_2.Models
         }
     }
 
-    //Класс контекста
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
-        
         public ApplicationDbContext()
             : base("name=DefaultConnection", throwIfV1Schema: false)
         {
@@ -63,6 +61,8 @@ namespace diplom_2.Models
         public virtual DbSet<Order> Orders { get; set; }
         public virtual DbSet<ProductInOrder> ProductInOrders { get; set; }
         public virtual DbSet<ProcessType> ProcessTypes { get; set; }
-        public virtual DbSet<Process> Proceses { get; set; }    
+        public virtual DbSet<Process> Proceses { get; set; }
+
+        //public System.Data.Entity.DbSet<diplom_2.Models.ApplicationUser> ApplicationUsers { get; set; }
     }
 }

@@ -54,6 +54,7 @@
         string role = new ApplicationDbContext().Roles.Find(currentUser.Roles.ToList()[0].RoleId).Name;
     }
 }
+
 <!DOCTYPE html>
 <html lang="uk">
 <head>
@@ -116,20 +117,20 @@
                         <a href=""><i class="fa fa-edit"></i> <span>Каталог</span></a>
                         <ul class="children">
 
-                            @*@foreach (var i in ProductCategory.GetCategories(TypeCategory.Категории))
+                            @foreach (var i in ProductCategory.GetCategories(TypeCategory.Категории))
                                             {
                                                 <li><a href="~/Catalog/GetProductsInCategory/@i.Id"><i class="fa fa-caret-right"></i> @i.Name</a></li>
-                                }*@
+                                }
 
                         </ul>
                     </li>
                     <li class="nav-parent">
                         <a href=""><i class="fa fa-edit"></i> <span>Направления</span></a>
                         <ul class="children">
-                            @*@foreach (var i in ProductCategory.GetCategories(TypeCategory.Направления))
+                            @foreach (var i in ProductCategory.GetCategories(TypeCategory.Направления))
                                             {
                                                 <li><a href="~/Catalog/GetProductsInCollection/@i.Id"><i class="fa fa-caret-right"></i> @i.Name</a></li>
-                                }*@
+                                }
 
                         </ul>
                     </li>

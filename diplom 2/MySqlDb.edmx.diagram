@@ -12,7 +12,7 @@
         <EntityTypeShape EntityType="Model.field_data_field_image" Width="1.5" PointX="4.875" PointY="3.75" />
         <EntityTypeShape EntityType="Model.field_revision_body" Width="1.5" PointX="2.875" PointY="3.75" />
         <EntityTypeShape EntityType="Model.field_revision_field_polotno" Width="1.5" PointX="0.75" PointY="4.625" />
-        <EntityTypeShape EntityType="Model.field_revision_field_collection" Width="1.5" PointX="2.75" PointY="7.5" />
+        <EntityTypeShape EntityType="Model.field_revision_field_collection" Width="1.5" PointX="6.875" PointY="5.125" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

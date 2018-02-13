@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using diplom_2.Models;
+using System.IO;
 
 namespace diplom_2.Controllers
 {
@@ -19,6 +20,28 @@ namespace diplom_2.Controllers
         {
             var orders = db.Orders.Include(o => o.Counterparty).Include(o => o.StatusOrder);
             return View(orders.ToList());
+        }
+
+
+        public ActionResult UploadImage()
+        {
+            //Request - вся информация о запросе, пришедшая от клиента (форма, файлы, служебная информация и т.д.)
+            //Request.Files - даёт доступ к файлам, присланным от клиента
+            //Проверяем, есть ли файлы
+            if (Request.Files.Count > 0)
+            {
+                var file = Request.Files[0];
+                //Узнать по какому физическому пути (physical path) находится нужная нам папка, в которую будет сохраняться файл:
+                string path = Server.MapPath("~/OrdersImages/");
+                //string pathfile = path + "\\" + file.FileName;                
+                string filename = Guid.NewGuid() + file.FileName;
+                //Комбинируем путь к папке и имя файла, чтобы получить путь к файлу.
+                string pathname = Path.Combine(path, filename); 
+                //Сохраняем файл по полученному пути
+                file.SaveAs(pathname);
+                return Json(filename);
+            }
+            return Json("error");
         }
 
         // GET: Orders/Details/5
@@ -39,7 +62,10 @@ namespace diplom_2.Controllers
         // GET: Orders/Create
         public ActionResult Create(int Id)
         {
-
+            var Counterparty = db.Counterparties.Find(Id);
+            ViewBag.CounterpartyId = Counterparty.Id;
+            ViewBag.Counterparty = Counterparty;
+            ViewBag.FirstContact = Counterparty.Contacts.FirstOrDefault();
             ViewBag.Counterparty_Id = new SelectList(db.Counterparties, "Id", "Name");
             ViewBag.StatusOrder_Id = new SelectList(db.StatusOrders, "Id", "Name");
             return View();

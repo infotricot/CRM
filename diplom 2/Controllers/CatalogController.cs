@@ -60,6 +60,7 @@ namespace diplom_2.Controllers
 
             //Создаём объект для доступа к базе данных
             meotis_newtricEntities db = new meotis_newtricEntities();
+            ViewBag.CategoryName = db.taxonomy_term_data.Find(id).name;
 
             //В таблице node храняться все товары. По этой таблице нельзя определить - в какой категории тот или иной товар
             //Связь между товарами и категориями находится в таблице field_revision_field_catalog
@@ -134,7 +135,7 @@ namespace diplom_2.Controllers
 
             //Создаём объект для доступа к базе данных
             meotis_newtricEntities db = new meotis_newtricEntities();
-
+            ViewBag.CategoryName = db.taxonomy_term_data.Find(id).name;
             //В таблице node храняться все товары. По этой таблице нельзя определить - в какой категории тот или иной товар
             //Связь между товарами и категориями находится в таблице field_revision_field_catalog
 

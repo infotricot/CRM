@@ -11,12 +11,12 @@
 
 }
 <div class="pageheader">
-    <h2><i class="fa fa-table"></i>Каталог<span></span></h2>
+    <h2><i class="fa fa-table"></i>Каталог<span> @ViewBag.CategoryName @* вот тут надо написать обращение к спсику всех видов продоваемых товаров и по айди указаному в урл адресе найти данную категорию и впистаь сюда  *@ </span></h2>
     <div class="breadcrumb-wrapper">
         <span class="label"></span>
         <ol class="breadcrumb">
             <li><a href="~/Home/Index">Главная</a></li>
-            <li class="active"><a href="~/Catalog/GetProductInCategory">Каталог - товары</a></li>          
+            <li class="active">Каталог - @ViewBag.CategoryName</li>          
         </ol>
     </div>
 </div>
@@ -79,11 +79,11 @@
 
                         </small>
                     </div><!-- photo-details -->
-                    <ul class="photo-meta">
+                    @*<ul class="photo-meta">
                         <li><span><i class="fa fa-eye"></i> 32,102</span></li>
                         <li><a href="#"><i class="fa fa-heart"></i> 1,003</a></li>
                         <li><a href="#"><i class="fa fa-comments"></i> 52</a></li>
-                    </ul>
+                    </ul>*@
                 </div><!-- panel-body -->
             </div><!-- panel -->
         </div><!-- col-sm-6 -->
