@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace diplom_2.Models
 {
@@ -31,12 +32,26 @@ namespace diplom_2.Models
         [ForeignKey("StatusOrder")]
         public int StatusOrder_Id { get; set; }
 
-        
+        [AllowHtml]
+        public string Comments { get; set; }
         public virtual Counterparty Counterparty { get;set;}
         public virtual ApplicationUser Manager { get; set; }
         public virtual StatusOrder StatusOrder { get; set; }
         public virtual ICollection<ProductInOrder> Products { get; set; }
+        public virtual ICollection<OrderImage> Images { get; set; }
     }
+
+    public class OrderImage
+    {
+        public int Id { get; set; }
+        public string Link { get; set; }
+        public virtual Order Orderss { get; set; }
+    }
+
+
+
+
+
 
     public class ProductInOrder
     {
@@ -46,8 +61,8 @@ namespace diplom_2.Models
         public int Quantity { get; set; }
         public string Size { get; set; }
         public string Color { get; set; }
-        public string Price { get; set; }
-        public string Comments { get; set; }
+        
+      
         public virtual Order Order { get; set; }
     }
 }

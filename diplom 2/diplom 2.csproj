@@ -45,6 +45,28 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CKSource.CKFinder.Connector.Config">
+      <HintPath>ckfinder\bin\CKSource.CKFinder.Connector.Config.dll</HintPath>
+    </Reference>
+    <Reference Include="CKSource.CKFinder.Connector.Core">
+      <HintPath>ckfinder\bin\CKSource.CKFinder.Connector.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="CKSource.CKFinder.Connector.Host.Owin">
+      <HintPath>ckfinder\bin\CKSource.CKFinder.Connector.Host.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="CKSource.CKFinder.Connector.KeyValue.FileSystem">
+      <HintPath>ckfinder\bin\CKSource.CKFinder.Connector.KeyValue.FileSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="CKSource.CKFinder.Connector.Logs.NLog">
+      <HintPath>ckfinder\bin\CKSource.CKFinder.Connector.Logs.NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="CKSource.FileSystem, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>ckfinder\bin\CKSource.FileSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="CKSource.FileSystem.Local">
+      <HintPath>ckfinder\bin\CKSource.FileSystem.Local.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -220,6 +242,7 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ManagerController.cs" />
     <Compile Include="Controllers\OrdersController.cs" />
+    <Compile Include="CustomCKFinderAuthenticator.cs" />
     <Compile Include="field_data_field_image.cs">
       <DependentUpon>MySqlDb.tt</DependentUpon>
     </Compile>
@@ -288,6 +311,18 @@
     <Compile Include="Migrations\201801181359009_AddNameToProductInOrder.cs" />
     <Compile Include="Migrations\201801181359009_AddNameToProductInOrder.Designer.cs">
       <DependentUpon>201801181359009_AddNameToProductInOrder.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201802131626584_Changeproductorder.cs" />
+    <Compile Include="Migrations\201802131626584_Changeproductorder.Designer.cs">
+      <DependentUpon>201802131626584_Changeproductorder.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201802201438508_ChangeImageOrder.cs" />
+    <Compile Include="Migrations\201802201438508_ChangeImageOrder.Designer.cs">
+      <DependentUpon>201802201438508_ChangeImageOrder.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201802201700405_AllowHtml.cs" />
+    <Compile Include="Migrations\201802201700405_AllowHtml.Designer.cs">
+      <DependentUpon>201802201700405_AllowHtml.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -1116,6 +1151,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201801181359009_AddNameToProductInOrder.resx">
       <DependentUpon>201801181359009_AddNameToProductInOrder.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802131626584_Changeproductorder.resx">
+      <DependentUpon>201802131626584_Changeproductorder.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802201438508_ChangeImageOrder.resx">
+      <DependentUpon>201802201438508_ChangeImageOrder.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802201700405_AllowHtml.resx">
+      <DependentUpon>201802201700405_AllowHtml.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

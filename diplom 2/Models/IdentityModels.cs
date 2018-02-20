@@ -62,6 +62,7 @@ namespace diplom_2.Models
         public virtual DbSet<ProductInOrder> ProductInOrders { get; set; }
         public virtual DbSet<ProcessType> ProcessTypes { get; set; }
         public virtual DbSet<Process> Proceses { get; set; }
+        public virtual DbSet<OrderImage> Images { get; set; }
 
         //public System.Data.Entity.DbSet<diplom_2.Models.ApplicationUser> ApplicationUsers { get; set; }
     }

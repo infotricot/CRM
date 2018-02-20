@@ -271,6 +271,7 @@ namespace diplom_2.Controllers
             {
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Name = model.Name, Surname = model.Surname, Phone = model.Phone, City = model.City };
                 var result = await UserManager.CreateAsync(user, model.Password);
+                
                 if (result.Succeeded)
                 {                   
                     UserManager.AddToRole(user.Id, model.SelectedRole);

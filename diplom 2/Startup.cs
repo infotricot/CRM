@@ -1,4 +1,5 @@
-﻿using Microsoft.Owin;
+﻿
+using Microsoft.Owin;
 using Owin;
 
 [assembly: OwinStartupAttribute(typeof(diplom_2.Startup))]
@@ -9,6 +10,9 @@ namespace diplom_2
         public void Configuration(IAppBuilder app)
         {
             ConfigureAuth(app);
+       
         }
+
+  
     }
 }

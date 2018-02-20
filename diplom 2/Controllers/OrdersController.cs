@@ -8,6 +8,8 @@ using System.Web;
 using System.Web.Mvc;
 using diplom_2.Models;
 using System.IO;
+using Microsoft.AspNet.Identity.Owin;
+using System.Threading.Tasks;
 
 namespace diplom_2.Controllers
 {
@@ -76,10 +78,17 @@ namespace diplom_2.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,InvoiceUrl,CreatedDate,ChangeDate,ReadyDate,Counterparty_Id,StatusOrder_Id")] Order order)
+        public async Task<ActionResult> Create([Bind(Include = "Id,InvoiceUrl,CreatedDate,ChangeDate,ReadyDate,Counterparty_Id,StatusOrder_Id,Comments")] Order order)
         {
             if (ModelState.IsValid)
-            {
+            {                                
+
+                order.ChangeDate = DateTime.Now;
+                order.CreatedDate = DateTime.Now;
+                order.Counterparty = db.Counterparties.Find(order.Counterparty_Id);
+                var UserManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+                order.Manager = await UserManager.FindByNameAsync(User.Identity.Name);
+                
                 db.Orders.Add(order);
                 db.SaveChanges();
                 return RedirectToAction("Index");
