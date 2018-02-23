@@ -59,22 +59,43 @@
                     <div class="tab-pane active" id="activities_@client.Id">
                         <div class="activity-list">
                             <a href="~/Orders/Create/@client.Id" class="btn btn-sm btn-primary mr5"><i class="fa fa-plus"></i> Создать заявку</a>
-                            <a href="#" class="btn btn-sm btn-primary mr5"><i class="fa fa-plus"></i> Входящий звонок</a>
-                            <a href="#" class="btn btn-sm btn-primary mr5"><i class="fa fa-plus"></i> Исходящий звонок</a>
-                            <a href="#" class="btn btn-sm btn-primary mr5"><i class="fa fa-plus"></i> Отправка прайса</a>
-                            <a href="#" class="btn btn-sm btn-primary mr5"><i class="fa fa-plus"></i> Встреча</a>
-                            <a href="#" class="btn btn-sm btn-primary mr5"><i class="fa fa-plus"></i> Отправка образцов</a>
-                            <div class="media act-media">
+                            <a href="~/Processes/Create?ProcessTypeId=1&CounterpatyId=@client.Id" class="btn btn-sm btn-primary mr5"><i class="fa fa-plus"></i> Входящий звонок</a>
+                            <a href="~/Processes/Create?ProcessTypeId=2&CounterpatyId=@client.Id" class="btn btn-sm btn-primary mr5"><i class="fa fa-plus"></i> Исходящий звонок</a>
+                            <a href="~/Processes/Create?ProcessTypeId=3&CounterpatyId=@client.Id" class="btn btn-sm btn-primary mr5"><i class="fa fa-plus"></i> Отправка прайса</a>
+                            <a href="~/Processes/Create?ProcessTypeId=4&CounterpatyId=@client.Id" class="btn btn-sm btn-primary mr5"><i class="fa fa-plus"></i> Встреча</a>
+                            <a href="~/Processes/Create?ProcessTypeId=5&CounterpatyId=@client.Id" class="btn btn-sm btn-primary mr5"><i class="fa fa-plus"></i> Отправка образцов</a>
+                            <a href="~/Processes/Create?ProcessTypeId=6&CounterpatyId=@client.Id" class="btn btn-sm btn-primary mr5"><i class="fa fa-plus"></i> Другая задача</a>
+                            @foreach (var activity in client.Proceses.Where(a => a.Manager.Id == ViewBag.currentManager.Id).OrderByDescending(a=>a.CreateDate))
+                            {
+                            <div class="media act-media">   
                                 <a class="pull-left" href="#">
-                                    <img class="media-object act-thumb" src="~/images/photos/user1.png" alt="" />
-                                </a>
+                                    <img class="media-object act-thumb" src="~/images/photos/userprofile.png" alt="" />
+                                </a>                            
                                 <div class="media-body act-media-body">
-                                    <strong>Ray Sin</strong> started following <strong>Eileen Sideways</strong>. <br />
-                                    <small class="text-muted">Yesterday at 3:30pm</small>
+                                    <div class="row">
+                                        <div class="col-md-10">
+                                            <strong>@activity.Manager.Name: Создана задача </strong> - <strong>@activity.ProcessType.Name</strong>. <br />
+                                            <small class="text-muted">Дата создания: @activity.CreateDate </small><br />
+                                            <small class="text-muted">Запланированная дата выполнения: @activity.PlaningDate.ToShortDateString() </small><br />
+                                        </div>
+                                        <div class="col-md-2">
+                                        @if (activity.ExecuteDate == null)
+                                        {
+                                            <a data-toggle="modal" data-target="#myModal" href="#" CompanyId="@client.Id" class="btn btn-sm btn-primary mr5"><strong>Выполнить задачу</strong></a>
+                                            @*<a ProcessId="@activity.Id" data-toggle="modal" data-target="#CompleteActionModal" href="#" class="btn btn-sm btn-primary mr5"><i class="fa fa-check"></i> Выполнить задачу</a>*@
+                                        }
+                                        </div>
+                                    </div>
+                                    @if (activity.ExecuteDate != null)
+                                    {
+                                        <small class="text-muted">Была выполнена: @activity.ExecuteDate.Value.ToShortDateString() </small>                                        <br />
+                                    }
+                                   <br />
+                                   <strong>@Html.Raw(activity.Description)</strong>
                                 </div>
                             </div><!-- media -->
-
-                            <div class="media act-media">
+                            }
+                            @*<div class="media act-media">
                                 <a class="pull-left" href="#">
                                     <img class="media-object act-thumb" src="~/images/photos/userprofile.png" alt="" />
                                 </a>
@@ -204,7 +225,7 @@
                                     </div><!-- media -->
 
                                 </div>
-                            </div><!-- media -->
+                            </div><!-- media -->*@
 
                         </div><!-- activity-list -->
 
@@ -288,16 +309,40 @@
     </div><!-- modal-dialog -->
 </div><!-- modal -->
 
-<script>
-        $('#myModal').on('shown.bs.modal', function (e) {
+<!-- Modal -->
+<div class="modal fade" id="CompleteActionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="CompleteActionModal-modal-dialog" style="width: 80%">
+    </div><!-- modal-dialog -->
+</div><!-- modal -->
 
-            $('.modal-dialog').html('<div id="preloader_modal"><div id="status"><i class="fa fa-spinner fa-spin"></i></div></div>');
-            var CompanyId = $(e.relatedTarget).attr('CompanyId');
+<script>
+    $('#myModal').on('shown.bs.modal', function (e) {
+         alert('asdf');
+        $('.modal-dialog').html('<div id="preloader_modal"><div id="status"><i class="fa fa-spinner fa-spin"></i></div></div>');
+        var CompanyId = $(e.relatedTarget).attr('CompanyId');
+
+        $('#preloader_modal').show();
+        $.ajax({
+            type: "GET",
+            url: "/Counterparties/Details/" + CompanyId,
+
+            success: function (response) {
+                $('.modal-dialog').html(response);
+            },
+            error: function (response) {
+                alert("Error");
+            }
+        })
+    });
+        $('#CompleteActionModal').on('shown.bs.modal', function (e) {
+            alert('asdf');
+            $('.CompleteActionModal-modal-dialog').html('<div id="preloader_modal"><div id="status"><i class="fa fa-spinner fa-spin"></i></div></div>');
+            var ProcessId = $(e.relatedTarget).attr('ProcessId');
 
             $('#preloader_modal').show();
             $.ajax({
                 type: "GET",
-                url: "/Counterparties/Details/" + CompanyId,
+                url: "/Processes/Complete/" + ProcessId,
 
                 success: function (response) {
                     $('.modal-dialog').html(response);

@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <script type="text/javascript" src="~/ckeditor/ckeditor.js"></script>
-<script type="text/javascript" src="~/ckfinder/ckfinder.js"></script>
+
 <div class="pageheader">
     <h2><i class="fa fa-dollar"></i> Заявка <span></span></h2>
     <div class="breadcrumb-wrapper">
@@ -324,7 +324,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
 <script>
     jQuery(document).ready(function () {
-        jQuery('#datepicker').datepicker();
+        jQuery('#datepicker').datepicker({ dateFormat: 'dd.mm.yy' });
 
         // Select2
         jQuery(".select2").select2({

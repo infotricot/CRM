@@ -68,10 +68,12 @@
       <HintPath>ckfinder\bin\CKSource.FileSystem.Local.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.AI.Agent.Intercept, Version=2.0.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.2.0.6\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
@@ -108,8 +110,9 @@
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="MySql.Data, Version=6.10.5.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
-      <HintPath>..\packages\MySql.Data.6.10.5\lib\net452\MySql.Data.dll</HintPath>
+    <Reference Include="MySql.Data, Version=6.9.11.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.6.9.11\lib\net45\MySql.Data.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="MySql.Data.Entity.EF6, Version=6.9.11.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <HintPath>..\packages\MySql.Data.Entity.6.9.11\lib\net45\MySql.Data.Entity.EF6.dll</HintPath>
@@ -242,7 +245,7 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ManagerController.cs" />
     <Compile Include="Controllers\OrdersController.cs" />
-    <Compile Include="CustomCKFinderAuthenticator.cs" />
+    <Compile Include="Controllers\ProcessesController.cs" />
     <Compile Include="field_data_field_image.cs">
       <DependentUpon>MySqlDb.tt</DependentUpon>
     </Compile>
@@ -323,6 +326,18 @@
     <Compile Include="Migrations\201802201700405_AllowHtml.cs" />
     <Compile Include="Migrations\201802201700405_AllowHtml.Designer.cs">
       <DependentUpon>201802201700405_AllowHtml.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201802231257143_Add CreateByProcess.cs" />
+    <Compile Include="Migrations\201802231257143_Add CreateByProcess.Designer.cs">
+      <DependentUpon>201802231257143_Add CreateByProcess.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201802231319306_NullableExecuteDate.cs" />
+    <Compile Include="Migrations\201802231319306_NullableExecuteDate.Designer.cs">
+      <DependentUpon>201802231319306_NullableExecuteDate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201802231330346_ExecuteDescription.cs" />
+    <Compile Include="Migrations\201802231330346_ExecuteDescription.Designer.cs">
+      <DependentUpon>201802231330346_ExecuteDescription.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -1099,6 +1114,12 @@
     <Content Include="Views\Orders\Details.cshtml" />
     <Content Include="Views\Orders\Edit.cshtml" />
     <Content Include="Views\Orders\Index.cshtml" />
+    <Content Include="Views\Processes\Create.cshtml" />
+    <Content Include="Views\Processes\Delete.cshtml" />
+    <Content Include="Views\Processes\Details.cshtml" />
+    <Content Include="Views\Processes\Edit.cshtml" />
+    <Content Include="Views\Processes\Index.cshtml" />
+    <Content Include="Views\Processes\Complete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1160,6 +1181,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201802201700405_AllowHtml.resx">
       <DependentUpon>201802201700405_AllowHtml.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802231257143_Add CreateByProcess.resx">
+      <DependentUpon>201802231257143_Add CreateByProcess.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802231319306_NullableExecuteDate.resx">
+      <DependentUpon>201802231319306_NullableExecuteDate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802231330346_ExecuteDescription.resx">
+      <DependentUpon>201802231330346_ExecuteDescription.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

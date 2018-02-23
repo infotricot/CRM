@@ -21,13 +21,12 @@ namespace diplom_2.Controllers
         [Authorize(Roles= "admin,director,manager,remove manager")]
         public ActionResult Index()
         {
+            var currentManager = db.Users.Find(User.Identity.GetUserId());
+            ViewBag.currentManager = currentManager;
             if (User.IsInRole("director") || User.IsInRole("admin"))
                 return View(db.Counterparties.ToList());
-            else
-            {
-                var currentManager = db.Users.Find(User.Identity.GetUserId());
-                return View(db.Counterparties.ToList().Where(a => a.Managers.Contains(currentManager)).ToList());
-            }
+            else              
+                return View(db.Counterparties.ToList().Where(a => a.Managers.Contains(currentManager)).ToList());            
         }
 
         // GET: Counterparties/Details/5

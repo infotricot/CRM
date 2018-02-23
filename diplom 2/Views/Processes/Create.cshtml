@@ -1,0 +1,70 @@
+﻿@model diplom_2.Models.Process
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script type="text/javascript" src="~/ckeditor/ckeditor.js"></script>
+
+@using (Html.BeginForm()) 
+{
+  
+    
+    <input type="hidden" value="@ViewBag.ProcessTypeId" id="ProcessTypeId" name="@ViewBag.ProcessType.Id" />
+    <input type="hidden" value="@ViewBag.CounterpatyId" id="CounterpatyId" name="CounterpatyId"  />
+
+    <div class="form-horizontal">
+        <h4>Создание задачи "@ViewBag.ProcessType.Name"</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })     
+        <div class="form-group">
+            @Html.LabelFor(model => model.ExecuteDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ExecuteDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ExecuteDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.PlaningDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.PlaningDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.PlaningDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Создать действие" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Вернуться назад", "Index", "Counterparties")
+</div>
+
+<script>
+    jQuery(document).ready(function () {
+        jQuery('#ExecuteDate').datepicker({ dateFormat: 'dd.mm.yy' });
+        jQuery('#PlaningDate').datepicker({ dateFormat: 'dd.mm.yy' });
+    })
+
+    var editor = CKEDITOR.replace('Description');
+            CKEDITOR.editorConfig = function (config) {
+                // Define changes to default configuration here. For example:
+                // config.language = 'fr';
+                // config.uiColor = '#AADC6E';
+                config.removeButtons = 'Image';
+            };
+         
+</script>
