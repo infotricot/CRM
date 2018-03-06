@@ -163,6 +163,11 @@ namespace diplom_2.Controllers
             {
                 return HttpNotFound();
             }
+
+            var Counterparty = order.Counterparty;
+            ViewBag.CounterpartyId = Counterparty.Id;
+            ViewBag.Counterparty = Counterparty;
+            ViewBag.FirstContact = Counterparty.Contacts.FirstOrDefault();
             ViewBag.Counterparty_Id = new SelectList(db.Counterparties, "Id", "Name", order.Counterparty_Id);
             ViewBag.StatusOrder_Id = new SelectList(db.StatusOrders, "Id", "Name", order.StatusOrder_Id);
             return View(order);

@@ -327,6 +327,10 @@
     <Compile Include="Migrations\201802201700405_AllowHtml.Designer.cs">
       <DependentUpon>201802201700405_AllowHtml.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201803061622240_UpdateChangeAfterSync.cs" />
+    <Compile Include="Migrations\201803061622240_UpdateChangeAfterSync.Designer.cs">
+      <DependentUpon>201803061622240_UpdateChangeAfterSync.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Contact.cs" />
@@ -1169,6 +1173,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201802201700405_AllowHtml.resx">
       <DependentUpon>201802201700405_AllowHtml.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803061622240_UpdateChangeAfterSync.resx">
+      <DependentUpon>201803061622240_UpdateChangeAfterSync.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
