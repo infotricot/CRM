@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace diplom_2.Models
 {
@@ -14,16 +16,22 @@ namespace diplom_2.Models
 
     public class Process
     {
-        public int Id { get; set; }
+        public int Id { get; set; }        
         public DateTime CreateDate { get; set; } //Дата, создания задачи
-        public DateTime ExecuteDate { get; set; } //Дата, когда действие совршено
+        [Display(Name = "Когда задача была выполнена? (оставить пустым, если выполнение планируется в будущем)")]                
+        public DateTime? ExecuteDate { get; set; } //Дата, когда действие было совршено
+        [Display(Name = "Планируемая дата выполнения задачи")]
+        [Required]
         public DateTime PlaningDate { get; set; } //Дата, на когда запланировано выполнение задачи
-
+        [Display(Name = "Комментарий")]
+        [AllowHtml]
         public string Description  { get; set; }
-
+        [Display(Name = "Комментарий")]
+        [AllowHtml]
+        public string ExecuteDescription { get; set; }
         public virtual ProcessType ProcessType { get; set; }
-
         public virtual ApplicationUser Manager { get; set; }
+        public virtual ApplicationUser CreatedBy { get; set; }
         public virtual Counterparty Counterparty { get; set; }
     }
 }
