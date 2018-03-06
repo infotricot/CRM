@@ -31,6 +31,8 @@ namespace diplom_2.Models
         public int Counterparty_Id { get; set; }       
         [ForeignKey("StatusOrder")]
         public int StatusOrder_Id { get; set; }
+        [ForeignKey("Manager")]
+        public string Manager_Id { get; set; }
 
         [AllowHtml]
         public string Comments { get; set; }
@@ -38,15 +40,10 @@ namespace diplom_2.Models
         public virtual ApplicationUser Manager { get; set; }
         public virtual StatusOrder StatusOrder { get; set; }
         public virtual ICollection<ProductInOrder> Products { get; set; }
-        public virtual ICollection<OrderImage> Images { get; set; }
+     
     }
 
-    public class OrderImage
-    {
-        public int Id { get; set; }
-        public string Link { get; set; }
-        public virtual Order Orderss { get; set; }
-    }
+ 
 
 
 
