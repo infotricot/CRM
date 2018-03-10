@@ -339,6 +339,22 @@
     <Compile Include="Migrations\201802231330346_ExecuteDescription.Designer.cs">
       <DependentUpon>201802231330346_ExecuteDescription.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201803010815434_Update.cs" />
+    <Compile Include="Migrations\201803010815434_Update.Designer.cs">
+      <DependentUpon>201803010815434_Update.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201803021326129_AddIsExecuted.cs" />
+    <Compile Include="Migrations\201803021326129_AddIsExecuted.Designer.cs">
+      <DependentUpon>201803021326129_AddIsExecuted.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201803080809258_UpdateEmpty.cs" />
+    <Compile Include="Migrations\201803080809258_UpdateEmpty.Designer.cs">
+      <DependentUpon>201803080809258_UpdateEmpty.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201803101227393_CheckDb.cs" />
+    <Compile Include="Migrations\201803101227393_CheckDb.Designer.cs">
+      <DependentUpon>201803101227393_CheckDb.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Contact.cs" />
@@ -479,9 +495,11 @@
     <Content Include="images\droparrows.png" />
     <Content Include="images\dropdown-arrow.png" />
     <Content Include="images\favicon.png" />
+    <Content Include="images\file-delete.png" />
     <Content Include="images\hormenu.jpg" />
     <Content Include="images\icon-search%402x.png" />
     <Content Include="images\icon-search.png" />
+    <Content Include="images\img_232509.png" />
     <Content Include="images\index.html" />
     <Content Include="images\is-document.png" />
     <Content Include="images\is-money.png" />
@@ -576,11 +594,11 @@
     <Content Include="images\spritemap.png" />
     <Content Include="images\themeforest.png" />
     <Content Include="images\themepixels.png" />
+    <Content Include="images\time.png" />
     <Content Include="images\uploadfile%402x.png" />
     <Content Include="images\uploadfile.png" />
     <Content Include="images\user.png" />
     <Content Include="js\angular.min.js" />
-    <Content Include="js\bootstrap-datetimepicker.min.js" />
     <Content Include="js\bootstrap-editable.min.js" />
     <Content Include="js\bootstrap-timepicker.min.js" />
     <Content Include="js\bootstrap-wizard.min.js" />
@@ -928,7 +946,7 @@
     <Content Include="js\raphael-2.1.0.min.js" />
     <Content Include="js\respond.min.js" />
     <Content Include="js\retina.min.js" />
-    <Content Include="js\select2.min.js" />
+    <Content Include="js\select2.js" />
     <Content Include="js\toggles.min.js" />
     <Content Include="js\wysihtml5-0.3.0.min.js" />
     <Content Include="MySqlDb.Context.tt">
@@ -1120,6 +1138,8 @@
     <Content Include="Views\Processes\Edit.cshtml" />
     <Content Include="Views\Processes\Index.cshtml" />
     <Content Include="Views\Processes\Complete.cshtml" />
+    <Content Include="Views\Processes\ShowProcesses.cshtml" />
+    <Content Include="Views\Counterparties\ShowDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1190,6 +1210,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201802231330346_ExecuteDescription.resx">
       <DependentUpon>201802231330346_ExecuteDescription.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803010815434_Update.resx">
+      <DependentUpon>201803010815434_Update.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803021326129_AddIsExecuted.resx">
+      <DependentUpon>201803021326129_AddIsExecuted.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803080809258_UpdateEmpty.resx">
+      <DependentUpon>201803080809258_UpdateEmpty.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803101227393_CheckDb.resx">
+      <DependentUpon>201803101227393_CheckDb.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

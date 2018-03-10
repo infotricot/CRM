@@ -1,70 +1,137 @@
 ﻿@model diplom_2.Models.Process
-
+<script src="~/js/jquery-1.11.1.min.js"></script>
 @{
     ViewBag.Title = "Create";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = null;
 }
+
 <script type="text/javascript" src="~/ckeditor/ckeditor.js"></script>
+<script src="~/js/jquery-1.11.1.min.js"></script>
 
-@using (Html.BeginForm()) 
-{
-  
-    
-    <input type="hidden" value="@ViewBag.ProcessTypeId" id="ProcessTypeId" name="@ViewBag.ProcessType.Id" />
-    <input type="hidden" value="@ViewBag.CounterpatyId" id="CounterpatyId" name="CounterpatyId"  />
-
-    <div class="form-horizontal">
-        <h4>Создание задачи "@ViewBag.ProcessType.Name"</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })     
-        <div class="form-group">
-            @Html.LabelFor(model => model.ExecuteDate, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.ExecuteDate, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ExecuteDate, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.PlaningDate, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.PlaningDate, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.PlaningDate, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.TextAreaFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Создать действие" class="btn btn-default" />
-            </div>
-        </div>
+<div class="modal-content" style="padding: 10px;">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Создание задачи "@ViewBag.ProcessType.Name"</h4>
     </div>
-}
+  @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "CreatePrecessForm" }))
+  {
 
-<div>
-    @Html.ActionLink("Вернуться назад", "Index", "Counterparties")
+        <br /><br />
+        <input type="hidden" value="@ViewBag.ProcessType.Id" id="ProcessTypeId" name="ProcessTypeId" />
+        <input type="hidden" value="@ViewBag.CounterpatyId" id="CounterpatyId" name="CounterpatyId" />
+        <div class="form-horizontal">        
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            @if (ViewBag.CounterpatyId == null)
+            {
+                <div class="form-group">
+                    <label class="control-label col-md-2">Клиент: </label>
+                    <div class="col-md-10">
+                        <select id="selectList" class="select2" multiple="multiple" data-placeholder="Сделайте выбор">        
+                                   
+                            @foreach (var client in diplom_2.Models.Counterparty.GetAllCounterparties())
+                            {
+                                <option model="@client.Name" value="@client.Id">@client.Name</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+            }
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ExecuteDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.ExecuteDate, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ExecuteDate, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.PlaningDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.PlaningDate, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.PlaningDate, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextAreaFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Создать действие" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+    }
+
+    <div>
+        <button id="CloseButton" type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+    </div>
 </div>
-
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+<script src="~/js/select2.js"></script>
 <script>
-    jQuery(document).ready(function () {
-        jQuery('#ExecuteDate').datepicker({ dateFormat: 'dd.mm.yy' });
-        jQuery('#PlaningDate').datepicker({ dateFormat: 'dd.mm.yy' });
-    })
 
-    var editor = CKEDITOR.replace('Description');
-            CKEDITOR.editorConfig = function (config) {
-                // Define changes to default configuration here. For example:
-                // config.language = 'fr';
-                // config.uiColor = '#AADC6E';
-                config.removeButtons = 'Image';
-            };
-         
+    var frm = $('#CreatePrecessForm');
+
+    frm.submit(function (e) {
+
+        e.preventDefault();
+        CKEDITOR.instances['Description'].updateElement();
+        var ClientId = $('#selectList').find(":selected").val();
+        if (ClientId != undefined)
+            $('#CounterpatyId').val(ClientId);        
+       
+        //alert($('#ExecuteDate').val());
+        //alert(CKEDITOR.instances['Description'].getData());
+        $.ajax({
+            type: frm.attr('method'),
+            url: frm.attr('action'),
+            data: frm.serialize(),// + "&ProcessTypeId="+ +"&CounterpatyId="+ ,
+            success: function (data) {
+                $('#CloseButton').trigger('click');
+                $.ajax({
+                    type: "GET",
+                    url: '/Processes/ShowProcesses/' + data,
+                    cache: false,
+                    success: function (response) {                        
+                        if ($('#ProcesseList_' + data).length == 0)
+                            $('#ProcesseList').html(response);
+                        else
+                            $('#ProcesseList_' + data).html(response);
+                    },
+                    error: function (response) {
+                        alert("Error");
+                    }
+                })
+
+            },
+            error: function (data) {
+                alert('An error occurred.');
+                alert(data);
+            },
+        });
+    });
+     
+    jQuery(document).ready(function () {
+      
+            $("#ui-datepicker-div").remove();
+            jQuery('#ExecuteDate').datepicker({ dateFormat: 'dd.mm.yy' });
+            jQuery('#PlaningDate').datepicker({ dateFormat: 'dd.mm.yy' });
+            var editor2 = CKEDITOR.replace('Description');
+          
+            $(".select2").select2({      
+              
+                maximumSelectionLength: 1
+            });
+        });
+
 </script>
+<script src="~/js/jquery-ui-1.10.3.min.js"></script>
+

@@ -21,7 +21,7 @@
 
 <div class="contentpanel">
     <div class="panel-group" id="accordion">
-        @foreach (var client in Model)
+    @foreach (var client in Model)
     {
 
         <div class="panel panel-default">
@@ -59,42 +59,33 @@
                     <div class="tab-pane active" id="activities_@client.Id">
                         <div class="activity-list">
                             <a href="~/Orders/Create/@client.Id" class="btn btn-sm btn-primary mr5"><i class="fa fa-plus"></i> Создать заявку</a>
-                            <a href="~/Processes/Create?ProcessTypeId=1&CounterpatyId=@client.Id" class="btn btn-sm btn-primary mr5"><i class="fa fa-plus"></i> Входящий звонок</a>
-                            <a href="~/Processes/Create?ProcessTypeId=2&CounterpatyId=@client.Id" class="btn btn-sm btn-primary mr5"><i class="fa fa-plus"></i> Исходящий звонок</a>
-                            <a href="~/Processes/Create?ProcessTypeId=3&CounterpatyId=@client.Id" class="btn btn-sm btn-primary mr5"><i class="fa fa-plus"></i> Отправка прайса</a>
-                            <a href="~/Processes/Create?ProcessTypeId=4&CounterpatyId=@client.Id" class="btn btn-sm btn-primary mr5"><i class="fa fa-plus"></i> Встреча</a>
-                            <a href="~/Processes/Create?ProcessTypeId=5&CounterpatyId=@client.Id" class="btn btn-sm btn-primary mr5"><i class="fa fa-plus"></i> Отправка образцов</a>
-                            <a href="~/Processes/Create?ProcessTypeId=6&CounterpatyId=@client.Id" class="btn btn-sm btn-primary mr5"><i class="fa fa-plus"></i> Другая задача</a>
-                            @foreach (var activity in client.Proceses.Where(a => a.Manager.Id == ViewBag.currentManager.Id).OrderByDescending(a=>a.CreateDate))
-                            {
-                            <div class="media act-media">   
-                                <a class="pull-left" href="#">
-                                    <img class="media-object act-thumb" src="~/images/photos/userprofile.png" alt="" />
-                                </a>                            
-                                <div class="media-body act-media-body">
-                                    <div class="row">
-                                        <div class="col-md-10">
-                                            <strong>@activity.Manager.Name: Создана задача </strong> - <strong>@activity.ProcessType.Name</strong>. <br />
-                                            <small class="text-muted">Дата создания: @activity.CreateDate </small><br />
-                                            <small class="text-muted">Запланированная дата выполнения: @activity.PlaningDate.ToShortDateString() </small><br />
-                                        </div>
-                                        <div class="col-md-2">
-                                        @if (activity.ExecuteDate == null)
-                                        {
-                                            <a data-toggle="modal" data-target="#myModal" href="#" CompanyId="@client.Id" class="btn btn-sm btn-primary mr5"><strong>Выполнить задачу</strong></a>
-                                            @*<a ProcessId="@activity.Id" data-toggle="modal" data-target="#CompleteActionModal" href="#" class="btn btn-sm btn-primary mr5"><i class="fa fa-check"></i> Выполнить задачу</a>*@
-                                        }
-                                        </div>
-                                    </div>
-                                    @if (activity.ExecuteDate != null)
-                                    {
-                                        <small class="text-muted">Была выполнена: @activity.ExecuteDate.Value.ToShortDateString() </small>                                        <br />
-                                    }
-                                   <br />
-                                   <strong>@Html.Raw(activity.Description)</strong>
-                                </div>
-                            </div><!-- media -->
-                            }
+                            @*<a data-toggle="modal" data-target="#myModal" CompanyId="@client.Id" ProcessTypeId="1" href="~/Processes/Create?ProcessTypeId=1&CounterpatyId=@client.Id" class="btn btn-sm btn-primary mr5"><i class="fa fa-plus"></i> Входящий звонок</a>*@
+                            <a data-toggle="modal" data-target="#myModal" CompanyId="@client.Id" ProcessTypeId="1" href="#" class="btn btn-sm btn-primary mr5"><i class="fa fa-plus"></i> Входящий звонок</a>
+                            <a data-toggle="modal" data-target="#myModal" CompanyId="@client.Id" ProcessTypeId="2" href="#" class="btn btn-sm btn-primary mr5"><i class="fa fa-plus"></i> Исходящий звонок</a>
+                            <a data-toggle="modal" data-target="#myModal" CompanyId="@client.Id" ProcessTypeId="3" href="#" class="btn btn-sm btn-primary mr5"><i class="fa fa-plus"></i> Отправка прайса</a>
+                            <a data-toggle="modal" data-target="#myModal" CompanyId="@client.Id" ProcessTypeId="4" href="#" class="btn btn-sm btn-primary mr5"><i class="fa fa-plus"></i> Встреча</a>
+                            <a data-toggle="modal" data-target="#myModal" CompanyId="@client.Id" ProcessTypeId="5" href="#" class="btn btn-sm btn-primary mr5"><i class="fa fa-plus"></i> Отправка образцов</a>
+                            <a data-toggle="modal" data-target="#myModal" CompanyId="@client.Id" ProcessTypeId="6" href="#" class="btn btn-sm btn-primary mr5"><i class="fa fa-plus"></i> Другая задача</a>
+                            
+                            <br /><br />
+                            <div id="ProcesseList_@client.Id">
+
+                            </div>
+                        <script>
+
+                            $.ajax({
+                                type: "GET",
+                                url: '/Processes/ShowProcesses/@client.Id',
+                                cache: false,
+                                success: function (response) {
+                                    $('#ProcesseList_@client.Id').html(response);                                       
+                                },
+                                error: function (response) {
+                                    alert("Error");
+                                }
+                            })
+                        </script>
+                         
                             @*<div class="media act-media">
                                 <a class="pull-left" href="#">
                                     <img class="media-object act-thumb" src="~/images/photos/userprofile.png" alt="" />
@@ -316,49 +307,46 @@
 </div><!-- modal -->
 
 <script>
+
+
     $('#myModal').on('shown.bs.modal', function (e) {
-         alert('asdf');
+        $('.modal-dialog').html('');
         $('.modal-dialog').html('<div id="preloader_modal"><div id="status"><i class="fa fa-spinner fa-spin"></i></div></div>');
-        var CompanyId = $(e.relatedTarget).attr('CompanyId');
+        var Id = $(e.relatedTarget).attr('CompanyId');
+        var ProcessTypeId = $(e.relatedTarget).attr('ProcessTypeId');
+        var Action;
+      
+        if (ProcessTypeId != undefined)
+        {
+
+            Action = "/Processes/Create?ProcessTypeId=" + ProcessTypeId + "&CounterpatyId=" + Id;
+        }
+        else
+        if (Id == undefined) {
+            Id = $(e.relatedTarget).attr('ProcessId');
+            var typeComplete = $(e.relatedTarget).attr('ActionType');
+            Action = "/Processes/Complete/" + Id + "?Complete=" + typeComplete;
+        }
+        else {            
+            Action = "/Counterparties/Details/" + Id;
+        }
 
         $('#preloader_modal').show();
         $.ajax({
             type: "GET",
-            url: "/Counterparties/Details/" + CompanyId,
-
-            success: function (response) {
-                $('.modal-dialog').html(response);
+            url: Action,
+            cache: false,
+            success: function (response) {                
+                $('.modal-dialog').html(response);                                 
             },
             error: function (response) {
                 alert("Error");
             }
         })
     });
-        $('#CompleteActionModal').on('shown.bs.modal', function (e) {
-            alert('asdf');
-            $('.CompleteActionModal-modal-dialog').html('<div id="preloader_modal"><div id="status"><i class="fa fa-spinner fa-spin"></i></div></div>');
-            var ProcessId = $(e.relatedTarget).attr('ProcessId');
-
-            $('#preloader_modal').show();
-            $.ajax({
-                type: "GET",
-                url: "/Processes/Complete/" + ProcessId,
-
-                success: function (response) {
-                    $('.modal-dialog').html(response);
-                },
-                error: function (response) {
-                    alert("Error");
-                }
-            })
-        })
+       
 </script>
 
 <script>
 
-        //$('.data-row').hover(function () {
-        //    $(this).css("background-color", "rgb(243, 243, 243)");
-        //}, function () {
-        //    $(this).css("background-color", "white");
-        //});
 </script>

@@ -39,5 +39,11 @@ namespace diplom_2.Models
         public virtual ICollection<Contact> Contacts { get; set; }
         public virtual ICollection<ApplicationUser> Managers { get; set; }
         public virtual ICollection<Process> Proceses { get; set; }
+
+        public static List<Counterparty> GetAllCounterparties()
+        {
+            ApplicationDbContext db = new ApplicationDbContext();
+            return db.Counterparties.ToList();
+        }
     }
 }
