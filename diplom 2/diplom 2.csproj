@@ -327,17 +327,9 @@
     <Compile Include="Migrations\201802201700405_AllowHtml.Designer.cs">
       <DependentUpon>201802201700405_AllowHtml.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201802231257143_Add CreateByProcess.cs" />
-    <Compile Include="Migrations\201802231257143_Add CreateByProcess.Designer.cs">
-      <DependentUpon>201802231257143_Add CreateByProcess.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201802231319306_NullableExecuteDate.cs" />
-    <Compile Include="Migrations\201802231319306_NullableExecuteDate.Designer.cs">
-      <DependentUpon>201802231319306_NullableExecuteDate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201802231330346_ExecuteDescription.cs" />
-    <Compile Include="Migrations\201802231330346_ExecuteDescription.Designer.cs">
-      <DependentUpon>201802231330346_ExecuteDescription.cs</DependentUpon>
+    <Compile Include="Migrations\201803061622240_UpdateChangeAfterSync.cs" />
+    <Compile Include="Migrations\201803061622240_UpdateChangeAfterSync.Designer.cs">
+      <DependentUpon>201803061622240_UpdateChangeAfterSync.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\201803010815434_Update.cs" />
     <Compile Include="Migrations\201803010815434_Update.Designer.cs">
@@ -1202,14 +1194,8 @@
     <EmbeddedResource Include="Migrations\201802201700405_AllowHtml.resx">
       <DependentUpon>201802201700405_AllowHtml.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201802231257143_Add CreateByProcess.resx">
-      <DependentUpon>201802231257143_Add CreateByProcess.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201802231319306_NullableExecuteDate.resx">
-      <DependentUpon>201802231319306_NullableExecuteDate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201802231330346_ExecuteDescription.resx">
-      <DependentUpon>201802231330346_ExecuteDescription.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201803061622240_UpdateChangeAfterSync.resx">
+      <DependentUpon>201803061622240_UpdateChangeAfterSync.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201803010815434_Update.resx">
       <DependentUpon>201803010815434_Update.cs</DependentUpon>

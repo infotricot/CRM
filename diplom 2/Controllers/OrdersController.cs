@@ -78,17 +78,65 @@ namespace diplom_2.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,InvoiceUrl,CreatedDate,ChangeDate,ReadyDate,Counterparty_Id,StatusOrder_Id,Comments")] Order order)
+        public async Task<ActionResult> Create([Bind(Include = "Id,InvoiceUrl,CreatedDate,ChangeDate,ReadyDate,Counterparty_Id,StatusOrder_Id,Comments, amount, MatColor, Size, ProductId, ProductName")] Order order, 
+            string[] amount, 
+            string[] MatColor, 
+            string[] Size, 
+            string[] ProductId, 
+            string[] ProductName)
         {
+
+            if(amount.Length==0)
+            {
+                ModelState.AddModelError("Products", "В заявке должен быть хотя бы один товар");
+            }
+            else            
+                foreach (var item in amount)
+                {
+                    int temp;
+                    if (int.TryParse(item, out temp) == false)
+                    {
+                        ModelState.AddModelError("Products", "Количество должно быть целым числом");
+                        break;
+                    }
+                }
+
+           
+
+            
+
+
             if (ModelState.IsValid)
-            {                                
+            {
+                order.Products = new List<ProductInOrder>();
+                for (int i = 0; i < amount.Length; i++)
+                {
+                    ProductInOrder product = new ProductInOrder();
+                    product.Color = MatColor[i];
+                    product.Name = ProductName[i];
+                    long temp;
+                    if (long.TryParse(ProductId[i], out temp) == true)
+                    {
+                        product.ProductId = temp;
+                    }
+                    else
+                    {
+                        product.ProductId = -1;
+                    }
+                    product.Quantity = Convert.ToInt32(amount[i]);
+                    product.Size = Size[i];
+                    order.Products.Add(product);
+                      
+                }
+
 
                 order.ChangeDate = DateTime.Now;
                 order.CreatedDate = DateTime.Now;
-                order.Counterparty = db.Counterparties.Find(order.Counterparty_Id);
+                order.Counterparty_Id = order.Counterparty_Id;
                 var UserManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-                order.Manager = await UserManager.FindByNameAsync(User.Identity.Name);
-                
+                var currentUser = await UserManager.FindByNameAsync(User.Identity.Name);
+                order.Manager_Id = currentUser.Id;
+                order.StatusOrder_Id = 1;
                 db.Orders.Add(order);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -96,6 +144,10 @@ namespace diplom_2.Controllers
 
             ViewBag.Counterparty_Id = new SelectList(db.Counterparties, "Id", "Name", order.Counterparty_Id);
             ViewBag.StatusOrder_Id = new SelectList(db.StatusOrders, "Id", "Name", order.StatusOrder_Id);
+            var Counterparty = db.Counterparties.Find(order.Counterparty_Id);
+            ViewBag.CounterpartyId = Counterparty.Id;
+            ViewBag.Counterparty = Counterparty;
+            ViewBag.FirstContact = Counterparty.Contacts.FirstOrDefault();          
             return View(order);
         }
 
@@ -111,6 +163,11 @@ namespace diplom_2.Controllers
             {
                 return HttpNotFound();
             }
+
+            var Counterparty = order.Counterparty;
+            ViewBag.CounterpartyId = Counterparty.Id;
+            ViewBag.Counterparty = Counterparty;
+            ViewBag.FirstContact = Counterparty.Contacts.FirstOrDefault();
             ViewBag.Counterparty_Id = new SelectList(db.Counterparties, "Id", "Name", order.Counterparty_Id);
             ViewBag.StatusOrder_Id = new SelectList(db.StatusOrders, "Id", "Name", order.StatusOrder_Id);
             return View(order);

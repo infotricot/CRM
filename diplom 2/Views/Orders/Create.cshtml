@@ -107,13 +107,13 @@
             var CurrentRow = 0;
             function AddToOrder() {                
                 var ProductName = $('#select2-selectList-container').attr('title');
-                if (ProductName == 'undefined')
+                if (ProductName == undefined)
                     return;
 
                 var ProductId = $('#selectList').find(":selected").val();
                 //$('#selectList').val(null).trigger('change');               
                 //$('#tbody').append('<tr><td><div class="text-primary"><strong>' + ProductName + '</strong></div></td ><td></td><td>$99.00</td><td>$99.00</td></tr >');
-                $('#tbody').append('<tr class="row" id="Row_' + CurrentRow + '"><td class="col-md-5"><input name="ProductId" type="hidden" value=' + ProductId + '><div class="text-primary"><strong>' + ProductName + '</strong></div></td ><td  class="col-md-3"><input style="width: 100%" type="text" name="MatColor"></td><td  class="col-md-2"><input style="width: 100%"  type="text" name="Size"></td><td  class="col-md-1"><input style="width: 100%"  type="text" name="amount"></td><td  class="col-md-1"><div style="cursor: pointer" onclick="RemoveRow(' + CurrentRow + ')">X</div></td></tr>');
+                $('#tbody').append('<tr class="row" id="Row_' + CurrentRow + '"><td class="col-md-5"><input name="ProductId" type="hidden" value="' + ProductId + '"><div class="text-primary"><input type="hidden" name="ProductName" value="' + ProductName + '"><strong>' + ProductName + '</strong></div></td ><td  class="col-md-3"><input style="width: 100%" type="text" name="MatColor"></td><td  class="col-md-2"><input style="width: 100%"  type="text" name="Size"></td><td  class="col-md-1"><input style="width: 100%"  type="text" name="amount"></td><td  class="col-md-1"><div style="cursor: pointer" onclick="RemoveRow(' + CurrentRow + ')">X</div></td></tr>');
                 CurrentRow++;
             }
 
@@ -146,6 +146,7 @@
                         </tr>*@                     
                     </tbody>
                 </table>
+                @Html.ValidationMessageFor(model => model.Products, "", new { @class = "text-danger" })
             </div><!-- table-responsive -->
        <hr />
         <div class="form-group">
