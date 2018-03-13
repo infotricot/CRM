@@ -5,48 +5,132 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+<div class="pageheader">
+    <h2><i class="fa fa-table"></i>Задачи<span></span>  <a href="~/Counterparties/Create/" class="btn btn-sm btn-primary mr5"> Добавить клиента</a></h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.CreateDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ExecuteDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PlaningDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Description)
-        </th>
-        <th></th>
-    </tr>
+    <div class="breadcrumb-wrapper">
+        <span class="label"></span>
+        <ol class="breadcrumb">
+            <li><a href="~/Home/Index">Главная</a></li>
+            <li class="active">Мои задачи</li>
+        </ol>
+    </div>
+</div>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.CreateDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ExecuteDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.PlaningDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
 
-</table>
+
+<div class="contentpanel">
+    <div class="panel-group" id="accordion">
+     
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                 
+                </div>
+               
+                   
+                  
+                      
+                            <div class="activity-list">
+                                
+                                @*<a data-toggle="modal" data-target="#myModal" CompanyId="@client.Id" ProcessTypeId="1" href="~/Processes/Create?ProcessTypeId=1&CounterpatyId=@client.Id" class="btn btn-sm btn-primary mr5"><i class="fa fa-plus"></i> Входящий звонок</a>*@
+                                <a data-toggle="modal" data-target="#myModal" ProcessTypeId="1" href="#" class="btn btn-sm btn-primary mr5"><i class="fa fa-plus"></i> Входящий звонок</a>
+                                <a data-toggle="modal" data-target="#myModal" ProcessTypeId="2" href="#" class="btn btn-sm btn-primary mr5"><i class="fa fa-plus"></i> Исходящий звонок</a>
+                                <a data-toggle="modal" data-target="#myModal"  ProcessTypeId="3" href="#" class="btn btn-sm btn-primary mr5"><i class="fa fa-plus"></i> Отправка прайса</a>
+                                <a data-toggle="modal" data-target="#myModal"  ProcessTypeId="4" href="#" class="btn btn-sm btn-primary mr5"><i class="fa fa-plus"></i> Встреча</a>
+                                <a data-toggle="modal" data-target="#myModal" ProcessTypeId="5" href="#" class="btn btn-sm btn-primary mr5"><i class="fa fa-plus"></i> Отправка образцов</a>
+                                <a data-toggle="modal" data-target="#myModal"  ProcessTypeId="6" href="#" class="btn btn-sm btn-primary mr5"><i class="fa fa-plus"></i> Другая задача</a>
+
+                                <br /><br />
+                                <div id="ProcesseList">
+
+                                </div>
+                                <script>
+                                    $.ajax({
+                                        type: "GET",
+                                        url: '/Processes/ShowProcesses/',
+                                        cache: false,
+                                        success: function (response) {
+                                            $('#ProcesseList').html(response);
+                                        },
+                                        error: function (response) {
+                                            alert("Error");
+                                        }
+                                    })
+                                </script>
+
+                               
+
+                        </div>                     
+ 
+
+            </div>
+
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal"role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width: 80%">
+
+    </div><!-- modal-dialog -->
+</div><!-- modal -->
+<!-- Modal -->
+<div class="modal fade" id="CompleteActionModal"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="CompleteActionModal-modal-dialog" style="width: 80%">
+    </div><!-- modal-dialog -->
+</div><!-- modal -->
+
+<script>
+
+
+    $('#myModal').on('shown.bs.modal', function (e) {
+        $('.modal-dialog').html('');
+        $('.modal-dialog').html('<div id="preloader_modal"><div id="status"><i class="fa fa-spinner fa-spin"></i></div></div>');
+        var CompanyDetailsId = $(e.relatedTarget).attr('CompanyDetailsId');              
+        var Id = $(e.relatedTarget).attr('CompanyId');
+        var ProcessTypeId = $(e.relatedTarget).attr('ProcessTypeId');
+        var Action;
+
+        
+        if (CompanyDetailsId != undefined) {
+            Action = "/Counterparties/ShowDetails/" + CompanyDetailsId;
+        }
+        else
+        if (ProcessTypeId != undefined)
+        {
+            if (Id == undefined)
+                Action = "/Processes/Create?ProcessTypeId=" + ProcessTypeId;
+            else
+                Action = "/Processes/Create?ProcessTypeId=" + ProcessTypeId + "&CounterpatyId=" + Id;
+          
+        }
+        else
+        if (Id == undefined) {
+            Id = $(e.relatedTarget).attr('ProcessId');
+            var typeComplete = $(e.relatedTarget).attr('ActionType');
+            Action = "/Processes/Complete/" + Id + "?Complete=" + typeComplete;
+        }
+        else {
+            Action = "/Counterparties/Details/" + Id;
+        }
+
+        $('#preloader_modal').show();
+        $.ajax({
+            type: "GET",
+            url: Action,
+            cache: false,
+            success: function (response) {
+                $('.modal-dialog').html(response);
+            },
+            error: function (response) {
+                alert("Error");
+            }
+        })
+    });
+
+</script>
+
+<script>
+
+</script>

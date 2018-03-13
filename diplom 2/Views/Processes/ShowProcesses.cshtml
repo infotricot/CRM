@@ -1,0 +1,81 @@
+﻿@model List<diplom_2.Models.Process>
+
+@foreach (var activity in Model.Where(a => a.Manager.Id == ViewBag.currentManager.Id).OrderByDescending(a => a.CreateDate))
+{
+    string StyleExecuted;
+    if (activity.IsExecuted != null)
+    {
+        StyleExecuted = "background-color: #e3f5d9";
+    }
+    else
+    {
+        if (activity.PlaningDate.Date == DateTime.Now.Date)
+        {
+            StyleExecuted = "background-color: #fffee8";
+        }
+        else
+        {
+            StyleExecuted = "background-color: #ffe8e8";
+        }
+    }
+
+
+
+    <div class="media act-media" style="padding: 10px 0px 0px 5px; margin-top: 5px; @StyleExecuted" >
+        <a class="pull-left" href="#">
+            @*<img src="~/images/time.png" />
+            <img src="~/images/file-delete.png" />
+            <img src="~/images/img_232509.png" />*@
+            @if (activity.ExecuteDate == null)
+            {
+                <img class="media-object act-thumb" src="~/images/time.png" alt="" />
+            }
+            else
+            if (activity.IsExecuted == true)
+            {
+                <img class="media-object act-thumb" src="~/images/img_232509.png" alt="" />
+            }
+            else
+            {
+                <img class="media-object act-thumb" src="~/images/file-delete.png" alt="" />
+            }       
+        </a>
+        <div class="media-body act-media-body">
+            <div class="row">
+                <div class="col-md-8">
+                    <strong>@activity.Manager.Name: Создана задача </strong> - <strong>@activity.ProcessType.Name</strong>. <br />
+                    <small class="text-muted">Дата создания: @activity.CreateDate </small><br />
+                    <small class="text-muted">Запланированная дата выполнения: @activity.PlaningDate.ToShortDateString() </small><br />
+                </div>
+                <div class="col-md-4">
+                    @if (ViewBag.CounterpartyId == null && activity.Counterparty!=null)
+                    {
+                    <a style="float:left; background-color: #1caf9a" data-toggle="modal" data-target="#myModal" href="#" ActionType="true" CompanyDetailsId="@activity.Counterparty.Id" class="btn btn-sm btn-primary mr5"><strong>@activity.Counterparty.Name</strong></a>
+                    }
+                    @if (activity.ExecuteDate == null)
+                    {                      
+                        <a style="float:left" data-toggle="modal" data-target="#myModal" href="#" ActionType="true" ProcessId="@activity.Id" class="btn btn-sm btn-primary mr5"><strong>Выполнить задачу</strong></a>
+                        <a data-toggle="modal" data-target="#myModal" href="#" ActionType="false" ProcessId="@activity.Id" class="btn btn-sm btn-primary mr5"><strong>Отклонить задачу</strong></a>
+                                            @*<a ProcessId="@activity.Id" data-toggle="modal" data-target="#CompleteActionModal" href="#" class="btn btn-sm btn-primary mr5"><i class="fa fa-check"></i> Выполнить задачу</a>*@
+                    }
+
+                </div>
+            </div>
+            @if (activity.ExecuteDate != null)
+            {
+                if (activity.IsExecuted == true)
+                {
+                    <small class="text-muted">Была выполнена: @activity.ExecuteDate.Value.ToShortDateString() </small><br />
+                }
+                else
+                {
+                    <small class="text-muted">Была отклонена: @activity.ExecuteDate.Value.ToShortDateString() </small><br />
+                }
+            }
+            <br />
+
+            <strong>@Html.Raw(activity.Description)</strong>
+            <strong>@Html.Raw(activity.ExecuteDescription)</strong>
+        </div>
+    </div><!-- media -->
+}

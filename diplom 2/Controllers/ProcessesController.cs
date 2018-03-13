@@ -36,27 +36,48 @@ namespace diplom_2.Controllers
             return View(process);
         }
 
-        public ActionResult Complete(int id)
-        {           
+        public ActionResult Complete(int id, bool Complete)
+        {
+            var process = db.Proceses.Find(id);
+            process.ExecuteDate = DateTime.Now;
+            process.IsExecuted = Complete;
+
+
             return View(db.Proceses.Find(id));
         }
 
+
+        public PartialViewResult ShowProcesses(int? id)
+        {
+            var currentManager = db.Users.Find(User.Identity.GetUserId());
+            ViewBag.currentManager = currentManager;
+            ViewBag.CounterpartyId = id;
+            if (id == null)            
+                return PartialView(db.Proceses.ToList());            
+            else
+                return PartialView(db.Counterparties.Find(id).Proceses.ToList());
+        }
+
+
         [HttpPost]
-        public ActionResult Complete([Bind(Include = "Id,CreateDate,ExecuteDate,PlaningDate,Description")] Process process)
+        public string Complete([Bind(Include = "Id,CreateDate,ExecuteDate,PlaningDate,Description,ExecuteDescription, IsExecuted")] Process process)
         {
             Process editProcess = db.Proceses.Find(process.Id);
             editProcess.ExecuteDescription = process.ExecuteDescription;
             editProcess.ExecuteDate = process.ExecuteDate;
+            editProcess.IsExecuted = process.IsExecuted;
             db.Entry(editProcess).State = EntityState.Modified;
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return editProcess.Counterparty.Id.ToString();
         }
+   
 
         // GET: Processes/Create
-        public ActionResult Create(int ProcessTypeId, int CounterpatyId)
+        public ActionResult Create(int ProcessTypeId, int? CounterpatyId)
         {
             ViewBag.ProcessType = db.ProcessTypes.Find(ProcessTypeId);
             ViewBag.CounterpatyId = CounterpatyId;
+        
 
             return View();
         }
@@ -66,7 +87,7 @@ namespace diplom_2.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
     
-        public ActionResult Create([Bind(Include = "Id,CreateDate,ExecuteDate,PlaningDate,Description")] Process process, int ProcessTypeId, int CounterpatyId)
+        public string Create([Bind(Include = "Id,CreateDate,ExecuteDate,PlaningDate,Description")] Process process, int? ProcessTypeId, int? CounterpatyId)
         {
             process.Counterparty = db.Counterparties.Find(CounterpatyId);
             process.ProcessType = db.ProcessTypes.Find(ProcessTypeId);
@@ -76,13 +97,22 @@ namespace diplom_2.Controllers
 
             if (ModelState.IsValid)
             {
+                if (process.ExecuteDate != null)
+                    process.IsExecuted = true;
+
                 db.Proceses.Add(process);
                 db.SaveChanges();
-                return RedirectToAction("Index", "Counterparties");
+                if (CounterpatyId == null)
+                    return "";
+                else
+                    return process.Counterparty.Id.ToString();
             }
             ViewBag.ProcessType = db.ProcessTypes.Find(ProcessTypeId);
             ViewBag.CounterpatyId = CounterpatyId;
-            return View(process);
+            if (CounterpatyId == null)
+                return "";
+            else
+                return process.Counterparty.Id.ToString();
         }
 
         // GET: Processes/Edit/5

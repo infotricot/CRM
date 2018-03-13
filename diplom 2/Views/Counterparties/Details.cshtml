@@ -13,8 +13,8 @@
         </div>*@
 
 
-    @using (Html.BeginForm())
-    {
+   @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "EditCounterpartyForm" }))
+   {
         @Html.AntiForgeryToken()
         <p></p>
         <div class="form-horizontal">
@@ -79,27 +79,37 @@
 
             @Html.HiddenFor(model => model.Created)
 
-
-
-
-            @*<p>
-            @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-            @Html.ActionLink("Back to List", "Index")
-        </p>*@
-
             <div class="modal-footer">
                 <div class="form-group">
                     <div class="col-md-10" style="text-align: left;">
                         <input type="submit" value="Сохранить" class="btn btn-default" />
+                        <small>Чтобы увидеть внесённые изменения после сохранения, пожалуйста, перегрузите страницу</small>
                     </div>
                     <div class="col-md-2">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                        <button id="CloseButton" type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                     </div>
                 </div>
 
             </div>
-        </div>
-    
-    
+        </div>        
 }
-    </div>
+</div>
+
+<script>
+    var frm = $('#EditCounterpartyForm');
+    frm.submit(function (e) {
+        e.preventDefault();       
+        $.ajax({
+            type: frm.attr('method'),
+            url: frm.attr('action'),
+            data: frm.serialize(),
+            success: function (data) {
+                $('#CloseButton').trigger('click');               
+            },
+            error: function (data) {
+                alert('An error occurred.');
+                alert(data);
+            },
+        });
+    });
+</script>

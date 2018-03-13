@@ -26,9 +26,10 @@ namespace diplom_2.Models
         [Display(Name = "Комментарий")]
         [AllowHtml]
         public string Description  { get; set; }
-        [Display(Name = "Комментарий")]
+        [Display(Name = "Отчёт о выполненной задачи")]
         [AllowHtml]
         public string ExecuteDescription { get; set; }
+        public bool? IsExecuted { get; set; } //null - задача в процессе выполнение, true - задача выполнена, false - задача не выполнена по каким-то причинам
         public virtual ProcessType ProcessType { get; set; }
         public virtual ApplicationUser Manager { get; set; }
         public virtual ApplicationUser CreatedBy { get; set; }

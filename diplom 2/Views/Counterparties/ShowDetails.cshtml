@@ -1,0 +1,70 @@
+﻿@model diplom_2.Models.Counterparty
+
+
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">@Model.Name</h4>
+    </div>
+
+    <div class="activity-list">
+        <div class="media act-media">
+
+            <div class="media-body act-media-body row">
+                <div class="col-md-4">
+                    <strong>@Model.Address</strong>
+                </div>
+                <div class="col-md-4">
+                    <strong>@Model.Requisites</strong>
+                </div>
+                <div class="col-md-4">
+                    <strong>@Model.Web</strong>
+                </div>
+
+
+
+            </div>
+        </div><!-- media -->
+    </div><!-- activity-list -->
+    <div class="activity-list">
+        @foreach (var contact in Model.Contacts.Where(a => a.Deleted == false))
+        {
+            <div class="media">
+                @*<a class="pull-left" href="#">
+                        <img class="media-object" src="holder.js/100x125" alt="" />
+                    </a>*@
+                <div class="media-body">
+                    <h3 class="follower-name">@contact.FIO</h3>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="profile-location"><i class="fa fa-phone"></i> @contact.Phones</div>
+                            <div class="profile-position"><i class="fa fa-briefcase"></i> @contact.Position </div>
+                        </div>
+                        <div class="col-md-3">
+                            @contact.Notes
+                        </div>
+                        <div class="col-md-3">
+                            <div class="profile-location"><i class="fa fa-mail-forward"></i> @contact.Email</div>
+                            <div class="profile-position"><i class="fa fa-eye"></i> @contact.Viber </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="profile-location"><i class="fa fa-skype"></i> @contact.Skype</div>
+                            <div class="profile-position"><i class="fa fa-facebook"></i> @contact.Facebook </div>
+                        </div>
+
+                    </div>
+                    <div class="mb20"></div>
+
+                </div>
+            </div><!-- media -->
+        }
+    </div><!-- activity-list -->
+        <div class="modal-footer">
+            <div class="form-group">
+                <div class="col-md-12">
+                    <button id="CloseButton" type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
