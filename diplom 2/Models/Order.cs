@@ -43,12 +43,6 @@ namespace diplom_2.Models
      
     }
 
- 
-
-
-
-
-
 
     public class ProductInOrder
     {
