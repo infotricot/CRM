@@ -355,6 +355,10 @@
     <Compile Include="Migrations\201803301146567_AddOrdertoCounterparty.Designer.cs">
       <DependentUpon>201803301146567_AddOrdertoCounterparty.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201804171404365_before.cs" />
+    <Compile Include="Migrations\201804171404365_before.Designer.cs">
+      <DependentUpon>201804171404365_before.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Contact.cs" />
@@ -1221,6 +1225,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201803301146567_AddOrdertoCounterparty.resx">
       <DependentUpon>201803301146567_AddOrdertoCounterparty.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804171404365_before.resx">
+      <DependentUpon>201804171404365_before.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

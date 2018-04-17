@@ -259,7 +259,7 @@
             url: frm.attr('action'),
             data: frm.serialize(),// + "&ProcessTypeId="+ +"&CounterpatyId="+ ,
             success: function (data) {
-  //              $('#CloseButton').trigger('click');
+                $('#CloseButton').trigger('click');
                     $.ajax({
                         type: "GET",
                         url: '/Processes/ShowProcesses/' + data,

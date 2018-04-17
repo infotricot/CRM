@@ -57,39 +57,63 @@
         <div class="media-body act-media-body">
             <div class="row">
                 <div class="col-md-8">
-                    <strong>@activity.Manager.Name: Создана задача </strong> - <strong>@activity.ProcessType.Name</strong>. <br />
-                    <small class="text-muted">Дата создания: @activity.CreateDate </small><br />
-                    <small class="text-muted">Запланированная дата выполнения: @activity.PlaningDate.ToShortDateString() </small><br />
+                   @if(activity is Process)
+                    {
+                    <strong>@activity.Manager.Name: Создана задача </strong> <span>-</span> <strong>@((activity as Process).ProcessType.Name)</strong><span>.</span> <br />
+                    <small class="text-muted">Дата создания: @(activity.CreateDate)</small><br />
+                    <small class="text-muted">Запланированная дата выполнения: @((activity as Process).PlaningDate.ToShortDateString()) </small><br />
+                   }
+                   else
+                   {
+                    <strong>@activity.Manager.Name: заявка </strong>    <br />
+
+                    <small class="text-muted">Дата создания: @(activity.CreateDate)</small><br />
+                    <small class="text-muted">Запланированная дата поставки: @((activity as Order).ReadyDate.ToShortDateString()) </small><br />
+
+                   }
                 </div>
                 <div class="col-md-4">
                     @if (ViewBag.CounterpartyId == null && activity.Counterparty!=null)
                     {
                     <a style="float:left; background-color: #1caf9a" data-toggle="modal" data-target="#myModal" href="#" ActionType="true" CompanyDetailsId="@activity.Counterparty.Id" class="btn btn-sm btn-primary mr5"><strong>@activity.Counterparty.Name</strong></a>
                     }
-                    @if (activity.ExecuteDate == null)
-                    {                      
+                @if (activity is Process)
+                {
+                    if ((activity as Process).ExecuteDate == null)
+                    {
                         <a style="float:left" data-toggle="modal" data-target="#myModal" href="#" ActionType="true" ProcessId="@activity.Id" class="btn btn-sm btn-primary mr5"><strong>Выполнить задачу</strong></a>
                         <a data-toggle="modal" data-target="#myModal" href="#" ActionType="false" ProcessId="@activity.Id" class="btn btn-sm btn-primary mr5"><strong>Отклонить задачу</strong></a>
                                             @*<a ProcessId="@activity.Id" data-toggle="modal" data-target="#CompleteActionModal" href="#" class="btn btn-sm btn-primary mr5"><i class="fa fa-check"></i> Выполнить задачу</a>*@
                     }
-
-                </div>
-            </div>
-            @if (activity.ExecuteDate != null)
-            {
-                if (activity.IsExecuted == true)
-                {
-                    <small class="text-muted">Была выполнена: @activity.ExecuteDate.Value.ToShortDateString() </small><br />
                 }
                 else
                 {
-                    <small class="text-muted">Была отклонена: @activity.ExecuteDate.Value.ToShortDateString() </small><br />
+                        <a style="float:right; margin-right: 25%" data-toggle="modal" data-target="#myModal" href="#"  ProcessId="@activity.Id" class="btn btn-sm btn-primary mr5"><strong>Изменить Заявку</strong></a>
+                        @*<a ProcessId="@activity.Id" data-toggle="modal" data-target="#CompleteActionModal" href="#" class="btn btn-sm btn-primary mr5"><i class="fa fa-check"></i> Выполнить задачу</a>*@
+                }
+
+                </div>
+            </div>
+       @if (activity is Process)
+       {
+            if ((activity as Process).ExecuteDate != null)
+            {
+                if (activity.IsExecuted == true)
+                {
+                    <small class="text-muted">Была выполнена: @((activity as Process).ExecuteDate.Value.ToShortDateString()) </small><br />
+                }
+                else
+                {
+                    <small class="text-muted">Была отклонена: @((activity as Process).ExecuteDate.Value.ToShortDateString()) </small><br />
                 }
             }
+
             <br />
 
-            <strong>@Html.Raw(activity.Description)</strong>
-            <strong>@Html.Raw(activity.ExecuteDescription)</strong>
+            <strong>@Html.Raw(((activity as Process).Description))</strong>
+            <strong>@Html.Raw(((activity as Process).ExecuteDescription))</strong>
+       }
+       
         </div>
     </div><!-- media -->
 }

@@ -83,7 +83,7 @@
                                     $('#ProcesseList_@client.Id').html(response);
                                 },
                                 error: function (response) {
-                                    alert("Error");
+                                    alert("Error1");
                                 }
                             })
                         </script>
@@ -182,29 +182,54 @@
 
 
     $('#myModal').on('shown.bs.modal', function (e) {
+        //Очищаем модальное окно
         $('.modal-dialog').html('');
+        //Добавляем в модальное окно HTML-код прелоадер
         $('.modal-dialog').html('<div id="preloader_modal"><div id="status"><i class="fa fa-spinner fa-spin"></i></div></div>');
+        //Показываем прелоадер (делаем его видимым)
         $('#preloader_modal').show();
+        //Пытаемся получить значение атрибута CompanyId с тега, который инициировал открытие модельного окна.
         var Id = $(e.relatedTarget).attr('CompanyId');
+        //Пытаемся получить значение атрибута ProcessTypeId с тега, который инициировал открытие модельного окна.
         var ProcessTypeId = $(e.relatedTarget).attr('ProcessTypeId');
+        //Объявляем переменную, в которую будет записан адрес, куда будет отправлен ajax-запрос
         var Action;
-      
-        if (ProcessTypeId != undefined)
+        //Проверяем есть ли в ProcessTypeId значение
+        if (ProcessTypeId != undefined) //undefined - не определённое значение переменной (чем-то похоже на null в языке C#). 
         {
-            if (ProcessTypeId == 0)
-               Action = "/Orders/Create/" + Id;            
+            //Если была нажата кнопка "Создать заявку"
+            if (ProcessTypeId == 0)                
+                //Будим отправлять ajax-запрос в Action-метод создания заявки
+                Action = "/Orders/Create/" + Id;            
             else
+                //Будим отправлять ajax-запрос в Action-метод создания процесса (задачи)
                 Action = "/Processes/Create?ProcessTypeId=" + ProcessTypeId + "&CounterpatyId=" + Id;
         }
+        //Если тип процесса не определён
         else
-        if (Id == undefined) {
-            Id = $(e.relatedTarget).attr('ProcessId');
-            var typeComplete = $(e.relatedTarget).attr('ActionType');
-            Action = "/Processes/Complete/" + Id + "?Complete=" + typeComplete;
-        }
-        else {            
-            Action = "/Counterparties/Details/" + Id;
-        }
+            //Если не определён id компании
+            if (Id == undefined) {                
+                //Пытаемся получить значение атрибута ProcessId. Это нужно для того чтобы была возможность создавать задачи без привязки к компаниям. 
+                Id = $(e.relatedTarget).attr('ProcessId');
+             
+                //Получаем атрибут ActionType который указывает на то будет ли задача успешно завершена или отклонена
+                var typeComplete = $(e.relatedTarget).attr('ActionType');
+                //Если отсутствует информация о завершении процесса - это заявка
+                if (typeComplete == undefined) {
+                    Action = "/Orders/Edit/" + Id;
+                }
+                   //Иначе это процесс
+                else {
+                    //Будим отправлять ajax-запрос в Action-метод закрытия (завершения) задачи 
+                    Action = "/Processes/Complete/" + Id + "?Complete=" + typeComplete;
+                }
+                }           
+            //Если id-компании определён, но не определён тип задачи
+            else {
+                
+                //Значит была нажата кнопка "Изменить компанию"
+                Action = "/Counterparties/Details/" + Id;
+            }
 
       
         $.ajax({
