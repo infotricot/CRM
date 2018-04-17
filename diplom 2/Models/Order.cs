@@ -15,13 +15,10 @@ namespace diplom_2.Models
         public virtual ICollection<Order> Orders { get; set; }
     }
 
-    public class Order
-    {
-        public int Id { get; set; }
+    public class Order : ProcessOrderBase
+    {  
         [Display(Name = "Накладная")]
         public string InvoiceUrl { get; set; }
-        [Display(Name = "Дата создания")]
-        public DateTime CreatedDate { get; set; }
         [Display(Name = "Дата последнего действия")]
         public DateTime ChangeDate { get; set; }
         [Display(Name = "Срок поставки")]
@@ -36,8 +33,6 @@ namespace diplom_2.Models
 
         [AllowHtml]
         public string Comments { get; set; }
-        public virtual Counterparty Counterparty { get;set;}
-        public virtual ApplicationUser Manager { get; set; }
         public virtual StatusOrder StatusOrder { get; set; }
         public virtual ICollection<ProductInOrder> Products { get; set; }
      

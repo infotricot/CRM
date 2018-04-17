@@ -5,6 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+
 <div class="pageheader">
     <h2><i class="fa fa-table"></i> Все клиенты<span></span>  <a href="~/Counterparties/Create/" class="btn btn-sm btn-primary mr5"> Добавить клиента</a></h2>
   
@@ -58,7 +59,7 @@
                 <div class="tab-content">
                     <div class="tab-pane active" id="activities_@client.Id">
                         <div class="activity-list">
-                            <a href="~/Orders/Create/@client.Id" class="btn btn-sm btn-primary mr5"><i class="fa fa-plus"></i> Создать заявку</a>
+                            <a data-toggle="modal" data-target="#myModal" CompanyId="@client.Id" ProcessTypeId="0"  href="#" class="btn btn-sm btn-primary mr5"><i class="fa fa-plus"></i>Создать заявку</a>
                             @*<a data-toggle="modal" data-target="#myModal" CompanyId="@client.Id" ProcessTypeId="1" href="~/Processes/Create?ProcessTypeId=1&CounterpatyId=@client.Id" class="btn btn-sm btn-primary mr5"><i class="fa fa-plus"></i> Входящий звонок</a>*@
                             <a data-toggle="modal" data-target="#myModal" CompanyId="@client.Id" ProcessTypeId="1" href="#" class="btn btn-sm btn-primary mr5"><i class="fa fa-plus"></i> Входящий звонок</a>
                             <a data-toggle="modal" data-target="#myModal" CompanyId="@client.Id" ProcessTypeId="2" href="#" class="btn btn-sm btn-primary mr5"><i class="fa fa-plus"></i> Исходящий звонок</a>
@@ -71,14 +72,15 @@
                             <div id="ProcesseList_@client.Id">
 
                             </div>
-                        <script>
 
+                        <script>
                             $.ajax({
                                 type: "GET",
                                 url: '/Processes/ShowProcesses/@client.Id',
                                 cache: false,
                                 success: function (response) {
-                                    $('#ProcesseList_@client.Id').html(response);                                       
+                                 
+                                    $('#ProcesseList_@client.Id').html(response);
                                 },
                                 error: function (response) {
                                     alert("Error");
@@ -86,137 +88,7 @@
                             })
                         </script>
                          
-                            @*<div class="media act-media">
-                                <a class="pull-left" href="#">
-                                    <img class="media-object act-thumb" src="~/images/photos/userprofile.png" alt="" />
-                                </a>
-                                <div class="media-body act-media-body">
-                                    <strong>Eileen Sideways</strong> posted a new blog. <br />
-                                    <small class="text-muted">Today at 3:18pm</small>
-
-                                    <div class="media blog-media">
-                                        <a class="pull-left" href="#">
-                                            <img class="media-object" src="~/images/photos/media5.png" alt="" />
-                                        </a>
-                                        <div class="media-body">
-                                            <h4 class="media-title"><a href="">Ut Enim Ad Minim Veniam</a></h4>
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat... <a href="">Read more</a></p>
-                                        </div>
-                                    </div><!-- media -->
-
-                                </div>
-                            </div><!-- media -->
-
-                            <div class="media act-media">
-                                <a class="pull-left" href="#">
-                                    <img class="media-object act-thumb" src="~/images/photos/user2.png" alt="" />
-                                </a>
-                                <div class="media-body act-media-body">
-                                    <strong>Chris Anthemum</strong> started following <strong>Eileen Sideways</strong>. <br />
-                                    <small class="text-muted">2 days ago at 8:30am</small>
-                                </div>
-                            </div><!-- media -->
-
-                            <div class="media act-media">
-                                <a class="pull-left" href="#">
-                                    <img class="media-object act-thumb" src="~/images/photos/userprofile.png" alt="" />
-                                </a>
-                                <div class="media-body act-media-body">
-                                    <strong>Eileen Sideways</strong> uploaded <a href="">5 photos</a>. <br />
-                                    <small class="text-muted">5 days ago at 12:30pm</small>
-
-                                    <ul class="uploadphoto-list">
-                                        <li><a href="~/images/photos/media1.jpg" data-rel="prettyPhoto"><img src="images/photos/media1.jpg" class="img-responsive" alt="" /></a></li>
-                                        <li><a href="~/images/photos/media2.png" data-rel="prettyPhoto"><img src="images/photos/media2.png" class="img-responsive" alt="" /></a></li>
-                                        <li><a href="~/images/photos/media3.png" data-rel="prettyPhoto"><img src="images/photos/media3.png" class="img-responsive" alt="" /></a></li>
-                                    </ul>
-                                </div>
-                            </div><!-- media -->
-
-                            <div class="media act-media">
-                                <a class="pull-left" href="#">
-                                    <img class="media-object act-thumb" src="images/photos/user4.png" alt="" />
-                                </a>
-                                <div class="media-body act-media-body">
-                                    <strong>Frank Furter</strong> started following <strong>Eileen Sideways</strong>. <br />
-                                    <small class="text-muted">6 days ago at 8:15am</small>
-                                </div>
-                            </div><!-- media -->
-
-                            <div class="media act-media">
-                                <a class="pull-left" href="#">
-                                    <img class="media-object act-thumb" src="images/photos/userprofile.png" alt="" />
-                                </a>
-                                <div class="media-body act-media-body">
-                                    <strong>Eileen Sideways</strong> posted a new note. <br />
-                                    <small class="text-muted">6 days ago at 6:18am</small>
-                                    <h4 class="media-title"><a href="">Consectetur Adipisicing Elit</a></h4>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat... <a href="">Read more</a></p>
-                                </div>
-                            </div><!-- media -->
-
-                            <div class="media act-media">
-                                <a class="pull-left" href="#">
-                                    <img class="media-object act-thumb" src="images/photos/userprofile.png" alt="" />
-                                </a>
-                                <div class="media-body act-media-body">
-                                    <strong>Eileen Sideways</strong> posted a new blog. <br />
-                                    <small class="text-muted">December 25 at 3:18pm</small>
-
-                                    <div class="media blog-media">
-                                        <a class="pull-left" href="#">
-                                            <img class="media-object" src="images/photos/media4.png" alt="" />
-                                        </a>
-                                        <div class="media-body">
-                                            <h4 class="media-title"><a href="">Ut Enim Ad Minim Veniam</a></h4>
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat... <a href="">Read more</a></p>
-                                        </div>
-                                    </div><!-- media -->
-                                </div>
-                            </div><!-- media -->
-
-                            <div class="media act-media">
-                                <a class="pull-left" href="#">
-                                    <img class="media-object act-thumb" src="images/photos/userprofile.png" alt="" />
-                                </a>
-                                <div class="media-body act-media-body">
-                                    <strong>Eileen Sideways</strong> added new photo. <br />
-                                    <small class="text-muted">December 24 at 1:30pm</small>
-                                    <div class="mb20"></div>
-                                    <a href="images/photos/media6.png" data-rel="prettyPhoto" class="img-single"><img src="images/photos/media6.png" class="img-responsive" alt="" /></a>
-                                </div>
-                            </div><!-- media -->
-
-                            <div class="media act-media">
-                                <a class="pull-left" href="#">
-                                    <img class="media-object act-thumb" src="images/photos/user5.png" alt="" />
-                                </a>
-                                <div class="media-body act-media-body">
-                                    <strong>Weno Carasbong</strong> started following <strong>Eileen Sideways</strong>. <br />
-                                    <small class="text-muted">December 15 at 3:30pm</small>
-                                </div>
-                            </div><!-- media -->
-
-                            <div class="media act-media">
-                                <a class="pull-left" href="#">
-                                    <img class="media-object act-thumb" src="images/photos/userprofile.png" alt="" />
-                                </a>
-                                <div class="media-body act-media-body">
-                                    <strong>Eileen Sideways</strong> posted a new blog. <br />
-                                    <small class="text-muted">December 15 at 3:18pm</small>
-
-                                    <div class="media blog-media">
-                                        <a class="pull-left" href="#">
-                                            <img class="media-object" src="images/photos/media7.png" alt="" />
-                                        </a>
-                                        <div class="media-body">
-                                            <h4 class="media-title"><a href="">Ut Enim Ad Minim Veniam</a></h4>
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat... <a href="">Read more</a></p>
-                                        </div>
-                                    </div><!-- media -->
-
-                                </div>
-                            </div><!-- media -->*@
+                         
 
                         </div><!-- activity-list -->
 
@@ -294,14 +166,14 @@
     </div>
 
 <!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="myModal"  role="dialog"  aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog" style="width: 80%">
 
     </div><!-- modal-dialog -->
 </div><!-- modal -->
 
 <!-- Modal -->
-<div class="modal fade" id="CompleteActionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="CompleteActionModal"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="CompleteActionModal-modal-dialog" style="width: 80%">
     </div><!-- modal-dialog -->
 </div><!-- modal -->
@@ -312,14 +184,17 @@
     $('#myModal').on('shown.bs.modal', function (e) {
         $('.modal-dialog').html('');
         $('.modal-dialog').html('<div id="preloader_modal"><div id="status"><i class="fa fa-spinner fa-spin"></i></div></div>');
+        $('#preloader_modal').show();
         var Id = $(e.relatedTarget).attr('CompanyId');
         var ProcessTypeId = $(e.relatedTarget).attr('ProcessTypeId');
         var Action;
       
         if (ProcessTypeId != undefined)
         {
-
-            Action = "/Processes/Create?ProcessTypeId=" + ProcessTypeId + "&CounterpatyId=" + Id;
+            if (ProcessTypeId == 0)
+               Action = "/Orders/Create/" + Id;            
+            else
+                Action = "/Processes/Create?ProcessTypeId=" + ProcessTypeId + "&CounterpatyId=" + Id;
         }
         else
         if (Id == undefined) {
@@ -331,13 +206,14 @@
             Action = "/Counterparties/Details/" + Id;
         }
 
-        $('#preloader_modal').show();
+      
         $.ajax({
             type: "GET",
             url: Action,
             cache: false,
             success: function (response) {                
-                $('.modal-dialog').html(response);                                 
+                $('.modal-dialog').html(response);
+
             },
             error: function (response) {
                 alert("Error");

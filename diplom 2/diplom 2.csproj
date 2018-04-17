@@ -339,6 +339,22 @@
     <Compile Include="Migrations\201803122140075_HomeWork12.03.2018.Designer.cs">
       <DependentUpon>201803122140075_HomeWork12.03.2018.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201803131528312_13032018.cs" />
+    <Compile Include="Migrations\201803131528312_13032018.Designer.cs">
+      <DependentUpon>201803131528312_13032018.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201803301118068_AddProcessOrderBase.cs" />
+    <Compile Include="Migrations\201803301118068_AddProcessOrderBase.Designer.cs">
+      <DependentUpon>201803301118068_AddProcessOrderBase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201803301127338_AddProcessOrderBase2.cs" />
+    <Compile Include="Migrations\201803301127338_AddProcessOrderBase2.Designer.cs">
+      <DependentUpon>201803301127338_AddProcessOrderBase2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201803301146567_AddOrdertoCounterparty.cs" />
+    <Compile Include="Migrations\201803301146567_AddOrdertoCounterparty.Designer.cs">
+      <DependentUpon>201803301146567_AddOrdertoCounterparty.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Contact.cs" />
@@ -347,6 +363,7 @@
     <Compile Include="Models\Order.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Process.cs" />
+    <Compile Include="Models\ProcessOrderBase.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="Models\ProductCategories.cs" />
     <Compile Include="MySqlDb.Context.cs">
@@ -1120,6 +1137,8 @@
     <Content Include="Views\Processes\Edit.cshtml" />
     <Content Include="Views\Processes\Index.cshtml" />
     <Content Include="Views\Processes\Complete.cshtml" />
+    <Content Include="Views\Home\PartialGraphicView.cshtml" />
+    <Content Include="Views\Processes\ShowProcesses.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1190,6 +1209,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201803122140075_HomeWork12.03.2018.resx">
       <DependentUpon>201803122140075_HomeWork12.03.2018.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803131528312_13032018.resx">
+      <DependentUpon>201803131528312_13032018.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803301118068_AddProcessOrderBase.resx">
+      <DependentUpon>201803301118068_AddProcessOrderBase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803301127338_AddProcessOrderBase2.resx">
+      <DependentUpon>201803301127338_AddProcessOrderBase2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803301146567_AddOrdertoCounterparty.resx">
+      <DependentUpon>201803301146567_AddOrdertoCounterparty.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -47,15 +47,32 @@ namespace diplom_2.Controllers
         }
 
 
+        //id - это идентификатор контрагента. 
+        //Он может быть задан, а может быть не задан
         public PartialViewResult ShowProcesses(int? id)
         {
             var currentManager = db.Users.Find(User.Identity.GetUserId());
             ViewBag.currentManager = currentManager;
             ViewBag.CounterpartyId = id;
-            if (id == null)            
-                return PartialView(db.Proceses.ToList());            
+            List<ProcessOrderBase> TaskList = new List<ProcessOrderBase>();
+            
+            //Если id контрагента не указан
+            if (id == null)
+            {
+                TaskList.AddRange(db.Proceses.ToList());
+                TaskList.AddRange(db.Orders.ToList());
+                //возвращаем список со всеми задачами текущего менеджера
+                return PartialView(TaskList);
+            }
+            //Если id контрагента указан
             else
-                return PartialView(db.Counterparties.Find(id).Proceses.ToList());
+            {
+                TaskList.AddRange(db.Counterparties.Find(id).Proceses.ToList());
+                TaskList.AddRange(db.Counterparties.Find(id).Orders.ToList());
+                //возвращаем список задач, текущего менеджера связанных с указанным клиентом
+                return PartialView(TaskList);
+            }
+               
         }
 
 

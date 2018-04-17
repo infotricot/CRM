@@ -49,7 +49,7 @@
                         }
                     </address>
 
-                    <p><strong>Дата создания заявки:</strong> @DateTime.Now.ToString("yyyy-MM-dd");</p>
+                    <p><strong>Дата создания заявки:</strong> @Model.CreateDate.ToString("dd-MM-yyyy");</p>
                     @*<p><strong>Due Date:</strong> January 22, 2014</p>*@
 
                 </div>
@@ -58,6 +58,7 @@
             {
 
                 @Html.AntiForgeryToken()
+                <input type="hidden" name="CreateDate" id="CreateDate" value="@Model.CreateDate" />
                 <input type="hidden" name="Counterparty_Id" id="Counterparty_Id" value="@ViewBag.CounterpartyId" />
                 <div class="form-horizontal">
 

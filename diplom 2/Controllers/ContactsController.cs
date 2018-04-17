@@ -36,9 +36,14 @@ namespace diplom_2.Controllers
             return View(contact);
         }
 
+        //public PartialViewResult Test()
+        //{
+        //    //
+        //    return PartialView();
+        //}
+
         public ActionResult CreateById(int id)
-        {
-          
+        {          
             return RedirectToAction("Create", db.Counterparties.Find(id));
         }
 

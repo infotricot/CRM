@@ -63,7 +63,7 @@ namespace diplom_2.Controllers
         }
 
         // GET: Orders/Create
-        public ActionResult Create(int Id)
+        public PartialViewResult Create(int Id)
         {
             var Counterparty = db.Counterparties.Find(Id);
             ViewBag.CounterpartyId = Counterparty.Id;
@@ -71,7 +71,7 @@ namespace diplom_2.Controllers
             ViewBag.FirstContact = Counterparty.Contacts.FirstOrDefault();
             ViewBag.Counterparty_Id = new SelectList(db.Counterparties, "Id", "Name");
             ViewBag.StatusOrder_Id = new SelectList(db.StatusOrders, "Id", "Name");
-            return View();
+            return PartialView();
         }
 
         // POST: Orders/Create
@@ -79,7 +79,7 @@ namespace diplom_2.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,InvoiceUrl,CreatedDate,ChangeDate,ReadyDate,Counterparty_Id,StatusOrder_Id,Comments, amount, MatColor, Size, ProductId, ProductName")] Order order, 
+        public async Task<string> Create([Bind(Include = "Id,InvoiceUrl,CreateDate,ChangeDate,ReadyDate,Counterparty_Id,StatusOrder_Id,Comments, amount, MatColor, Size, ProductId, ProductName")] Order order, 
             string[] amount, 
             string[] MatColor, 
             string[] Size, 
@@ -126,7 +126,7 @@ namespace diplom_2.Controllers
 
 
                 order.ChangeDate = DateTime.Now;
-                order.CreatedDate = DateTime.Now;
+                order.CreateDate = DateTime.Now;
                 order.Counterparty_Id = order.Counterparty_Id;
                 var UserManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
                 var currentUser = await UserManager.FindByNameAsync(User.Identity.Name);
@@ -134,7 +134,7 @@ namespace diplom_2.Controllers
                 order.StatusOrder_Id = 1;
                 db.Orders.Add(order);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return order.Counterparty_Id.ToString();
             }
 
             ViewBag.Counterparty_Id = new SelectList(db.Counterparties, "Id", "Name", order.Counterparty_Id);
@@ -143,7 +143,7 @@ namespace diplom_2.Controllers
             ViewBag.CounterpartyId = Counterparty.Id;
             ViewBag.Counterparty = Counterparty;
             ViewBag.FirstContact = Counterparty.Contacts.FirstOrDefault();          
-            return View(order);
+            return Counterparty.Id.ToString();
         }
 
         // GET: Orders/Edit/5
@@ -158,7 +158,6 @@ namespace diplom_2.Controllers
             {
                 return HttpNotFound();
             }
-
             var Counterparty = order.Counterparty;
             ViewBag.CounterpartyId = Counterparty.Id;
             ViewBag.Counterparty = Counterparty;
@@ -173,7 +172,7 @@ namespace diplom_2.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,InvoiceUrl,CreatedDate,ChangeDate,ReadyDate,Counterparty_Id,StatusOrder_Id,Comments, amount, MatColor, Size, ProductId, ProductName")] Order order,
+        public async Task<ActionResult> Edit([Bind(Include = "Id,InvoiceUrl,CreateDate,ChangeDate,ReadyDate,Counterparty_Id,StatusOrder_Id,Comments, amount, MatColor, Size, ProductId, ProductName")] Order order,
             string[] amount,
             string[] MatColor,
             string[] Size,
@@ -225,20 +224,11 @@ namespace diplom_2.Controllers
 
                 orderFromDb.ChangeDate = DateTime.Now;
                 orderFromDb.Comments = order.Comments;
-
+                orderFromDb.CreateDate = order.CreateDate;
+                orderFromDb.StatusOrder_Id = 2;
+                orderFromDb.ReadyDate = order.ReadyDate;
                 db.SaveChanges();
-
-
-               
-                order.CreatedDate = DateTime.Now;
-                order.Counterparty_Id = order.Counterparty_Id;
-                var UserManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-                var currentUser = await UserManager.FindByNameAsync(User.Identity.Name);
-                order.Manager_Id = currentUser.Id;
-                order.StatusOrder_Id = 1;
-                //db.Entry(order).State = EntityState.Modified;
-
-                db.SaveChanges();
+                
                 return RedirectToAction("Index");
             }
 
@@ -247,7 +237,29 @@ namespace diplom_2.Controllers
             var Counterparty = db.Counterparties.Find(order.Counterparty_Id);
             ViewBag.CounterpartyId = Counterparty.Id;
             ViewBag.Counterparty = Counterparty;
-            ViewBag.FirstContact = Counterparty.Contacts.FirstOrDefault();          
+            ViewBag.FirstContact = Counterparty.Contacts.FirstOrDefault();
+            order.Products = new List<ProductInOrder>();
+            for (int i = 0; i < amount.Length; i++)
+            {
+                ProductInOrder product = new ProductInOrder();
+
+                product.Color = MatColor[i];
+                product.Name = ProductName[i];
+                long temp;
+                if (long.TryParse(ProductId[i], out temp) == true)
+                {
+                    product.ProductId = temp;
+                }
+                else
+                {
+                    product.ProductId = -1;
+                }
+                product.Quantity = Convert.ToInt32(amount[i]);
+                product.Size = Size[i];
+                order.Products.Add(product);
+            }
+
+
             return View(order);
         }
 

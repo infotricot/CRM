@@ -1,22 +1,25 @@
 ﻿@model diplom_2.Models.Order
 
 @{
-    ViewBag.Title = "Create";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+   
+    Layout = null;
 }
+
 <script type="text/javascript" src="~/ckeditor/ckeditor.js"></script>
 
-<div class="pageheader">
+<script src="~/js/jquery-1.11.1.min.js"></script>
+<script src="~/js/select2.js"></script>
+@*<div class="pageheader">
     <h2><i class="fa fa-dollar"></i> Заявка <span></span></h2>
     <div class="breadcrumb-wrapper">
-        @*<span class="label">Вы тут:</span>*@
+        <span class="label">Вы тут:</span>
         <ol class="breadcrumb">
             <li><a href="index.html">Скобка</a></li>
             <li><a href="index.html">Страницы</a></li>
             <li class="active">Заявка</li>
         </ol>
     </div>
-</div>
+</div>*@
 
 <div class="contentpanel">
 
@@ -54,7 +57,7 @@
 
                 </div>
             </div><!-- row -->
-            @using (Html.BeginForm())
+            @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "CreateOrderForm" }))
             {
                 
         @Html.AntiForgeryToken()
@@ -82,8 +85,8 @@
             <div class="form-group">
                 <label class="col-sm-2 control-label">Модель</label>
                 <div class="col-sm-8">
-                    <select id="selectList" class="select2" data-placeholder="Выберете или введите название модели">
-                        <option id="SelectedProduct" value=""></option>
+                    <select id="selectList" class="select2" @*data-placeholder="Выберете или введите название модели"*@>
+                        @*<option id="SelectedProduct" value=""></option>*@
                         @foreach (var product in diplom_2.Models.Product.GetProductFromSiteDb())
                 {
                     <option model="@product.title" value="@product.nid">@product.title</option>
@@ -223,80 +226,7 @@
                
             }
 
-            //function FileUpload(number) {
-            //    //Ищем тег по id input с выбранным файлом.
-            //    //Поиск тегов может дать в результате не один тег а сразу несколько,
-            //    //но мы точно знаем, что может только один тег с указанным Id
-            //    //поэтому получаем из массива объектов нулевое, т.е. первый и единственный с помощью функции .get(0)
-            //    //Найденный тег - это input с типом file, в котором может быть выбрано несколько файлов, если включен
-            //    //соответствующий атрибут multiple. Но у нас этот атрибут не используется, хотя
-            //    //получить можно только через массив файлов. Поэтому извлекаем из массива нулевый и единственный файл .files[0]
-            //    ///И запоминаем в переменную file.
-            //    var file = $('#Image' + number + 'Url').get(0).files[0];
-
-            //    //Для отправки данных на сервер нужно использовать Post-запрос.
-            //    //Post-запрос можно отправить на сервер двумя способами:
-            //    //- через кнопку submit в форме, причём будут взяты данные из всех input-ов формы
-            //    //- с помощью javascript с применением ajax.
-            //    //Сейчас мы должны отправить данные (файл) с помощью ajax пост-запроса на сервер, при этом
-            //    //для input-ов с выбранными файлами формы не используются.
-
-            //    //Но для отправки post форма всё равно нужна. Поэтому создадим такую "виртуальную" форму
-            //    //для отправки запроса. Такая виртуальная формаи называется объектом типа FormData.
-            //    var fileData = new FormData();
-
-            //    //В виртуальную форму данных добавляем пару "ключ/значение", где ключом выступает имя файла,
-            //    //а значаем сам файл (скорее всего в байтовом виде).
-            //    fileData.append(file.name, file);
-
-
-            //    //Отправляем пост-запрос с помощью ajax
-            //    $.ajax({
-            //        url: '/Orders/UploadImage', //куда отправляем запрос (в какой actio-метод какого контроллера)
-            //        type: "POST", //типа
-            //        data: fileData, //форма с данными
-            //        //чтобы протокол HTTP не исказил передаваемый файл, отключаем все флаги преобразований
-            //        contentType: false, //тип данных не указан
-            //        processData: false, //данные не нужно обрабатывать
-            //        success: function (result) {
-            //            //alert(result);
-            //            $('#Slide' + number).attr('src', '../../OrdersImages/' + result);
-            //            $('#InputImage' + number + 'Url').val(result);
-            //        },
-            //        error: function (err) {
-            //            alert(err.statusText);
-            //        }
-            //    })
-            //}
-
-            //var AmountImages = 1;
-            //var LastImage = 1;
-            //function ImageChange(n) {
-
-            //    $('#FormGroup' + n + '> .col-md-10').append('<br><hr><div onclick="DeleteImage(' + LastImage +
-            //            ')" style="font-size: 25px; cursor: pointer; width: 25px; float: left">x</div>')
-            //    LastImage++;
-
-            //    FileUpload(n);
-            //    n++;
-            //    $("#ImageContainer").append('<div id="FormGroup' + LastImage +
-            //        '" class="form-group"><div class="control-label col-md-2"><b>Image ' + LastImage +
-            //        '</b></div> <div class="col-md-10"><input id="Image' + LastImage +
-            //        'Url" name="Image' + LastImage +
-            //        'Url" type="file" onchange="ImageChange(' + LastImage +
-            //        ')" style="float: left;" /></div><img id="Slide' + LastImage +
-            //        '" src="" width="200px" /></div>' +
-            //        '<input type="hidden" id="InputImage' + LastImage + 'Url" name="FileName" >'
-            //        );
-            //    AmountImages++;
-
-
-
-            //}
-            //function DeleteImage(n) {
-            //    $('#FormGroup' + n).remove();
-            //    AmountImages--;
-            //}
+        
         </script>
 
         <div class="text-right btn-invoice">
@@ -305,7 +235,9 @@
             @*<button <i class="fa fa-dollar mr5"></i> Make A Payment</button>*@
             <button class="btn btn-white"><i class="fa fa-print mr5"></i> Распечатать</button>
         </div>
-
+        <div>
+            <button id="CloseButton" type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+        </div>
         <div class="mb40"></div>
 
 
@@ -315,6 +247,43 @@
     </div><!-- panel -->
             
 </div>
+<script>
+    var frm = $('#CreateOrderForm');
+
+    frm.submit(function (e) {
+
+        e.preventDefault();
+       
+        $.ajax({
+            type: frm.attr('method'),
+            url: frm.attr('action'),
+            data: frm.serialize(),// + "&ProcessTypeId="+ +"&CounterpatyId="+ ,
+            success: function (data) {
+  //              $('#CloseButton').trigger('click');
+                    $.ajax({
+                        type: "GET",
+                        url: '/Processes/ShowProcesses/' + data,
+                        cache: false,
+                        success: function (response) {
+                            if ($('#ProcesseList_' + data).length == 0)
+                                $('#ProcesseList').html(response);
+                            else
+                                $('#ProcesseList_' + data).html(response);
+                        },
+                        error: function (response) {
+                            alert("Error");     
+                        }
+                    })
+
+            },
+            error: function (data) {
+                alert('An error occurred.');
+                alert(data);
+            },
+        });
+    });
+</script>
+
 
 
 @*<div>
@@ -323,15 +292,26 @@
 @*<script src="~/js/select2.min.js"></script>*@
 <script src="~/js/jquery-ui-1.10.3.min.js"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+
 <script>
     jQuery(document).ready(function () {
+        $("#ui-datepicker-div").remove();
+     
         jQuery('#datepicker').datepicker({ dateFormat: 'dd.mm.yy' });
+     
+        //$("#selectList").select2();
 
-        // Select2
-        jQuery(".select2").select2({
+        
+        $("#selectList").select2({
             //width: '100%'
             tags: true
         });
+
+        //$(".select2").select2({
+
+        //    maximumSelectionLength: 1
+        //});
+      
     })
 </script>
+<script src="~/js/jquery-ui-1.10.3.min.js"></script>

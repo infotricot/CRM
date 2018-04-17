@@ -36,6 +36,7 @@ namespace diplom_2.Models
         [Display(Name = "Последнее действие")]
         public DateTime LastModify { get; set; }
 
+        public virtual ICollection<Order> Orders { get; set; }
         public virtual ICollection<Contact> Contacts { get; set; }
         public virtual ICollection<ApplicationUser> Managers { get; set; }
         public virtual ICollection<Process> Proceses { get; set; }

@@ -1,22 +1,36 @@
-﻿@model List<diplom_2.Models.Process>
+﻿@model List<diplom_2.Models.ProcessOrderBase>
+@using diplom_2.Models
 
 @foreach (var activity in Model.Where(a => a.Manager.Id == ViewBag.currentManager.Id).OrderByDescending(a => a.CreateDate))
 {
-    string StyleExecuted;
+    string StyleExecuted = "";
+    @*Задача выполнена или отклонена*@
     if (activity.IsExecuted != null)
     {
         StyleExecuted = "background-color: #e3f5d9";
     }
     else
     {
-        if (activity.PlaningDate.Date == DateTime.Now.Date)
+        @*Если текущая активность это процесс*@
+        if (activity is Process)
         {
-            StyleExecuted = "background-color: #fffee8";
+            @*Если задача должна быть выполнена сегодня*@
+            if ((activity as Process).PlaningDate.Date == DateTime.Now.Date)
+            {
+                StyleExecuted = "background-color: #fffee8";
+            }
+            @*Задача не выполнена*@
+            else
+            {
+                StyleExecuted = "background-color: #ffe8e8";
+            }
         }
+     
         else
-        {
-            StyleExecuted = "background-color: #ffe8e8";
-        }
+            if (activity is Order)
+            {
+                StyleExecuted = "background-color: #ffe8e8";
+            }
     }
 
 
@@ -26,7 +40,7 @@
             @*<img src="~/images/time.png" />
             <img src="~/images/file-delete.png" />
             <img src="~/images/img_232509.png" />*@
-            @if (activity.ExecuteDate == null)
+            @if (activity is Process && (activity as Process).ExecuteDate == null)
             {
                 <img class="media-object act-thumb" src="~/images/time.png" alt="" />
             }

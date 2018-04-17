@@ -1,5 +1,5 @@
 ﻿@model diplom_2.Models.Process
-<script src="~/js/jquery-1.11.1.min.js"></script>
+
 @{
     ViewBag.Title = "Create";
     Layout = null;
@@ -13,7 +13,7 @@
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h4 class="modal-title" id="myModalLabel">Создание задачи "@ViewBag.ProcessType.Name"</h4>
     </div>
-  @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "CreatePrecessForm" }))
+  @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "CreateProcessForm" }))
   {
 
         <br /><br />
@@ -78,7 +78,7 @@
 <script src="~/js/select2.js"></script>
 <script>
 
-    var frm = $('#CreatePrecessForm');
+    var frm = $('#CreateProcessForm');
 
     frm.submit(function (e) {
 
@@ -96,20 +96,20 @@
             data: frm.serialize(),// + "&ProcessTypeId="+ +"&CounterpatyId="+ ,
             success: function (data) {
                 $('#CloseButton').trigger('click');
-                $.ajax({
-                    type: "GET",
-                    url: '/Processes/ShowProcesses/' + data,
-                    cache: false,
-                    success: function (response) {                        
-                        if ($('#ProcesseList_' + data).length == 0)
-                            $('#ProcesseList').html(response);
-                        else
-                            $('#ProcesseList_' + data).html(response);
-                    },
-                    error: function (response) {
-                        alert("Error");
-                    }
-                })
+                    $.ajax({
+                        type: "GET",
+                        url: '/Processes/ShowProcesses/' + data,
+                        cache: false,
+                        success: function (response) {                        
+                            if ($('#ProcesseList_' + data).length == 0)
+                                $('#ProcesseList').html(response);
+                            else
+                                $('#ProcesseList_' + data).html(response);
+                        },
+                        error: function (response) {
+                            alert("Error");
+                        }
+                    })
 
             },
             error: function (data) {
