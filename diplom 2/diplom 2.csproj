@@ -415,6 +415,10 @@
     <Compile Include="Migrations\201804131129002_AddPayed.Designer.cs">
       <DependentUpon>201804131129002_AddPayed.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201804201125053_AfterMerge1.cs" />
+    <Compile Include="Migrations\201804201125053_AfterMerge1.Designer.cs">
+      <DependentUpon>201804201125053_AfterMerge1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Contact.cs" />
@@ -1326,6 +1330,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201804131129002_AddPayed.resx">
       <DependentUpon>201804131129002_AddPayed.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804201125053_AfterMerge1.resx">
+      <DependentUpon>201804201125053_AfterMerge1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -52,8 +52,9 @@ namespace diplom_2.Controllers
             var currentManager = db.Users.Find(User.Identity.GetUserId());
             ViewBag.currentManager = currentManager;
             ViewBag.CounterpartyId = id;
-            List<Process> ProcessesList = new List<Process>();
-            List<Process> ResultProcessesList = new List<Process>();
+            List<ProcessOrderBase> ProcessesList = new List<ProcessOrderBase>();
+            
+            List<ProcessOrderBase> ResultProcessesList = new List<ProcessOrderBase>();
             if (id == null)
             {
                 //Если нужно показать задачи подчинённых
@@ -61,25 +62,32 @@ namespace diplom_2.Controllers
                 {
                     //Если текущий пользователь вышестоящий менеджер показываем задачи его подчинённых
                     if (User.IsInRole("manager"))
-                        ProcessesList = db.Proceses.Where(a => a.Manager.ParentManager.Id == currentManager.Id).ToList();
+                        ProcessesList = db.Proceses.Where(a => a.Manager.ParentManager.Id == currentManager.Id).ToList<ProcessOrderBase>();
                     //Если текущий пользователь администратор, то показываем задачи всех менеджеров
                     if (User.IsInRole("admin"))
-                        ProcessesList = db.Proceses.Where(a => a.Manager.Roles.FirstOrDefault().RoleId == "1" || a.Manager.Roles.FirstOrDefault().RoleId == "5").ToList();
+                        ProcessesList = db.Proceses.Where(a => a.Manager.Roles.FirstOrDefault().RoleId == "1" || a.Manager.Roles.FirstOrDefault().RoleId == "5").ToList<ProcessOrderBase>();
                     //Если текущий пользователь директор, то показываем задачи всех сотрудников (кроме своих собственных)
                     if (User.IsInRole("director"))
-                        ProcessesList = db.Proceses.Where(a=>a.Manager.Id != currentManager.Id).ToList();
+                        ProcessesList = db.Proceses.Where(a => a.Manager.Id != currentManager.Id).ToList<ProcessOrderBase>();
                 }
                 else
                     //Если нужно показать задачи выбранного менеджера
                     if (SelectManagerProcess != "undefined" && SelectManagerProcess != "MyProcesses")
-                    ProcessesList = db.Proceses.Where(a => a.Manager.Id == SelectManagerProcess).ToList();
-                else
-                    //Если нужно показать задачи текущего пользователя
-                    ProcessesList = db.Proceses.Where(a => a.Manager.Id == currentManager.Id).ToList();                
+                    {
+                        ProcessesList = db.Proceses.Where(a => a.Manager.Id == SelectManagerProcess).ToList<ProcessOrderBase>();
+                    }
+                    else
+                    {
+                        //Если нужно показать задачи текущего пользователя
+                        ProcessesList = db.Proceses.Where(a => a.Manager.Id == currentManager.Id).ToList<ProcessOrderBase>();
+                    }
             }
             else
-            {              
-                ProcessesList = db.Counterparties.Find(id).Proceses.Where(a => a.Manager.Id == currentManager.Id).ToList();                
+            {
+                ProcessesList = db.Counterparties.Find(id).Proceses.Where(a => a.Manager.Id == currentManager.Id).ToList<ProcessOrderBase>();
+                var OrderList = db.Counterparties.Find(id).Orders;
+                if (OrderList.Count()!=0)
+                    ProcessesList.AddRange(OrderList.Where(a => a.Manager!=null && a.Manager.Id == currentManager.Id).ToList<ProcessOrderBase>());
             }
 
             if(showTaskToday == null)
@@ -88,13 +96,16 @@ namespace diplom_2.Controllers
             }
 
             if (showTaskToday.Value)
-                ResultProcessesList.AddRange(ProcessesList.Where(a => a.PlaningDate <= DateTime.Now && a.IsExecuted == null).ToList());            
+                ResultProcessesList.AddRange(ProcessesList.Where(a => (a as Process).PlaningDate <= DateTime.Now && a.IsExecuted == null).ToList());            
             if (showTaskReady.Value)
                 ResultProcessesList.AddRange(ProcessesList.Where(a => a.IsExecuted != null && a.IsExecuted.Value==true).ToList());
             if (showTaskDiscard.Value)
                 ResultProcessesList.AddRange(ProcessesList.Where(a => a.IsExecuted != null && a.IsExecuted.Value == false).ToList());
             if (showTaskInWork.Value)
-                ResultProcessesList.AddRange(ProcessesList.Where(a => a.PlaningDate > DateTime.Now && a.IsExecuted == null).ToList());
+                ResultProcessesList.AddRange(ProcessesList.Where(a => (a as Process).PlaningDate > DateTime.Now && a.IsExecuted == null).ToList());
+
+        
+          
 
             if (typeSort == 0)
             {
@@ -102,8 +113,9 @@ namespace diplom_2.Controllers
             } else
                 if (typeSort == 1)
             {
-                ResultProcessesList = ResultProcessesList.OrderByDescending(a => a.PlaningDate).ToList();
+                ResultProcessesList = ResultProcessesList.OrderByDescending(a => (a as Process).PlaningDate).ToList();
             }
+
 
             return PartialView(ResultProcessesList);
         }

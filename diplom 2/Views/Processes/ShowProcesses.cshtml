@@ -57,15 +57,27 @@
         <div class="media-body act-media-body">
             <div class="row">
                 <div class="col-md-8">
-                    @*Если задача была поставлена вышестоящим менеджером - выводим соответствующий текст и кем именно была поставлена задача*@
-                    @if (activity.Manager.Id != activity.CreatedBy.Id) 
+                    @if (activity is Process)
                     {
-                        <strong style='line-height: 22px;'>Кем поставлена задача: @(activity.CreatedBy.Name + " " + activity.CreatedBy.Surname)</strong><br />                        
+                        var Task = activity as Process;
+                        @*Если задача была поставлена вышестоящим менеджером - выводим соответствующий текст и кем именно была поставлена задача*@
+                        if (activity.Manager.Id != Task.CreatedBy.Id)
+                        {
+                            <strong style='line-height: 22px;'>Кем поставлена задача: @(Task.CreatedBy.Name + " " + Task.CreatedBy.Surname)</strong><br />                        
+                        }
+                        <strong style='line-height: 22px;'> Исполнитель: @(activity.Manager.Name + " " + activity.Manager.Surname)<br /></strong> 
+                        <strong style='line-height: 22px;'>Задача: @Task.ProcessType.Name</strong><br />
+                        <small class="text-muted">Дата создания: @activity.CreateDate </small><br />
+                        <small class="text-muted">Запланированная дата выполнения: @Task.PlaningDate.ToShortDateString() </small><br />
                     }
-                    <strong style='line-height: 22px;'> Исполнитель: @(activity.Manager.Name + " " + activity.Manager.Surname)<br /></strong> 
-                    <strong style='line-height: 22px;'>Задача: @activity.ProcessType.Name</strong>. <br />
-                    <small class="text-muted">Дата создания: @activity.CreateDate </small><br />
-                    <small class="text-muted">Запланированная дата выполнения: @activity.PlaningDate.ToShortDateString() </small><br />
+                    else
+                    {
+                        var Task = activity as Order;
+                        <small class="text-muted">Дата создания: @activity.CreateDate </small><br />
+                        <small class="text-muted">Дата последнего изменения: @Task.ChangeDate </small><br />
+                        <small class="text-muted">Статус заявки: @Task.StatusOrder.Name </small><br />
+                        <small class="text-muted">Запланированная дата выполнения: @Task.ReadyDate.ToShortDateString() </small><br />
+                    }
                 </div>
                 <div class="col-md-4">
                     @if (ViewBag.CounterpartyId == null && activity.Counterparty!=null)

@@ -27,6 +27,7 @@ namespace diplom_2.Models
         [AllowHtml]
         public string Description { get; set; }
         [AllowHtml]
+        [Display(Name = "Отчёт о выполнении")]
         public string ExecuteDescription { get; set; }
       
         public virtual ProcessType ProcessType { get; set; }

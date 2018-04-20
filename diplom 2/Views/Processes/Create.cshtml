@@ -81,12 +81,12 @@
     if (lastSelectManagerProcess != undefined)
         $('#Manager_Id').val(lastSelectManagerProcess)
     else
-        $('#Manager_Id').val('');
-    alert($('#Manager_Id').val());
-    var frm = $('#CreatePrecessForm');
+        $('#Manager_Id').val('');   
+   
+    var frm = $('#CreateProcessForm');
 
     frm.submit(function (e) {
-
+     
         e.preventDefault();
         CKEDITOR.instances['Description'].updateElement();
         var ClientId = $('#selectList').find(":selected").val();
@@ -100,23 +100,28 @@
             url: frm.attr('action'),
             data: frm.serialize(),// + "&ProcessTypeId="+ +"&CounterpatyId="+ ,
             success: function (data) {
+             
                 $('#CloseButton').trigger('click');
-                UpdateProccessList();
-                //$.ajax({
-                //    type: "GET",
-                //    url: '/Processes/ShowProcesses/' + data,
-                //    cache: false,
-                //    success: function (response) {
-                      
-                //        if ($('#ProcesseList_' + data).length == 0)
-                //            $('#ProcesseList').html(response);
-                //        else
-                //            $('#ProcesseList_' + data).html(response);
-                //    },
-                //    error: function (response) {
-                //        alert("Error");
-                //    }
-                //})
+                if (currentPage == 'Tasks')
+                    UpdateProccessList();
+                else
+                    if (currentPage == 'Clients') {
+                        $.ajax({
+                            type: "GET",
+                            url: '/Processes/ShowProcesses/' + data,
+                            cache: false,
+                            success: function (response) {
+
+                                if ($('#ProcesseList_' + data).length == 0)
+                                    $('#ProcesseList').html(response);
+                                else
+                                    $('#ProcesseList_' + data).html(response);
+                            },
+                            error: function (response) {
+                                alert("Error");
+                            }
+                        })
+                    }
 
             },
             error: function (data) {

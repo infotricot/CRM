@@ -2,21 +2,21 @@
 
 @{
     ViewBag.Title = "Edit";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = null;
 }
 <script type="text/javascript" src="~/ckeditor/ckeditor.js"></script>
-
-<div class="pageheader">
+<script src="~/js/jquery-1.11.1.min.js"></script>
+@*<div class="pageheader">
     <h2><i class="fa fa-dollar"></i> Заявка <span></span></h2>
     <div class="breadcrumb-wrapper">
-        @*<span class="label">Вы тут:</span>*@
+      
         <ol class="breadcrumb">
             <li><a href="index.html">Скобка</a></li>
             <li><a href="index.html">Страницы</a></li>
             <li class="active">Заявка</li>
         </ol>
     </div>
-</div>
+</div>*@
 
 <div class="contentpanel">
 
@@ -56,7 +56,7 @@
                 </div>
             </div><!-- row -->
           
-            @using (Html.BeginForm())
+           @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "EditOrderForm" }))
             {
 
                 @Html.AntiForgeryToken()
@@ -372,11 +372,13 @@
 </div>
 
 
-
+<script src="~/js/jquery-ui-1.10.3.min.js"></script>
 @*<script src="~/js/select2.min.js"></script>*@
+
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+<script src="~/js/select2.js"></script>
 <script>
+ 
     jQuery(document).ready(function () {
         jQuery('#datepicker').datepicker({ dateFormat: 'dd.mm.yy' });
 
@@ -387,3 +389,47 @@
         });
     })
 </script>
+
+<script>
+    var frm = $('#EditOrderForm');
+
+    frm.submit(function (e) {
+
+        e.preventDefault();
+
+        $.ajax({
+            type: frm.attr('method'),
+            url: frm.attr('action'),
+            data: frm.serialize(),// + "&ProcessTypeId="+ +"&CounterpatyId="+ ,
+            success: function (data) {
+              
+                    $.ajax({
+                        type: "GET",
+                        url: '/Processes/ShowProcesses/' + data,
+                        cache: false,
+                        success: function (response) {
+                            if (response!='error')
+                            {
+                                if ($('#ProcesseList_' + data).length == 0)
+                                    $('#ProcesseList').html(response);
+                                else
+                                    $('#ProcesseList_' + data).html(response);
+                                $('#CloseButton').trigger('click');
+                            }
+                            else
+                                alert('error');
+                        },
+                        error: function (response) {
+                            alert("Error");
+                        }
+                    })
+
+            },
+            error: function (data) {
+                alert('An error occurred.');
+                alert(data);
+            },
+        });
+    });
+</script>
+
