@@ -4610,3 +4610,8 @@ div.error label.error:before {
 .form-group {
     margin-right: 0px !important;
 }
+
+#ui-datepicker-div
+{
+    z-index: 1051 !important;
+}

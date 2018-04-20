@@ -16,6 +16,7 @@ namespace diplom_2.Controllers
     public class OrdersController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        
 
         // GET: Orders
         public ActionResult Index()
@@ -62,7 +63,7 @@ namespace diplom_2.Controllers
         }
 
         // GET: Orders/Create
-        public ActionResult Create(int Id)
+        public PartialViewResult Create(int Id)
         {
             var Counterparty = db.Counterparties.Find(Id);
             ViewBag.CounterpartyId = Counterparty.Id;
@@ -70,7 +71,7 @@ namespace diplom_2.Controllers
             ViewBag.FirstContact = Counterparty.Contacts.FirstOrDefault();
             ViewBag.Counterparty_Id = new SelectList(db.Counterparties, "Id", "Name");
             ViewBag.StatusOrder_Id = new SelectList(db.StatusOrders, "Id", "Name");
-            return View();
+            return PartialView();
         }
 
         // POST: Orders/Create
@@ -139,7 +140,7 @@ namespace diplom_2.Controllers
                 order.StatusOrder_Id = 1;
                 db.Orders.Add(order);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return order.Counterparty_Id.ToString();
             }
 
             ViewBag.Counterparty_Id = new SelectList(db.Counterparties, "Id", "Name", order.Counterparty_Id);
@@ -148,7 +149,7 @@ namespace diplom_2.Controllers
             ViewBag.CounterpartyId = Counterparty.Id;
             ViewBag.Counterparty = Counterparty;
             ViewBag.FirstContact = Counterparty.Contacts.FirstOrDefault();          
-            return View(order);
+            return Counterparty.Id.ToString();
         }
 
         // GET: Orders/Edit/5
@@ -163,7 +164,6 @@ namespace diplom_2.Controllers
             {
                 return HttpNotFound();
             }
-
             var Counterparty = order.Counterparty;
             ViewBag.CounterpartyId = Counterparty.Id;
             ViewBag.Counterparty = Counterparty;
@@ -190,10 +190,38 @@ namespace diplom_2.Controllers
                 order.ChangeDate = DateTime.Now;
                 db.Entry(order).State = EntityState.Modified;
                 db.SaveChanges();
+                
                 return RedirectToAction("Index");
             }
+
             ViewBag.Counterparty_Id = new SelectList(db.Counterparties, "Id", "Name", order.Counterparty_Id);
             ViewBag.StatusOrder_Id = new SelectList(db.StatusOrders, "Id", "Name", order.StatusOrder_Id);
+            var Counterparty = db.Counterparties.Find(order.Counterparty_Id);
+            ViewBag.CounterpartyId = Counterparty.Id;
+            ViewBag.Counterparty = Counterparty;
+            ViewBag.FirstContact = Counterparty.Contacts.FirstOrDefault();
+            order.Products = new List<ProductInOrder>();
+            for (int i = 0; i < amount.Length; i++)
+            {
+                ProductInOrder product = new ProductInOrder();
+
+                product.Color = MatColor[i];
+                product.Name = ProductName[i];
+                long temp;
+                if (long.TryParse(ProductId[i], out temp) == true)
+                {
+                    product.ProductId = temp;
+                }
+                else
+                {
+                    product.ProductId = -1;
+                }
+                product.Quantity = Convert.ToInt32(amount[i]);
+                product.Size = Size[i];
+                order.Products.Add(product);
+            }
+
+
             return View(order);
         }
 

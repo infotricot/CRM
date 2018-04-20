@@ -25,8 +25,7 @@ namespace diplom_2.Models
         public DateTime PlaningDate { get; set; } //Дата, на когда запланировано выполнение задачи
         [Display(Name = "Комментарий")]
         [AllowHtml]
-        public string Description  { get; set; }
-        [Display(Name = "Отчёт о выполненной задачи")]
+        public string Description { get; set; }
         [AllowHtml]
         public string ExecuteDescription { get; set; }
       
