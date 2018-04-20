@@ -20,7 +20,6 @@ namespace diplom_2.Models
 
         public virtual ICollection<Counterparty> Counterparties { get; set; }
         public virtual ICollection<Process> Proceses { get; set; }
-
         public virtual ApplicationUser ParentManager { get; set; }
         public virtual ICollection<ApplicationUser> SubManagers { get; set; }
 
@@ -40,6 +39,35 @@ namespace diplom_2.Models
             var role = roleManager.FindByName(roleName).Users.First();
             var usersInRole = db.Users.Where(u => u.Roles.Select(r => r.RoleId).Contains(role.RoleId)).ToList();
             return usersInRole;
+        }
+
+        public static List<ApplicationUser> GetSubManagers(string Name)
+        {
+            
+            ApplicationDbContext db = new ApplicationDbContext();
+            var CurrentManager = db.Users.Where(a => a.UserName == Name).FirstOrDefault();
+            //Если пользователь, для которого нужно получить список подчинённых - администратор
+            if (CurrentManager.Roles.FirstOrDefault().RoleId == "3")
+            {
+                //получаем список всех менеджеров (удалённых и руководящих)
+                var Managers = db.Users.Where(a => a.Roles.FirstOrDefault().RoleId == "1" || a.Roles.FirstOrDefault().RoleId == "5").ToList();
+                return Managers;
+            }
+            else
+            //Если пользователь, для которого нужно получить список подчинённых - директор
+            if (CurrentManager.Roles.FirstOrDefault().RoleId == "0")
+            {
+                //получаем список всех сотрудников, кроме текущего пользователя (директора)
+                var Employers = db.Users.Where(a => a.Name != CurrentManager.Name).ToList();
+                return Employers;
+            }
+            //иначе, если пользователь - руководящий менеджер
+            else
+            {
+                //получаем список его подчинённых менеджеров
+                var SubManagers = CurrentManager.SubManagers.ToList();
+                return SubManagers;
+            }
         }
     }
 
@@ -62,7 +90,10 @@ namespace diplom_2.Models
         public virtual DbSet<ProductInOrder> ProductInOrders { get; set; }
         public virtual DbSet<ProcessType> ProcessTypes { get; set; }
         public virtual DbSet<Process> Proceses { get; set; }
-     
+
+        public virtual DbSet<Invoice> Invoices { get; set; }
+        public virtual DbSet<InvoiceItem> InvoiceItems { get; set; }
+
 
         //public System.Data.Entity.DbSet<diplom_2.Models.ApplicationUser> ApplicationUsers { get; set; }
     }

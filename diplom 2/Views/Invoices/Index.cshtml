@@ -1,0 +1,89 @@
+﻿@model IEnumerable<diplom_2.Models.Invoice>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    <input type="file" id="upload" name="upload" onchange="FileUpload()" /> 
+
+    <script>
+        function FileUpload() {
+            //Ищем тег по id input с выбранным файлом.
+            //Поиск тегов может дать в результате не один тег а сразу несколько,
+            //но мы точно знаем, что может только один тег с указанным Id
+            //поэтому получаем из массива объектов нулевое, т.е. первый и единственный с помощью функции .get(0)
+            //Найденный тег - это input с типом file, в котором может быть выбрано несколько файлов, если включен
+            //соответствующий атрибут multiple. Но у нас этот атрибут не используется, хотя
+            //получить можно только через массив файлов. Поэтому извлекаем из массива нулевый и единственный файл .files[0]
+            ///И запоминаем в переменную file.
+            var file = $('#upload').get(0).files[0];
+
+            //Для отправки данных на сервер нужно использовать Post-запрос.
+            //Post-запрос можно отправить на сервер двумя способами:
+            //- через кнопку submit в форме, причём будут взяты данные из всех input-ов формы
+            //- с помощью javascript с применением ajax.
+            //Сейчас мы должны отправить данные (файл) с помощью ajax пост-запроса на сервер, при этом
+            //для input-ов с выбранными файлами формы не используются.
+
+            //Но для отправки post форма всё равно нужна. Поэтому создадим такую "виртуальную" форму
+            //для отправки запроса. Такая виртуальная формаи называется объектом типа FormData.
+            var fileData = new FormData();
+
+            //В виртуальную форму данных добавляем пару "ключ/значение", где ключом выступает имя файла,
+            //а значаем сам файл (скорее всего в байтовом виде).
+            fileData.append('upload', file);
+
+            
+            //Отправляем пост-запрос с помощью ajax
+            $.ajax({
+                url: '/Invoices/UploadExcelFile', //куда отправляем запрос (в какой actio-метод какого контроллера)
+                type: "POST", //типа
+                data: fileData, //форма с данными
+                //чтобы протокол HTTP не исказил передаваемый файл, отключаем все флаги преобразований
+                contentType: false, //тип данных не указан
+                processData: false, //данные не нужно обрабатывать
+                success: function (result) {
+                    alert(result);
+                    //$('#Slide' + number).attr('src', '../../OrdersImages/' + result);
+                    //$('#InputImage' + number + 'Url').val(result);
+                },
+                error: function (err) {
+                    alert(err.statusText);
+                }
+            })
+        }
+    </script>
+
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Number)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Date)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Number)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Date)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>

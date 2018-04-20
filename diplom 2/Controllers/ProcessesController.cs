@@ -47,15 +47,65 @@ namespace diplom_2.Controllers
         }
 
 
-        public PartialViewResult ShowProcesses(int? id)
+        public PartialViewResult ShowProcesses(int? id, bool? showTaskToday, bool? showTaskReady, bool? showTaskDiscard, bool? showTaskInWork, int? typeSort, string SelectManagerProcess)
         {
             var currentManager = db.Users.Find(User.Identity.GetUserId());
             ViewBag.currentManager = currentManager;
             ViewBag.CounterpartyId = id;
-            if (id == null)            
-                return PartialView(db.Proceses.ToList());            
+            List<Process> ProcessesList = new List<Process>();
+            List<Process> ResultProcessesList = new List<Process>();
+            if (id == null)
+            {
+                //Если нужно показать задачи подчинённых
+                if (SelectManagerProcess == "MyManagerProcesses")
+                {
+                    //Если текущий пользователь вышестоящий менеджер показываем задачи его подчинённых
+                    if (User.IsInRole("manager"))
+                        ProcessesList = db.Proceses.Where(a => a.Manager.ParentManager.Id == currentManager.Id).ToList();
+                    //Если текущий пользователь администратор, то показываем задачи всех менеджеров
+                    if (User.IsInRole("admin"))
+                        ProcessesList = db.Proceses.Where(a => a.Manager.Roles.FirstOrDefault().RoleId == "1" || a.Manager.Roles.FirstOrDefault().RoleId == "5").ToList();
+                    //Если текущий пользователь директор, то показываем задачи всех сотрудников (кроме своих собственных)
+                    if (User.IsInRole("director"))
+                        ProcessesList = db.Proceses.Where(a=>a.Manager.Id != currentManager.Id).ToList();
+                }
+                else
+                    //Если нужно показать задачи выбранного менеджера
+                    if (SelectManagerProcess != "undefined" && SelectManagerProcess != "MyProcesses")
+                    ProcessesList = db.Proceses.Where(a => a.Manager.Id == SelectManagerProcess).ToList();
+                else
+                    //Если нужно показать задачи текущего пользователя
+                    ProcessesList = db.Proceses.Where(a => a.Manager.Id == currentManager.Id).ToList();                
+            }
             else
-                return PartialView(db.Counterparties.Find(id).Proceses.ToList());
+            {              
+                ProcessesList = db.Counterparties.Find(id).Proceses.Where(a => a.Manager.Id == currentManager.Id).ToList();                
+            }
+
+            if(showTaskToday == null)
+            {
+                return PartialView(ProcessesList);
+            }
+
+            if (showTaskToday.Value)
+                ResultProcessesList.AddRange(ProcessesList.Where(a => a.PlaningDate <= DateTime.Now && a.IsExecuted == null).ToList());            
+            if (showTaskReady.Value)
+                ResultProcessesList.AddRange(ProcessesList.Where(a => a.IsExecuted != null && a.IsExecuted.Value==true).ToList());
+            if (showTaskDiscard.Value)
+                ResultProcessesList.AddRange(ProcessesList.Where(a => a.IsExecuted != null && a.IsExecuted.Value == false).ToList());
+            if (showTaskInWork.Value)
+                ResultProcessesList.AddRange(ProcessesList.Where(a => a.PlaningDate > DateTime.Now && a.IsExecuted == null).ToList());
+
+            if (typeSort == 0)
+            {
+                ResultProcessesList = ResultProcessesList.OrderByDescending(a => a.CreateDate).ToList();
+            } else
+                if (typeSort == 1)
+            {
+                ResultProcessesList = ResultProcessesList.OrderByDescending(a => a.PlaningDate).ToList();
+            }
+
+            return PartialView(ResultProcessesList);
         }
 
 
@@ -68,7 +118,11 @@ namespace diplom_2.Controllers
             editProcess.IsExecuted = process.IsExecuted;
             db.Entry(editProcess).State = EntityState.Modified;
             db.SaveChanges();
-            return editProcess.Counterparty.Id.ToString();
+            if (editProcess.Counterparty== null)
+                return "";
+            else
+                return editProcess.Counterparty.Id.ToString();
+           
         }
    
 
@@ -87,13 +141,19 @@ namespace diplom_2.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
     
-        public string Create([Bind(Include = "Id,CreateDate,ExecuteDate,PlaningDate,Description")] Process process, int? ProcessTypeId, int? CounterpatyId)
+        public string Create([Bind(Include = "Id,CreateDate,ExecuteDate,PlaningDate,Description,Manager_Id")] Process process, int? ProcessTypeId, int? CounterpatyId)
         {
             process.Counterparty = db.Counterparties.Find(CounterpatyId);
             process.ProcessType = db.ProcessTypes.Find(ProcessTypeId);
             process.CreateDate = DateTime.Now;
-            process.Manager = db.Users.Find(User.Identity.GetUserId());
+            
             process.CreatedBy = db.Users.Find(User.Identity.GetUserId());
+            //Если не указано какому менеджеру поставлена задача, значит её ставил менджер сам себе
+            if (string.IsNullOrEmpty(process.Manager_Id) || process.Manager_Id == "MyProcesses")
+                process.Manager = db.Users.Find(User.Identity.GetUserId());
+            //иначе, если есть id-менеджера, значит задачу поставил вышестоящий менеджер подченённому менеджеру с указанным Id
+            else
+                process.Manager = db.Users.Find(process.Manager_Id);
 
             if (ModelState.IsValid)
             {

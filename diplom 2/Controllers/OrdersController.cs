@@ -78,7 +78,7 @@ namespace diplom_2.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,InvoiceUrl,CreatedDate,ChangeDate,ReadyDate,Counterparty_Id,StatusOrder_Id,Comments, amount, MatColor, Size, ProductId, ProductName")] Order order, 
+        public async Task<ActionResult> Create([Bind(Include = "Id,InvoiceUrl,CreateDate,ChangeDate,ReadyDate,Counterparty_Id,StatusOrder_Id,Comments, amount, MatColor, Size, ProductId, ProductName")] Order order, 
             string[] amount, 
             string[] MatColor, 
             string[] Size, 
@@ -131,7 +131,7 @@ namespace diplom_2.Controllers
 
 
                 order.ChangeDate = DateTime.Now;
-                order.CreatedDate = DateTime.Now;
+                order.CreateDate = DateTime.Now;
                 order.Counterparty_Id = order.Counterparty_Id;
                 var UserManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
                 var currentUser = await UserManager.FindByNameAsync(User.Identity.Name);
@@ -178,10 +178,16 @@ namespace diplom_2.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,InvoiceUrl,CreatedDate,ChangeDate,ReadyDate,Counterparty_Id,StatusOrder_Id")] Order order)
+        public ActionResult Edit([Bind(Include = "Id,InvoiceUrl,CreateDate,ChangeDate,ReadyDate,Counterparty_Id,StatusOrder_Id")] Order order)
         {
             if (ModelState.IsValid)
             {
+             
+                //Если заявка была изменена, но у неё не сминился стату с "Новая" на какой либо другой
+                if (order.StatusOrder_Id == 1)
+                    //Присваиваем такой заявке статус "Была изменена"
+                    order.StatusOrder_Id = 2;
+                order.ChangeDate = DateTime.Now;
                 db.Entry(order).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");

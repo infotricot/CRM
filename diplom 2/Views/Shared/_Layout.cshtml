@@ -187,9 +187,14 @@
                     <li><a href="~/Processes/Index"><i class="fa fa-calendar"></i><span>Задачи</span></a></li>
                     <li><a href="maps.html"><i class="fa fa-map-marker"></i><span>Maps</span></a></li>
                     <li class="nav-parent">
-                        <a href=""><i class="fa fa-file-text"></i> <span>Pages</span></a>
+                        <a href=""><i class="fa fa-file-text"></i> <span>Отчёты</span></a>
                         <ul class="children">
-                            <li><a href="calendar.html"><i class="fa fa-caret-right"></i> Calendar</a></li>
+                            @if (User.IsInRole("remove manager"))
+                            {
+                                <li><a href="~/Reports/MyReport"><i class="fa fa-caret-right"></i>Мой отчёт</a></li>
+                            }
+
+                            @*<li><a href="calendar.html"><i class="fa fa-caret-right"></i> Calendar</a></li>
                             <li><a href="media-manager.html"><i class="fa fa-caret-right"></i> Media Manager</a></li>
                             <li><a href="timeline.html"><i class="fa fa-caret-right"></i> Timeline</a></li>
                             <li><a href="blog-list.html"><i class="fa fa-caret-right"></i> Blog List</a></li>
@@ -202,7 +207,7 @@
                             <li><a href="notfound.html"><i class="fa fa-caret-right"></i> 404 Page</a></li>
                             <li><a href="locked.html"><i class="fa fa-caret-right"></i> Locked Screen</a></li>
                             <li><a href="signin.html"><i class="fa fa-caret-right"></i> Sign In</a></li>
-                            <li><a href="signup.html"><i class="fa fa-caret-right"></i> Sign Up</a></li>
+                            <li><a href="signup.html"><i class="fa fa-caret-right"></i> Sign Up</a></li>*@
                         </ul>
                     </li>
                     <li class="nav-parent">

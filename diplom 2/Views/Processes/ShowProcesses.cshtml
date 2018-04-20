@@ -1,6 +1,6 @@
 ﻿@model List<diplom_2.Models.Process>
 
-@foreach (var activity in Model.Where(a => a.Manager.Id == ViewBag.currentManager.Id).OrderByDescending(a => a.CreateDate))
+@foreach (var activity in Model)
 {
     string StyleExecuted;
     if (activity.IsExecuted != null)
@@ -43,7 +43,13 @@
         <div class="media-body act-media-body">
             <div class="row">
                 <div class="col-md-8">
-                    <strong>@activity.Manager.Name: Создана задача </strong> - <strong>@activity.ProcessType.Name</strong>. <br />
+                    @*Если задача была поставлена вышестоящим менеджером - выводим соответствующий текст и кем именно была поставлена задача*@
+                    @if (activity.Manager.Id != activity.CreatedBy.Id) 
+                    {
+                        <strong style='line-height: 22px;'>Кем поставлена задача: @(activity.CreatedBy.Name + " " + activity.CreatedBy.Surname)</strong><br />                        
+                    }
+                    <strong style='line-height: 22px;'> Исполнитель: @(activity.Manager.Name + " " + activity.Manager.Surname)<br /></strong> 
+                    <strong style='line-height: 22px;'>Задача: @activity.ProcessType.Name</strong>. <br />
                     <small class="text-muted">Дата создания: @activity.CreateDate </small><br />
                     <small class="text-muted">Запланированная дата выполнения: @activity.PlaningDate.ToShortDateString() </small><br />
                 </div>
@@ -61,7 +67,7 @@
 
                 </div>
             </div>
-            @if (activity.ExecuteDate != null)
+            @if (activity.IsExecuted != null)
             {
                 if (activity.IsExecuted == true)
                 {

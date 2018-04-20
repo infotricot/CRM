@@ -91,17 +91,21 @@
                 data: frm.serialize(),
                 success: function (data) {
                     $('#CloseButton').trigger('click');
-                    $.ajax({
-                        type: "GET",
-                        url: '/Processes/ShowProcesses/' + data,
-                        cache: false,
-                        success: function (response) {
-                            $('#ProcesseList_' + data).html(response);
-                        },
-                        error: function (response) {
-                            alert("Error");
-                        }
-                    })
+                    UpdateProccessList();
+                    //$.ajax({
+                    //    type: "GET",
+                    //    url: '/Processes/ShowProcesses/' + data,
+                    //    cache: false,
+                    //    success: function (response) {
+                    //        if ($('#ProcesseList_' + data).length == 0)
+                    //            $('#ProcesseList').html(response);
+                    //        else
+                    //            $('#ProcesseList_' + data).html(response);
+                    //    },
+                    //    error: function (response) {
+                    //        alert("Error");
+                    //    }
+                    //})
                   
                 },
                 error: function (data) {

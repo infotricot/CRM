@@ -1,0 +1,28 @@
+﻿@model diplom_2.Models.Invoice
+
+
+<tr id="InvoiceRow_@Model.Id" class="row">
+    <td class="col-md-7">
+        <a href="~/InvoiceFiles/@Model.FileName">@Model.FileName.Remove(0, 36)</a>
+    </td>
+    <td class="col-md-2">
+        Сумма по накладной: @Model.GetSum()грн.
+    </td>
+    <td class="col-md-2">
+        <input onblur="SavePayedSum(this, @Model.Id)" type="text" value="@Model.Payed" />
+    </td>
+    <td class="col-md-1">
+        <div style="cursor: pointer" onclick="RemoveInvoiceRow('@Model.Id', '@Model.FileName')">X</div>
+    </td>
+</tr>
+
+<script>
+    function SavePayedSum(e, InvoicId)
+    {
+        $.ajax({
+            url: '/Invoices/UpdatePayedSum?Id=' + InvoicId + '&value=' + e.value, //куда отправляем запрос (в какой actio-метод какого контроллера)
+            type: "get"            
+        })        
+    }
+</script>
+

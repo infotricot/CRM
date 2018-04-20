@@ -15,32 +15,32 @@ namespace diplom_2.Models
         public virtual ICollection<Order> Orders { get; set; }
     }
 
-    public class Order
+    public class Order : ProcessOrderBase
     {
-        public int Id { get; set; }
         [Display(Name = "Накладная")]
         public string InvoiceUrl { get; set; }
-        [Display(Name = "Дата создания")]
-        public DateTime CreatedDate { get; set; }
+
         [Display(Name = "Дата последнего действия")]
         public DateTime ChangeDate { get; set; }
         [Display(Name = "Срок поставки")]
         public DateTime ReadyDate { get; set; }
 
         [ForeignKey("Counterparty")]
-        public int Counterparty_Id { get; set; }       
+        public int Counterparty_Id { get; set; }
+
+        [Display(Name = "Статус заявки")]   
         [ForeignKey("StatusOrder")]
         public int StatusOrder_Id { get; set; }
-        [ForeignKey("Manager")]
-        public string Manager_Id { get; set; }
+    
 
         [AllowHtml]
         public string Comments { get; set; }
-        public virtual Counterparty Counterparty { get;set;}
-        public virtual ApplicationUser Manager { get; set; }
+
+        [Display(Name = "Статус заявки")]
         public virtual StatusOrder StatusOrder { get; set; }
         public virtual ICollection<ProductInOrder> Products { get; set; }
-     
+        public virtual ICollection<Invoice> Invoices { get; set; }
+
     }
 
  

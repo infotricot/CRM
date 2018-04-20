@@ -1,4 +1,5 @@
-﻿@model IEnumerable<diplom_2.Models.Process>
+﻿@using diplom_2.Models;
+@model IEnumerable<diplom_2.Models.Process>
 
 @{
     ViewBag.Title = "Index";
@@ -6,7 +7,7 @@
 }
 
 <div class="pageheader">
-    <h2><i class="fa fa-table"></i>Задачи<span></span>  <a href="~/Counterparties/Create/" class="btn btn-sm btn-primary mr5"> Добавить клиента</a></h2>
+    <h2><i class="fa fa-table"></i>Задачи<span></span>  @*<a href="~/Counterparties/Create/" class="btn btn-sm btn-primary mr5"> Добавить клиента</a>*@</h2>
 
     <div class="breadcrumb-wrapper">
         <span class="label"></span>
@@ -17,46 +18,175 @@
     </div>
 </div>
 
+<div class="panel panel-default">
 
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-3">
+              
+
+             
+
+                <div class="ckbox ckbox-warning">
+                    <input type="checkbox" id="checkboxWarning" checked="checked" onchange="UpdateProccessList()">
+                    <label for="checkboxWarning">Задачи на сегодня</label>
+                </div>
+
+                <div class="ckbox ckbox-success">
+                    <input type="checkbox" id="checkboxSuccess" checked="checked" onchange="UpdateProccessList()">
+                    <label for="checkboxSuccess">Выполненные задачи</label>
+                </div>
+
+                <div class="ckbox ckbox-primary">
+                    <input type="checkbox" value="1" id="checkboxPrimary" checked="checked" onchange="UpdateProccessList()">
+                    <label for="checkboxPrimary">Отклонённые задачи</label>
+                </div>
+
+                <div class="ckbox ckbox-danger">
+                    <input type="checkbox" id="checkboxDanger" checked="checked" onchange="UpdateProccessList()">
+                    <label for="checkboxDanger">Не выполненные задачи</label>
+                </div>               
+            </div><!-- col-md-4 -->
+
+            <div class="col-md-9">
+                <div class="rdio rdio-primary">
+                    <input type="radio" name="radio" value="0" id="radioPrimary" checked="checked" onclick="UpdateProccessList()">
+                    <label for="radioPrimary">Сортировать по дате создания задачи</label>
+                </div>
+                <div class="rdio rdio-warning">
+                    <input type="radio" name="radio" value="1" id="radioWarning" onclick="UpdateProccessList()">
+                    <label for="radioWarning">Сортировать по дате выполнения задачи</label>
+                </div>
+                @if (User.IsInRole("manager") || User.IsInRole("admin") || User.IsInRole("director"))
+                {
+                    <div class="btn-group">
+                        <button id="MyProcesseButton" type="button" class="btn btn-default" onclick="UpdateProccessList('MyProcesses')">Мои задачи</button>                    
+                        <button  id="MyManagerProcessesButton" type="button" class="btn btn-default" onclick="UpdateProccessList('MyManagerProcesses')">
+                            @if (User.IsInRole("manager"))
+                            {
+                                <span>Задачи моих менеджеров</span>
+                            }
+                            else
+                            if (User.IsInRole("admin"))
+                            {
+                                <span>Задачи менеджеров</span>
+                            }
+                            else
+                            if (User.IsInRole("director"))
+                            {
+                                <span>Задачи сотрудников</span>
+                            }
+                        </button>
+
+                        <div class="btn-group">
+                            <button id = "SelectManagerProcessesButton" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                Выберите менеджера, для просмотра его задач
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                @foreach(var manager in ApplicationUser.GetSubManagers(User.Identity.Name))
+                                {
+                                    <li ><a href = "#" onclick="event.preventDefault(); UpdateProccessList('@manager.Id', '@(manager.Surname +" " + manager.Name)')">@(manager.Surname +" " + manager.Name)</a></li>
+                                }
+                            </ul>
+                        </div>
+                    </div><!-- btn-group -->
+                }
+            </div>
+
+        </div><!-- row -->
+    </div><!-- panel-body -->
+</div>
 
 <div class="contentpanel">
     <div class="panel-group" id="accordion">
-     
+
 
             <div class="panel panel-default">
                 <div class="panel-heading">
-                 
-                </div>
-               
-                   
-                  
-                      
-                            <div class="activity-list">
-                                
-                                @*<a data-toggle="modal" data-target="#myModal" CompanyId="@client.Id" ProcessTypeId="1" href="~/Processes/Create?ProcessTypeId=1&CounterpatyId=@client.Id" class="btn btn-sm btn-primary mr5"><i class="fa fa-plus"></i> Входящий звонок</a>*@
-                                <a data-toggle="modal" data-target="#myModal" ProcessTypeId="1" href="#" class="btn btn-sm btn-primary mr5"><i class="fa fa-plus"></i> Входящий звонок</a>
-                                <a data-toggle="modal" data-target="#myModal" ProcessTypeId="2" href="#" class="btn btn-sm btn-primary mr5"><i class="fa fa-plus"></i> Исходящий звонок</a>
-                                <a data-toggle="modal" data-target="#myModal"  ProcessTypeId="3" href="#" class="btn btn-sm btn-primary mr5"><i class="fa fa-plus"></i> Отправка прайса</a>
-                                <a data-toggle="modal" data-target="#myModal"  ProcessTypeId="4" href="#" class="btn btn-sm btn-primary mr5"><i class="fa fa-plus"></i> Встреча</a>
-                                <a data-toggle="modal" data-target="#myModal" ProcessTypeId="5" href="#" class="btn btn-sm btn-primary mr5"><i class="fa fa-plus"></i> Отправка образцов</a>
-                                <a data-toggle="modal" data-target="#myModal"  ProcessTypeId="6" href="#" class="btn btn-sm btn-primary mr5"><i class="fa fa-plus"></i> Другая задача</a>
 
+                </div>
+
+
+
+
+                            <div class="activity-list">
+                                <div id = "ManagerProcessWarning" style="display: none"><b>Внимание! Задача будет добавлена для выбранного менеджера</b></div>
+                                @*<a data-toggle="modal" data-target="#myModal" CompanyId="@client.Id" ProcessTypeId="1" href="~/Processes/Create?ProcessTypeId=1&CounterpatyId=@client.Id" class="btn btn-sm btn-primary mr5"><i class="fa fa-plus"></i> Входящий звонок</a>*@
+                                <div id="ProcessButtons">
+                                    <a data-toggle="modal" data-target="#myModal" ProcessTypeId="1" href="#" class="btn btn-sm btn-primary mr5"><i class="fa fa-plus"></i> Входящий звонок</a>
+                                    <a data-toggle="modal" data-target="#myModal" ProcessTypeId="2" href="#" class="btn btn-sm btn-primary mr5"><i class="fa fa-plus"></i> Исходящий звонок</a>
+                                    <a data-toggle="modal" data-target="#myModal" ProcessTypeId="3" href="#" class="btn btn-sm btn-primary mr5"><i class="fa fa-plus"></i> Отправка прайса</a>
+                                    <a data-toggle="modal" data-target="#myModal" ProcessTypeId="4" href="#" class="btn btn-sm btn-primary mr5"><i class="fa fa-plus"></i> Встреча</a>
+                                    <a data-toggle="modal" data-target="#myModal" ProcessTypeId="5" href="#" class="btn btn-sm btn-primary mr5"><i class="fa fa-plus"></i> Отправка образцов</a>
+                                    <a data-toggle="modal" data-target="#myModal" ProcessTypeId="6" href="#" class="btn btn-sm btn-primary mr5"><i class="fa fa-plus"></i> Другая задача</a>
+                                </div>
                                 <br /><br />
                                 <div id="ProcesseList">
 
                                 </div>
                                 <script>
-                                    $.ajax({
-                                        type: "GET",
-                                        url: '/Processes/ShowProcesses/',
-                                        cache: false,
-                                        success: function (response) {
-                                            $('#ProcesseList').html(response);
-                                        },
-                                        error: function (response) {
-                                            alert("Error");
+                                    UpdateProccessList();
+                                    var lastSelectManagerProcess = undefined;
+                                    function UpdateProccessList(SelectManagerProcess, ManagerName) {
+                                  
+                                        var showTaskToday = $('#checkboxWarning').is(':checked');                                        
+                                        var showTaskReady = $('#checkboxSuccess').is(':checked');
+                                        var showTaskDiscard = $('#checkboxPrimary').is(':checked');
+                                        var showTaskInWork = $('#checkboxDanger').is(':checked');                                        
+                                        var typeSort;
+                                        if (SelectManagerProcess == undefined)
+                                            SelectManagerProcess = lastSelectManagerProcess;
+                                        else
+                                            lastSelectManagerProcess = SelectManagerProcess;
+                                        if (SelectManagerProcess == undefined || SelectManagerProcess == 'MyProcesses') {
+                                            $('#MyProcesseButton').addClass('active');
+                                            $('#MyManagerProcessesButton').removeClass('active');
+                                            $('#SelectManagerProcessesButton').removeClass('active');
+                                            $('#SelectManagerProcessesButton').html('Выберите менеджера, для просмотра его задач');
+                                            $('#ManagerProcessWarning').fadeOut(200);
+                                            $('#ProcessButtons').fadeIn(200);                                            
                                         }
-                                    })
+                                        else if (SelectManagerProcess == "MyManagerProcesses") {
+                                            
+                                            $('#MyProcesseButton').removeClass('active');
+                                            $('#MyManagerProcessesButton').addClass('active');
+                                            $('#SelectManagerProcessesButton').removeClass('active');
+                                            $('#SelectManagerProcessesButton').html('Выберите менеджера, для просмотра его задач');
+                                            $('#ManagerProcessWarning').fadeOut(200);
+                                            $('#ProcessButtons').fadeOut(200);
+                                        }
+                                        else
+                                        {                                          
+                                            $('#MyProcesseButton').removeClass('active');
+                                            $('#MyManagerProcessesButton').removeClass('active');
+                                            $('#SelectManagerProcessesButton').addClass('active');
+                                            $('#SelectManagerProcessesButton').html(ManagerName);
+                                            $('#ManagerProcessWarning').fadeIn(200);
+                                            $('#ProcessButtons').fadeIn(200);
+                                        }
+                                        if ($('#radioPrimary').is(':checked') == true)
+                                        {
+                                            typeSort = 0;
+                                        }
+                                        else
+                                            if ($('#radioWarning').is(':checked') == true) {
+                                                typeSort = 1;
+                                            }
+
+                                        $.ajax({
+                                            type: "GET",
+                                            url: '/Processes/ShowProcesses?showTaskToday=' + showTaskToday + '&showTaskReady=' + showTaskReady + '&showTaskInWork=' + showTaskInWork + '&showTaskDiscard=' + showTaskDiscard + '&typeSort=' + typeSort + '&SelectManagerProcess=' + SelectManagerProcess,
+                                            cache: false,
+                                            success: function (response) {                                           
+                                                $('#ProcesseList').html(response);
+                                                
+                                            },
+                                            error: function (response) {
+                                                alert("Error");
+                                            }
+                                        })
+                                    }
                                 </script>
 
                                
