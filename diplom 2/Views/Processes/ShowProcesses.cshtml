@@ -77,6 +77,8 @@
                         <small class="text-muted">Дата последнего изменения: @Task.ChangeDate </small><br />
                         <small class="text-muted">Статус заявки: @Task.StatusOrder.Name </small><br />
                         <small class="text-muted">Запланированная дата выполнения: @Task.ReadyDate.ToShortDateString() </small><br />
+
+                       
                     }
                 </div>
                 <div class="col-md-4">
@@ -120,7 +122,20 @@
             <strong>@Html.Raw(((activity as Process).Description))</strong>
             <strong>@Html.Raw(((activity as Process).ExecuteDescription))</strong>
        }
-       
+       else
+       {
+           var Task = activity as Order;
+           if (Task.Invoices.Count > 0)
+           {
+            <br />
+               foreach (var invoice in Task.Invoices)
+               {
+                <strong><a href="~/InvoiceFiles/@invoice.FileName">@invoice.FileName.Remove(0, 36)</a> - Сумма по накладной: @invoice.GetSum()грн.</strong>
+                <br />
+               }
+           }
+       }
+
         </div>
     </div><!-- media -->
 }

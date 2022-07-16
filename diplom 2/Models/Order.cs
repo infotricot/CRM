@@ -40,8 +40,8 @@ namespace diplom_2.Models
         public virtual StatusOrder StatusOrder { get; set; }
         public virtual ICollection<ProductInOrder> Products { get; set; }
         public virtual ICollection<Invoice> Invoices { get; set; }
-
     }
+
 
 
     public class ProductInOrder

@@ -153,11 +153,11 @@ namespace diplom_2.Controllers
             return PartialView("InvoiceRowPartial", null);
         }
 
-        public void UpdatePayedSum(int id, decimal value)
+        public void UpdatePayment(int id, decimal value, int PaymentNumber)
         {
-            var invoice = db.Invoices.Find(id);
-            invoice.Payed = value;
-            db.SaveChanges();
+            //var invoice = db.Invoices.Find(id);
+            //invoice.Payed = value;
+            //db.SaveChanges();
         }
 
         // GET: Invoices/Details/5

@@ -1,0 +1,1 @@
+Data Source=mssql4.1gb.ua;Initial Catalog=1gb_jersiweb;User ID=1gb_sudak-pravda;Password=b6aed88b

@@ -1,28 +1,59 @@
 ﻿@model diplom_2.Models.Invoice
 
 
-<tr id="InvoiceRow_@Model.Id" class="row">
-    <td class="col-md-7">
+<tr id="InvoiceRow_@Model.Id" class="row InvoiceRow_@Model.Id" >
+    <td class="col-md-4" style="border-color: #8e8e8e" >
         <a href="~/InvoiceFiles/@Model.FileName">@Model.FileName.Remove(0, 36)</a>
     </td>
-    <td class="col-md-2">
+    <td class="col-md-5" style="border-color: #8e8e8e">
         Сумма по накладной: @Model.GetSum()грн.
+    </td>    
+    <td class="col-md-3" style="border-color: #8e8e8e">
+        <div style="cursor: pointer; text-decoration: underline; color:#428bca" onclick="RemoveInvoiceRow('@Model.Id', '@Model.FileName')">Удалить накладную</div>
+    </td>    
+</tr>
+<tr class="row InvoiceRow_@Model.Id">
+    <td class="col-md-4" style="border-top: none">
+        Оплаты по накладной:
     </td>
-    <td class="col-md-2">
-        <input onblur="SavePayedSum(this, @Model.Id)" type="text" value="@Model.Payed" />
+    <td class="col-md-5" style="border-top: none">Дата оплаты:</td>
+    <td class="col-md-3" style="border-top: none"></td>
+</tr>
+<tr class="row InvoiceRow_@Model.Id" id="Payments_@Model.Id">
+    <td class="col-md-4" style="border-top: none">
+        <input onclick="AddPayment_@(Model.Id)()" class="btn btn-primary mr5" type="button" value="Добавить оплату"/>
     </td>
-    <td class="col-md-1">
-        <div style="cursor: pointer" onclick="RemoveInvoiceRow('@Model.Id', '@Model.FileName')">X</div>
-    </td>
+    <td class="col-md-5" style="border-top: none"></td>
+    <td class="col-md-3" style="border-top: none"></td>
 </tr>
 
-<script>
-    function SavePayedSum(e, InvoicId)
+
+
+
+<script class="InvoiceRow_@Model.Id">
+    jQuery('#PaymentDate_0_@Model.Id').datepicker({ dateFormat: 'dd.mm.yy' });
+    var CurrentPayment = 0;
+    function AddPayment_@(Model.Id)() {
+        @{ 
+            string Date = DateTime.Now.ToString("yyyy-MM-dd");
+        }
+        $('#Payments_@Model.Id').before('<tr id="Payment_' + CurrentPayment + '_@Model.Id" class="InvoiceRow_@Model.Id row"><td class="col-md-4"><input onblur="SavePay(this, @Model.Id, ' + CurrentPayment + ')" type="text" /><div onclick="DeletePayment(@Model.Id, ' + CurrentPayment + ' )" style="float: right; cursor: pointer; text-decoration: underline; color:#428bca">Удалить опалту</div></td><td class="col-md-5"><input onblur="SavePay(this, @Model.Id, ' + CurrentPayment + ')" style="line-height: 13px;" id="PaymentDate_' + CurrentPayment + '_@Model.Id" type="date" value="@Date" /></td><td class="col-md-3"></td></tr>');
+        CurrentPayment++;
+
+    }
+
+    function DeletePayment(InvoiceId, PaymentNumber)
+    {
+        $('#Payment_' + PaymentNumber + '_' + InvoiceId).remove();
+    }
+
+    function SavePay(e, InvoiceId, PaymentNumber)
     {
         $.ajax({
-            url: '/Invoices/UpdatePayedSum?Id=' + InvoicId + '&value=' + e.value, //куда отправляем запрос (в какой actio-метод какого контроллера)
-            type: "get"            
-        })        
+            url: '/Invoices/UpdatePayment?Id=' + InvoiceId + '&value=' + e.value + '&PaymentNumber=' + PaymentNumber, //куда отправляем запрос (в какой action-метод какого контроллера)
+            type: "get"
+        })
     }
+
 </script>
 

@@ -93,6 +93,7 @@ namespace diplom_2.Models
 
         public virtual DbSet<Invoice> Invoices { get; set; }
         public virtual DbSet<InvoiceItem> InvoiceItems { get; set; }
+        public virtual DbSet<InvoicePayment> InvoicePayments { get; set; }
 
 
         //public System.Data.Entity.DbSet<diplom_2.Models.ApplicationUser> ApplicationUsers { get; set; }

@@ -419,6 +419,18 @@
     <Compile Include="Migrations\201804201125053_AfterMerge1.Designer.cs">
       <DependentUpon>201804201125053_AfterMerge1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201804300824034_AddInvoicePayments.cs" />
+    <Compile Include="Migrations\201804300824034_AddInvoicePayments.Designer.cs">
+      <DependentUpon>201804300824034_AddInvoicePayments.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804300830152_repair.cs" />
+    <Compile Include="Migrations\201804300830152_repair.Designer.cs">
+      <DependentUpon>201804300830152_repair.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805010637103_AddPayment.cs" />
+    <Compile Include="Migrations\201805010637103_AddPayment.Designer.cs">
+      <DependentUpon>201805010637103_AddPayment.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Contact.cs" />
@@ -1333,6 +1345,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201804201125053_AfterMerge1.resx">
       <DependentUpon>201804201125053_AfterMerge1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804300824034_AddInvoicePayments.resx">
+      <DependentUpon>201804300824034_AddInvoicePayments.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804300830152_repair.resx">
+      <DependentUpon>201804300830152_repair.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805010637103_AddPayment.resx">
+      <DependentUpon>201805010637103_AddPayment.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -111,7 +111,7 @@ namespace diplom_2.Controllers
             {
                 ResultProcessesList = ResultProcessesList.OrderByDescending(a => a.CreateDate).ToList();
             } else
-                if (typeSort == 1)
+                //if (typeSort == 1)
             {
                 ResultProcessesList = ResultProcessesList.OrderByDescending(a => (a as Process).PlaningDate).ToList();
             }

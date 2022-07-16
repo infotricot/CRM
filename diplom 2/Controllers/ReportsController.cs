@@ -13,9 +13,10 @@ namespace diplom_2.Controllers
        
     }
 
-    class MyReportModel
+    public class MyReportModel
     {
         public ApplicationUser Manager { get; set; }
+        public string MonthString { get; set; }
         public int Month { get; set; }
         public int Year { get; set; }
         public int TaskComplete { get; set; }
@@ -27,6 +28,7 @@ namespace diplom_2.Controllers
         public int NewClients { get; set; }
         public int NewInvoices { get; set; }
         public decimal InvoicesPayment { get; set; }
+        public int AmountInvoicesPayment { get; set; }
 
         public List<Invoice> Invoices { get; set; }
 
@@ -44,6 +46,25 @@ namespace diplom_2.Controllers
         {
             //Создаём объект модели данных для оформления отчёта
             MyReportModel report = new MyReportModel();
+
+            switch (month)
+            {
+                case 1: report.MonthString = "январь"; break;
+                case 2: report.MonthString = "февраль"; break;
+                case 3: report.MonthString = "март"; break;
+                case 4: report.MonthString = "апрель"; break;
+                case 5: report.MonthString = "май"; break;
+                case 6: report.MonthString = "июнь"; break;
+                case 7: report.MonthString = "июль"; break;
+                case 8: report.MonthString = "август"; break;
+                case 9: report.MonthString = "сентябрь"; break;
+                case 10: report.MonthString = "октябрь"; break;
+                case 11: report.MonthString = "ноябрь"; break;
+                case 12: report.MonthString = "декабрь"; break;              
+                default:
+                    new Exception("Не определён месяц, указанный в отчёте");
+                    break;
+            }
 
             //Есть текущий пользователь является удалённым менеджером
             if (User.IsInRole("remove manager"))
@@ -138,14 +159,26 @@ namespace diplom_2.Controllers
                 a.Created.Year == year && a.Created.Month == month
                );
 
-            //report.Invoices = db.Invoices.Count(a =>
-            //  a.Order.Manager_Id == report.Manager.Id &&
-            //  //получаем только те задачи, которые были изменены в указанном году и месяце
-              
-            // );
+            var TempInvoices = db.Invoices.ToList();
+
+            report.Invoices = TempInvoices.Where(a =>
+                a.Order.Manager_Id == report.Manager.Id &&
+                //получаем только те задачи, которые были изменены в указанном году и месяце
+                a.Date.Year == year && a.Date.Month == month 
+             ).ToList();
+
+            //foreach (var i in report.Invoices)
+            //{
+            //    if (i.Payed != 0)
+            //    {
+            //        report.InvoicesPayment += i.Payed;
+            //        report.AmountInvoicesPayment++;
+            //    }
+            //}
+     
 
 
-            return View();
+            return View(report);
         }
     }
 }

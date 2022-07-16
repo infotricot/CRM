@@ -14,8 +14,7 @@ namespace diplom_2.Models
         public string FileName { get; set; }
         public virtual Order Order { get; set; }        
         public virtual ICollection<InvoiceItem> InvoiceItems { get; set; }
-        public decimal Payed { get; set; }
-
+        public virtual ICollection<InvoicePayment> InvoicePayments { get; set; }
         public decimal GetSum()
         {
             decimal sum = 0m;
@@ -24,9 +23,18 @@ namespace diplom_2.Models
                 sum += i.Price * i.Amount;
             }
             return sum;
-
         }
     }
+
+
+    public class InvoicePayment
+    {
+        public int Id { get; set; }
+        public decimal Payed { get; set; }
+        public DateTime Date { get; set; }
+        public virtual Invoice Invoice { get; set; }
+    }
+
 
     public class InvoiceItem
     {

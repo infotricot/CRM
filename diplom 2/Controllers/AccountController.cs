@@ -87,8 +87,8 @@ namespace diplom_2.Controllers
                 if (UserManager.FindByEmail(model.Email).Deleted == true)
                     return View(model);
 
-            // Сбои при входе не приводят к блокированию учетной записи
-            // Чтобы ошибки при вводе пароля инициировали блокирование учетной записи, замените на shouldLockout: true
+            // Login failures do not result in account suspension
+            // Change to shouldLockout: true to make password errors trigger account lockout
             var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
 
             switch (result)
@@ -111,7 +111,7 @@ namespace diplom_2.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> VerifyCode(string provider, string returnUrl, bool rememberMe)
         {
-            // Требовать предварительный вход пользователя с помощью имени пользователя и пароля или внешнего имени входа
+            // Require user to pre-login with username and password or external login
             if (!await SignInManager.HasBeenVerifiedAsync())
             {
                 return View("Error");
@@ -131,10 +131,10 @@ namespace diplom_2.Controllers
                 return View(model);
             }
 
-            // Приведенный ниже код защищает от атак методом подбора, направленных на двухфакторные коды. 
-            // Если пользователь введет неправильные коды за указанное время, его учетная запись 
-            // будет заблокирована на заданный период. 
-            // Параметры блокирования учетных записей можно настроить в IdentityConfig
+            // The code below protects against brute-force attacks against two-factor codes.
+            // If the user enters the wrong codes within the specified time, his account
+            // will be blocked for the specified period.
+            // Account lockout settings can be configured in IdentityConfig
             var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent:  model.RememberMe, rememberBrowser: model.RememberBrowser);
             switch (result)
             {
@@ -183,15 +183,15 @@ namespace diplom_2.Controllers
         // GET: /Account/Register      
         public ActionResult Edit(string id)
         {
-            //Находим редактируемого пользователя
+            //Find the user being edited
             ApplicationUser user = UserManager.FindById(id);
-            //Создаём объект model класса RegisterViewModel, так как 
-            //нам удобнее чтобы представление Edit максимально было похожим на представление Register,
-            //которое ужидает от сервера данные типа RegisterViewModel. 
+            //Create a model object of the RegisterViewModel class, because
+            // it is more convenient for us to make the Edit view as similar as possible to the Register view,
+            //which expects data of type RegisterViewModel from the server.
             EditViewModel model = new EditViewModel();
-            //Наполняем данными объект model
-            model.Id = id; //идентификатор пользователя берём из параметра метода
-            //остальную информацию из объекта user.
+            //Fill the model object with data
+            model.Id = id; //we take the user ID from the method parameter
+                           //other information from the user object.
             model.Name = user.Name;
             model.Surname = user.Surname;
             model.Email = user.Email;            
@@ -226,10 +226,10 @@ namespace diplom_2.Controllers
 
             db.SaveChanges();
 
-            
-            //user.Roles.ToList()[0].RoleId - получаем Id текущей роль пользователя
-            //db.Roles.Find(user.Roles.ToList()[0].RoleId) - находим её по id в списке всех доступных ролей
-            //db.Roles.Find(user.Roles.ToList()[0].RoleId).Name - получаем название роли
+
+            //user.Roles.ToList()[0].RoleId - get current user role id
+            //db.Roles.Find(user.Roles.ToList()[0].RoleId) - find it by id in the list of all available roles
+            //db.Roles.Find(user.Roles.ToList()[0].RoleId).Name - get role name
             if (user.Roles.ToList().Count == 0)
             {
                 UserManager.AddToRole(model.Id, db.Roles.Find(model.SelectedRole).Name);
@@ -237,14 +237,14 @@ namespace diplom_2.Controllers
             }
             string roleName = db.Roles.Find(user.Roles.ToList()[0].RoleId).Name;
 
-            //Проверяем, изменилась ли роль у редактируемого пользователя
+            //Check if the edited user's role has changed
             if (model.SelectedRole != roleName)
             {//Если изменилось
-               
-                //Удаляем пользователя с model.Id из роли roleName
+
+                //Remove user with model.Id from roleName
                 UserManager.RemoveFromRole(model.Id, roleName);
-               
-                //Добавляем его в новую роль
+
+                //Add it to a new role
                 UserManager.AddToRole(model.Id, model.SelectedRole);
                 if (User.Identity.Name == user.Email)
                     return Redirect("LogOff");
@@ -276,17 +276,17 @@ namespace diplom_2.Controllers
                 {                   
                     UserManager.AddToRole(user.Id, model.SelectedRole);
 
-                    // Дополнительные сведения о том, как включить подтверждение учетной записи и сброс пароля, см. по адресу: http://go.microsoft.com/fwlink/?LinkID=320771
-                    // Отправка сообщения электронной почты с этой ссылкой
+                    // For more information on how to enable account verification and password reset, see: http://go.microsoft.com/fwlink/?LinkID=320771
+                    // Send an email with this link
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Подтверждение учетной записи", "Подтвердите вашу учетную запись, щелкнув <a href=\"" + callbackUrl + "\">здесь</a>");                    
+                    // await UserManager.SendEmailAsync(user.Id, "Account Verification", "Verify your account by clicking <a href=\"" + callbackUrl + "\">here</a>");                    
                     return RedirectToAction("UsersList");
                 }
                 AddErrors(result);
             }
 
-            // Появление этого сообщения означает наличие ошибки; повторное отображение формы
+            // If this message appears, there is an error; redisplay form
             return View(model);
         }
 
@@ -322,19 +322,19 @@ namespace diplom_2.Controllers
                 var user = await UserManager.FindByNameAsync(model.Email);
                 if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
                 {
-                    // Не показывать, что пользователь не существует или не подтвержден
+                    // Do not show if the user does not exist or is not verified
                     return View("ForgotPasswordConfirmation");
                 }
 
-                // Дополнительные сведения о том, как включить подтверждение учетной записи и сброс пароля, см. по адресу: http://go.microsoft.com/fwlink/?LinkID=320771
-                // Отправка сообщения электронной почты с этой ссылкой
+                // For more information on how to enable account verification and password reset, see: http://go.microsoft.com/fwlink/?LinkID=320771
+                // Send an email with this link
                 // string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
                 // var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
-                // await UserManager.SendEmailAsync(user.Id, "Сброс пароля", "Сбросьте ваш пароль, щелкнув <a href=\"" + callbackUrl + "\">здесь</a>");
+                // await UserManager.SendEmailAsync(user.Id, "Reset password", "Reset your password by clicking <a href=\"" + callbackUrl + "\">здесь</a>");
                 // return RedirectToAction("ForgotPasswordConfirmation", "Account");
             }
 
-            // Появление этого сообщения означает наличие ошибки; повторное отображение формы
+            // If this message appears, there is an error; redisplay form
             return View(model);
         }
 
@@ -368,7 +368,7 @@ namespace diplom_2.Controllers
             var user = await UserManager.FindByNameAsync(model.Email);
             if (user == null)
             {
-                // Не показывать, что пользователь не существует
+                // Don't show that the user doesn't exist
                 return RedirectToAction("ResetPasswordConfirmation", "Account");
             }
             var result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
@@ -395,7 +395,7 @@ namespace diplom_2.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult ExternalLogin(string provider, string returnUrl)
         {
-            // Запрос перенаправления к внешнему поставщику входа
+            // Request a redirect to an external login provider
             return new ChallengeResult(provider, Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl }));
         }
 
@@ -426,7 +426,7 @@ namespace diplom_2.Controllers
                 return View();
             }
 
-            // Создание и отправка маркера
+            // Create and send a token
             if (!await SignInManager.SendTwoFactorCodeAsync(model.SelectedProvider))
             {
                 return View("Error");
@@ -445,7 +445,7 @@ namespace diplom_2.Controllers
                 return RedirectToAction("Login");
             }
 
-            // Выполнение входа пользователя посредством данного внешнего поставщика входа, если у пользователя уже есть имя входа
+            // Logging in the user through this external login provider if the user already has a login
             var result = await SignInManager.ExternalSignInAsync(loginInfo, isPersistent: false);
             switch (result)
             {
@@ -457,7 +457,7 @@ namespace diplom_2.Controllers
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = false });
                 case SignInStatus.Failure:
                 default:
-                    // Если у пользователя нет учетной записи, то ему предлагается создать ее
+                    // If the user does not have an account, then he is prompted to create one
                     ViewBag.ReturnUrl = returnUrl;
                     ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
                     return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = loginInfo.Email });
@@ -478,7 +478,7 @@ namespace diplom_2.Controllers
 
             if (ModelState.IsValid)
             {
-                // Получение сведений о пользователе от внешнего поставщика входа
+                // Get user details from external login provider
                 var info = await AuthenticationManager.GetExternalLoginInfoAsync();
                 if (info == null)
                 {
@@ -537,8 +537,8 @@ namespace diplom_2.Controllers
             base.Dispose(disposing);
         }
 
-        #region Вспомогательные приложения
-        // Используется для защиты от XSRF-атак при добавлении внешних имен входа
+        #region Companion Applications
+        // Used to protect against XSRF attacks when adding external logins
         private const string XsrfKey = "XsrfId";
 
         private IAuthenticationManager AuthenticationManager

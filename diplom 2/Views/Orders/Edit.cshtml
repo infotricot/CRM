@@ -6,6 +6,7 @@
 }
 <script type="text/javascript" src="~/ckeditor/ckeditor.js"></script>
 <script src="~/js/jquery-1.11.1.min.js"></script>
+<script src="~/js/jquery-ui-1.10.3.min.js"></script>
 @*<div class="pageheader">
     <h2><i class="fa fa-dollar"></i> Заявка <span></span></h2>
     <div class="breadcrumb-wrapper">
@@ -246,10 +247,9 @@
                     <table class="table table-invoice">
                         <thead>
                             <tr class="row">
-                                <th class="col-md-7">Накладная</th>
-                                <th class="col-md-2">Сумма по накладной</th>
-                                <th class="col-md-2">Оплачено по накладной</th>                                
-                                <th class="col-md-1"></th>
+                                <th class="col-md-4" style="border-color: #8e8e8e">Накладная</th>
+                                <th class="col-md-5" style="border-color: #8e8e8e">Сумма по накладной</th>                                
+                                <th class="col-md-3" style="border-color: #8e8e8e"></th>
                             </tr>
                         </thead>
                         <tbody id="InvoiceBlock">
@@ -290,12 +290,19 @@
                 function RemoveInvoiceRow(V, filename)
                 {
                     
-                    $("#InvoiceRow_" + V).remove();                
+                    // $("#InvoiceRow_" + V).remove();     
+
+                    $(".InvoiceRow_" + V).each(
+                          function () {
+                              // temprary save the children elements like spans & divs
+                              $(this).remove();                              
+                          }
+                        );
+                    
                     $.ajax({
                         url: '/Invoices/Delete?filename=' + filename, //куда отправляем запрос (в какой actio-метод какого контроллера)
                         type: "GET", //типа
-                        success: function (result) {
-                            alert('ok');
+                        success: function (result) {                            
                             //$('#Slide' + number).attr('src', '../../OrdersImages/' + result);
                             //$('#InputImage' + number + 'Url').val(result);
                         },
@@ -357,8 +364,10 @@
                 <div class="text-right btn-invoice">
 
                     <input class="btn btn-primary mr5" type="submit" value="Изменить заявку" />
+                    
                     @*<button <i class="fa fa-dollar mr5"></i> Make A Payment</button>*@
                     <button class="btn btn-white"><i class="fa fa-print mr5"></i> Распечатать</button>
+                    <button id="CloseButton" type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                 </div>
 
                 <div class="mb40"></div>
@@ -372,7 +381,7 @@
 </div>
 
 
-<script src="~/js/jquery-ui-1.10.3.min.js"></script>
+
 @*<script src="~/js/select2.min.js"></script>*@
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
@@ -410,10 +419,12 @@
                         success: function (response) {
                             if (response!='error')
                             {
+                              
                                 if ($('#ProcesseList_' + data).length == 0)
                                     $('#ProcesseList').html(response);
                                 else
                                     $('#ProcesseList_' + data).html(response);
+                               
                                 $('#CloseButton').trigger('click');
                             }
                             else

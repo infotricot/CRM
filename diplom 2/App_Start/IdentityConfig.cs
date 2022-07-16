@@ -18,7 +18,7 @@ namespace diplom_2
     {
         public Task SendAsync(IdentityMessage message)
         {
-            // Подключите здесь службу электронной почты для отправки сообщения электронной почты.
+            // Connect your email service here to send an email message.
             return Task.FromResult(0);
         }
     }
@@ -27,12 +27,12 @@ namespace diplom_2
     {
         public Task SendAsync(IdentityMessage message)
         {
-            // Подключите здесь службу SMS, чтобы отправить текстовое сообщение.
+            //Connect the SMS service here to send a text message.
             return Task.FromResult(0);
         }
     }
 
-    // Настройка диспетчера пользователей приложения. UserManager определяется в ASP.NET Identity и используется приложением.
+    // Configuring the Application User Manager. The UserManager is defined in ASP.NET Identity and used by the application.
     public class ApplicationUserManager : UserManager<ApplicationUser>
     {
         public ApplicationUserManager(IUserStore<ApplicationUser> store)
@@ -43,14 +43,14 @@ namespace diplom_2
         public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context) 
         {
             var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(context.Get<ApplicationDbContext>()));
-            // Настройка логики проверки имен пользователей
+            // Configuring Username Validation Logic
             manager.UserValidator = new UserValidator<ApplicationUser>(manager)
             {
                 AllowOnlyAlphanumericUserNames = false,
                 RequireUniqueEmail = true
             };
 
-            // Настройка логики проверки паролей
+            // Setting up the password verification logic
             manager.PasswordValidator = new PasswordValidator
             {
                 RequiredLength = 6,
@@ -60,13 +60,13 @@ namespace diplom_2
                 RequireUppercase = false,
             };
 
-            // Настройка параметров блокировки по умолчанию
+            // Setting default blocking options
             manager.UserLockoutEnabledByDefault = true;
             manager.DefaultAccountLockoutTimeSpan = TimeSpan.FromMinutes(5);
             manager.MaxFailedAccessAttemptsBeforeLockout = 5;
 
-            // Регистрация поставщиков двухфакторной проверки подлинности. Для получения кода проверки пользователя в данном приложении используется телефон и сообщения электронной почты
-            // Здесь можно указать собственный поставщик и подключить его.
+            // Registering two-factor authentication providers. This app uses phone and email to get user verification code
+            // Here you can specify your own provider and connect it.
             manager.RegisterTwoFactorProvider("Код, полученный по телефону", new PhoneNumberTokenProvider<ApplicationUser>
             {
                 MessageFormat = "Ваш код безопасности: {0}"
@@ -88,7 +88,7 @@ namespace diplom_2
         }
     }
 
-    // Настройка диспетчера входа для приложения.
+    // Setting up a login manager for an application.
     public class ApplicationSignInManager : SignInManager<ApplicationUser, string>
     {
         public ApplicationSignInManager(ApplicationUserManager userManager, IAuthenticationManager authenticationManager)
